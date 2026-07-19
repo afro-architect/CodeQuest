@@ -373,11 +373,11 @@
         tryItTabBtn.disabled = true;
         tryItTabBtn.classList.add("is-disabled");
         tryItTabBtn.setAttribute("aria-disabled", "true");
-        tryItTabBtn.title = "No live code for this part";
+        tryItTabBtn.title = "Nothing to code yet; but keep an eye out for future side quests!";
       }
       var emptyNote = document.createElement("p");
       emptyNote.className = "tryit-empty";
-      emptyNote.textContent = "No live code for this part \u2014 check the video/description!";
+      emptyNote.textContent = "Nothing to code for this part \u2014 check the video/description!";
       tryItPanel.appendChild(emptyNote);
       return;
     }
