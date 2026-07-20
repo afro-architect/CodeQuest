@@ -55,6 +55,16 @@ body { overflow-x: hidden; }
 
 @media (max-width: 767px) {
   .sidebar-toggle { display: inline-flex; }
+  /* align-items: stretch is required here — the base .course-shell rule uses
+     flex-start so the sidebar and content top-align on desktop's row layout.
+     In column mode (mobile), flex-start lets flex children size to their own
+     content width instead of the container's width, so a child with wide
+     unwrapped content (e.g. the Description/Try It/Resources/Discussion tab
+     strip) silently stretches the entire page wider than the viewport. That
+     produced a real Android bug: the whole lesson page rendered ~30px wider
+     than the screen, forcing a horizontal layout-viewport expansion (visible
+     as a zoomed-out/clipped page on real devices). Stretch forces every flex
+     child to the shell's actual width so nothing can push the page wider. */
   .course-shell { flex-direction: column; align-items: stretch; padding-top: var(--space-3); }
   .course-content { width: 100%; }
   body.sidebar-open .sidebar-scrim {
@@ -63,6 +73,7 @@ body { overflow-x: hidden; }
     pointer-events: auto;
   }
 }
+
 /* ============ SIDEBAR ============ */
 .course-sidebar {
   flex: 0 0 clamp(260px, 28%, 340px);
@@ -329,6 +340,16 @@ body { overflow-x: hidden; }
 @keyframes tab-fade {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Discussion: giscus (GitHub Discussions) embed ---- */
+.discussion-giscus {
+  max-width: 720px;
+  min-height: 140px;
+}
+.discussion-giscus .giscus-frame {
+  width: 100%;
+  border: none;
 }
 
 /* Description panel reuses carousel-card-like typography */
