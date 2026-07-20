@@ -55,14 +55,14 @@ body { overflow-x: hidden; }
 
 @media (max-width: 767px) {
   .sidebar-toggle { display: inline-flex; }
-  .course-shell { flex-direction: column; padding-top: var(--space-3); }
+  .course-shell { flex-direction: column; align-items: stretch; padding-top: var(--space-3); }
+  .course-content { width: 100%; }
   body.sidebar-open .sidebar-scrim {
     display: block;
     opacity: 1;
     pointer-events: auto;
   }
 }
-
 /* ============ SIDEBAR ============ */
 .course-sidebar {
   flex: 0 0 clamp(260px, 28%, 340px);
