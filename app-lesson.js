@@ -1,10 +1,10 @@
-// app-lesson.js — shared behavior for every lesson-N.html page: renders the
+// app-lesson.js â€” shared behavior for every lesson-N.html page: renders the
 // sidebar mini-course (stop accordion + sub-lesson list), the video player +
 // tabs content browser for the active sub-lesson, wires the fixed
 // Stamp My Passport button, dark-mode toggle, and the locked-page guard.
 //
 // NOTE: completeLesson()/getProgress()/getLessonState() come from progress.js
-// and are NOT modified by this file — this file only reads/calls them exactly
+// and are NOT modified by this file â€” this file only reads/calls them exactly
 // as the previous carousel version did.
 
 (function () {
@@ -36,7 +36,7 @@
     bannerImg.src = nodeMeta.banner;
     bannerImg.alt = lesson.theme + " illustrated banner for " + lesson.title;
   }
-  document.title = lesson.title + " — Quest Map";
+  document.title = lesson.title + " â€” Quest Map";
 
   var cards = lesson.cards;
   var current = 0; // index of active sub-lesson within this stop
@@ -51,7 +51,7 @@
   function renderAccordion() {
     accordionEl.innerHTML = "";
 
-    // Only render THIS stop — other stops are intentionally hidden from the
+    // Only render THIS stop â€” other stops are intentionally hidden from the
     // sidebar so students stay focused on the current unit's sub-lessons.
     var nodeIdx = QUEST_NODES.findIndex(function (n) {
       return n.id === LESSON_ID;
@@ -150,7 +150,7 @@
     if (src) {
       videoEl.src = src;
       videoEl.play().catch(function () {
-        /* placeholder source may not resolve — poster stays as fallback */
+        /* placeholder source may not resolve â€” poster stays as fallback */
       });
     }
     videoPlayerEl.classList.add("is-playing");
@@ -237,7 +237,7 @@
     ul.querySelectorAll("[data-resource-placeholder]").forEach(function (link) {
       link.addEventListener("click", function (e) {
         e.preventDefault();
-        showToast("This is a placeholder resource — real files go here!");
+        showToast("This is a placeholder resource â€” real files go here!");
       });
     });
 
@@ -265,23 +265,56 @@
     }
   }
 
+  // giscus config â€” GitHub Discussions-powered comments for afro-architect/CodeQuest
+  var GISCUS_CONFIG = {
+    repo: "afro-architect/CodeQuest",
+    repoId: "R_kgDOTdW5Bg",
+    category: "General",
+    categoryId: "DIC_kwDOTdW5Bs4DBh3C",
+  };
+
+  function currentGiscusTheme() {
+    var t = document.documentElement.getAttribute("data-theme");
+    return t === "dark" ? "dark" : "light";
+  }
+
+  function postMessageToGiscus(message) {
+    var iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+    iframe.contentWindow.postMessage({ giscus: message }, "https://giscus.app");
+  }
+
+  // Keep the embedded giscus iframe's theme in sync when the site's own
+  // dark-mode toggle changes, without needing to reload the whole widget.
+  function syncGiscusTheme() {
+    postMessageToGiscus({ setConfig: { theme: currentGiscusTheme() } });
+  }
+  window.__syncGiscusTheme = syncGiscusTheme;
+
   function renderDiscussion(card) {
     var panel = document.querySelector('[data-panel="discussion"]');
     panel.innerHTML = "";
 
-    var composer = document.createElement("div");
-    composer.className = "discussion-composer";
-    composer.innerHTML =
-      '<input type="text" placeholder="Ask a question about &quot;' + card.heading + '&quot;\u2026" aria-label="Write a comment" />' +
-      "<button type=\"button\">Post</button>";
-    var input = composer.querySelector("input");
-    var postBtn = composer.querySelector("button");
-    postBtn.addEventListener("click", function () {
-      if (!input.value.trim()) return;
-      showToast("This is a placeholder discussion \u2014 posting isn't wired up yet!");
-      input.value = "";
-    });
-    panel.appendChild(composer);
+    var wrap = document.createElement("div");
+    wrap.className = "discussion-giscus";
+    panel.appendChild(wrap);
+
+    var script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo", GISCUS_CONFIG.repo);
+    script.setAttribute("data-repo-id", GISCUS_CONFIG.repoId);
+    script.setAttribute("data-category", GISCUS_CONFIG.category);
+    script.setAttribute("data-category-id", GISCUS_CONFIG.categoryId);
+    script.setAttribute("data-mapping", "pathname");
+    script.setAttribute("data-strict", "0");
+    script.setAttribute("data-reactions-enabled", "1");
+    script.setAttribute("data-emit-metadata", "0");
+    script.setAttribute("data-input-position", "bottom");
+    script.setAttribute("data-theme", currentGiscusTheme());
+    script.setAttribute("data-lang", "en");
+    script.crossOrigin = "anonymous";
+    script.async = true;
+    wrap.appendChild(script);
   }
 
   // =========================================================================
@@ -289,7 +322,7 @@
   // =========================================================================
   var tryItPanel = document.querySelector('[data-panel="tryit"]');
 
-  // Shared Pyodide instance — loaded lazily once per page view, reused across
+  // Shared Pyodide instance â€” loaded lazily once per page view, reused across
   // every Python sub-lesson card on this same lesson page.
   var pyodideInstance = null;
   var pyodidePromise = null;
@@ -382,7 +415,7 @@
       return;
     }
 
-    // Playground exists — enable the tab.
+    // Playground exists â€” enable the tab.
     if (tryItTabBtn) {
       tryItTabBtn.disabled = false;
       tryItTabBtn.classList.remove("is-disabled");
@@ -477,7 +510,7 @@
       });
       cm.setValue(code || "");
       // Container may have been zero-width at mount time (e.g. tab panel was
-      // hidden with display:none) — refresh on the next frame so CodeMirror
+      // hidden with display:none) â€” refresh on the next frame so CodeMirror
       // re-measures itself and renders every line correctly.
       requestAnimationFrame(function () {
         cm.refresh();
@@ -830,6 +863,7 @@
       t.addEventListener("click", function () {
         d = d === "dark" ? "light" : "dark";
         r.setAttribute("data-theme", d);
+        if (window.__syncGiscusTheme) window.__syncGiscusTheme();
         t.setAttribute("aria-label", "Switch to " + (d === "dark" ? "light" : "dark") + " mode");
         t.innerHTML =
           d === "dark"
