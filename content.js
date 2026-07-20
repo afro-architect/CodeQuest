@@ -9,11 +9,11 @@ const LESSON_CONTENT = [
     title: "What Makes a Website?",
     theme: "Trailhead / Campsite",
     cards: [
+      { heading: "Course Introduction", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects — not just read about them." }
       { heading: "Every Website is a Conversation", videoSrc: "assets/video/placeholder-every-website-is-a-conversation.mp4", body: "Websites are how computers talk to you — through text, images, buttons, and links. Every click is you 'talking back.'" },
       { heading: "Three Layers of Every Site", videoSrc: "assets/video/placeholder-three-layers-of-every-site.mp4", body: "HTML = structure (the bones), CSS = style (the skin/outfit), JavaScript = behavior (the reflexes). You'll learn all three on this trail." },
       { heading: "Client vs. Server", videoSrc: "assets/video/placeholder-client-vs-server.mp4", body: "Your browser (the client) asks a server for a page. The server sends back the ingredients, and your browser assembles them for you." },
-      { heading: "You're About to Build One", videoSrc: "assets/video/placeholder-you-re-about-to-build-one.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects — not just read about them." }
-    ]
+          ]
   },
   {
     id: "lesson-2",
