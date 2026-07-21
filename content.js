@@ -326,7 +326,8 @@ const LESSON_CONTENT = [
     heading: "What's Next?",
     body: "Preview upcoming projects that build on these JavaScript ideas for richer interactivity and behavior."
   }
-] },
+]
+  },
   {
     id: "lesson-6",
     title: "What is Python?",
