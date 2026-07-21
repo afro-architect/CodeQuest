@@ -183,9 +183,8 @@ const LESSON_CONTENT = [
       { heading: "Helpful Terms to Know", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
       { heading: "HTML = The Ingredients", videoSrc: "assets/video/placeholder-html-the-ingredients.mp4", body: "Tags are like ingredients you line up and combine to build a page." },
       { heading: "Tags & Elements", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "Tags come in pairs: <p>...</p>, <h1>...</h1>. What's between the tags is the content." },
-      { heading: "The IDE", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "Tags come in pairs: <p>...</p>, <h1>...</h1>. What's between the tags is the content." },
-      { heading: "Activity: Recipe Tags", videoSrc: "assets/video/placeholder-tags-elements.mp4",  body: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Practice Activity</h1>\n  </body>\n</html>", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Practice Activity</h1>\n  </body>\n</html>" } },
-      { heading: "Containers & Sections", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "Tags come in pairs: <p>...</p>, <h1>...</h1>. What's between the tags is the content." },      
+      { heading: "The IDE", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "An IDE is your coding workspace. It’s where you write and organize your HTML, CSS, and JavaScript files, see errors, and run or preview your project." },
+      { heading: "Containers & Sections", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "Webpages are organized into containers and sections—like headers, main content areas, and footers. These sections help you group related content so it’s easier to design, style, and understand."  },      
       { heading: "Nesting", videoSrc: "assets/video/placeholder-nesting.mp4", body: "Tags can go inside other tags and like a burrito wrapped in foil wrapped in a bag." },
       {
         heading: "Activity: Big List, Little List",
