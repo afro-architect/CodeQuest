@@ -245,69 +245,93 @@ const LESSON_CONTENT = [
       { heading: "What's Next?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
 ]
   },
-  {
-    id: "lesson-5",
-    title: "What is JavaScript?",
-    theme: "Arcade",
-    cards: [
-  {    heading: "What You'll Learn",
-    body: "Learn how HTML, CSS, and JavaScript work together by building small interactive pages and mini projects."  },
-  {    heading: "Icebreaker",
-    body: "Share how you already use apps and imagine what you’d build or change if you could control the code."  },
-  {    heading: "Helpful Terms to Know",
-    body: "Get a quick glossary of words like variable, function, event, and DOM before you start coding."  },
-  {    heading: "What is Javascript?",
-    body: "JavaScript is the language that makes web pages interactive, telling the browser what to do when users act."  },
-  {    heading: "JS = The Cook",
-    body: "JavaScript is the cook that reacts to orders, runs steps on events, and updates what you see on the page."  },
-  {    heading: "Syntax: How the Cook Writes Instructions",
-    body: "Syntax is JavaScript’s grammar—the rules for writing instructions the browser can understand."  },
-  {    heading: "Simple Statements",
-    body: "Start with one-line instructions like console.log(...) to see JavaScript run steps from top to bottom."  },
-  {    heading: "Variables: What the Cook Keeps Track Of",
-    body: "Variables store information—like scores, names, or flags—so JavaScript can remember values as it runs."  },
-  {    heading: "Functions: what the cook can do (define + call)",
-    body: "Functions are named actions—mini recipes you define once and call whenever you need them."  },
-  {    heading: "Events: when something happens on the page",
-    body: "Events are clicks, key presses, and submits that signal JavaScript to run code in response."  },
-  {    heading: "The DOM: What is Javascript Talking To",
-    body: "The DOM is the browser’s live map of page elements that JavaScript can find, change, and listen to."  },
-  {    heading: "Event listeners + How to Call a Function + Updating the DOM",
-    body: "Attach listeners so a click on a DOM element calls your function, updates variables, and changes on-screen text."  },
-  {    heading: "What Happens behind the scenes",
-    body: "The browser reads your script, sets up variables, functions, and listeners, then runs code when events occur."  },
-  {    heading: "Activity: Order Counter",
-    body: "Build an Order button that raises a counter and updates a status message each time it’s clicked."  },
-  {    heading: "Core variables to practice",
-    body: "Practice using numbers, strings, and true/false variables to track scores, names, and simple states."  },
-  {    heading: "Statements and patterns to bank",
-    body: "Reuse patterns like console.log, score = score + 1, if/else checks, and simple function calls."  },
-  {    heading: "Mini Challenge: TBD",
-    body: "Create a button that counts and displays how many times it’s been clicked using a variable and listener."
-  },
-  {    heading: "Recap",
-    body: "Review how you used variables, functions, events, and the DOM to make a static page feel interactive."  },
-  {    heading: "What's Next?",
-    body: "Preview upcoming projects that build on these JavaScript ideas for richer interactivity and behavior."  },
-]
-  },
-  {
-    id: "lesson-6",
-    title: "What is Python?",
-    theme: "Surf Break",
-    cards: [
-      { heading: "What You'll Learn", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "Icebreaker", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "Helpful Terms to Know", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "Python = A New Board", videoSrc: "assets/video/placeholder-python-a-new-board.mp4", body: "Different language, different feel and but you're still surfing the same ocean of logic you learned in JS." },
-      { heading: "Why Python?", videoSrc: "assets/video/placeholder-why-python.mp4", body: "Readable syntax, huge community, and it powers everything from apps to AI to robots." },
-      { heading: "Where Python Runs", videoSrc: "assets/video/placeholder-where-python-runs.mp4", body: "Not just in browsers and scripts, servers, data pipelines, and even physical robots run on Python." },
-      { heading: "Print & Input", videoSrc: "assets/video/placeholder-print-input.mp4", body: "print('Hello!') and input('What's your name? ') are your first two Python commands.", playground: { lang: "python", code: "print('Hello!')\nname = 'Explorer'\nprint('What is your name? (edit the name variable above and Run again)')\nprint('Nice to meet you, ' + name + '!')" } },
-      { heading: "Mini Challenge: Say Hello", videoSrc: "assets/video/placeholder-mini-challenge-say-hello.mp4", body: "Write a script that asks for your name and prints a custom greeting back.", playground: { lang: "python", code: "name = 'Explorer'\n\ndef greet(who):\n    print('Hey there, ' + who + '! Welcome to the trail.')\n\ngreet(name)" } },
-      { heading: "Recap", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "What's Next?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-]
-  },
+{
+  id: "lesson-5",
+  title: "What is JavaScript?",
+  theme: "Arcade",
+  cards: [
+    {
+      heading: "What You'll Learn",
+      videoSrc: "assets/video/placeholder-course-intro.mp4",
+      body: "Learn how HTML, CSS, and JavaScript work together by building small interactive pages and mini projects."
+    },
+    {
+      heading: "Icebreaker",
+      videoSrc: "assets/video/placeholder-course-intro.mp4",
+      body: "Share how you already use apps and imagine what you’d build or change if you could control the code."
+    },
+    {
+      heading: "Helpful Terms to Know",
+      videoSrc: "assets/video/placeholder-course-intro.mp4",
+      body: "Get a quick glossary of words like variable, function, event, and DOM before you start coding."
+    },
+    {
+      heading: "What is Javascript?",
+      videoSrc: "assets/video/placeholder-js-the-controller.mp4",
+      body: "JavaScript is the language that makes web pages interactive, telling the browser what to do when users act."
+    },
+    {
+      heading: "JS = The Cook",
+      videoSrc: "assets/video/placeholder-js-the-controller.mp4",
+      body: "JavaScript is the cook that reacts to orders, runs steps on events, and updates what you see on the page."
+    },
+    {
+      heading: "Syntax: How the Cook Writes Instructions",
+      videoSrc: "assets/video/placeholder-js-the-controller.mp4",
+      body: "Syntax is JavaScript’s grammar—the rules for writing instructions the browser can understand."
+    },
+    {
+      heading: "Simple Statements",
+      videoSrc: "assets/video/placeholder-variables-values.mp4",
+      body: "Start with one-line instructions like console.log(...) to see JavaScript run steps from top to bottom."
+    },
+    {
+      heading: "Variables: What the Cook Keeps Track Of",
+      videoSrc: "assets/video/placeholder-variables-values.mp4",
+      body: "Variables store information—like scores, names, or flags—so JavaScript can remember values as it runs."
+    },
+    {
+      heading: "Functions: what the cook can do (define + call)",
+      videoSrc: "assets/video/placeholder-functions.mp4",
+      body: "Functions are named actions—mini recipes you define once and call whenever you need them."
+    },
+    {
+      heading: "Events: when something happens on the page",
+      videoSrc: "assets/video/placeholder-events.mp4",
+      body: "Events are clicks, key presses, and submits that signal JavaScript to run code in response."
+    },
+    {
+      heading: "The DOM: What is Javascript Talking To",
+      videoSrc: "assets/video/placeholder-events.mp4",
+      body: "The DOM is the browser’s live map of page elements that JavaScript can find, change, and listen to."
+    },
+    {
+      heading: "Event listeners + How to Call a Function + Updating the DOM",
+      videoSrc: "assets/video/placeholder-events.mp4",
+      body: "Attach listeners so a click on a DOM element calls your function, updates variables, and changes on-screen text."
+    },
+    {
+      heading: "What Happens behind the scenes",
+      videoSrc: "assets/video/placeholder-events.mp4",
+      body: "The browser reads your script, sets up variables, functions, and listeners, then runs code when events occur."
+    },
+    {
+      heading: "Activity: Order Counter",
+      videoSrc: "assets/video/placeholder-events.mp4",
+      body: "Build an Order button that raises a counter and updates a status message each time it’s clicked."
+    },
+    {
+      heading: "Core variables to practice",
+      videoSrc: "assets/video/placeholder-events.mp4",
+      body: "Practice using numbers, strings, and true/false variables to track scores, names, and simple states."
+    },
+    {
+      heading: "Statements and patterns to bank",
+      videoSrc: "assets/video/placeholder-events.mp4",
+      body: "Reuse patterns like console.log, score = score + 1, if/else checks, and simple function calls."
+    },
+    {
+      heading: ,
   {
     id: "lesson-7",
     title: "What do you need before building Python projects?",
