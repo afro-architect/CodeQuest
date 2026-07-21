@@ -394,9 +394,242 @@
       .replace(/>/g, "&gt;");
   }
 
+  // =========================================================================
+  // TAG-MATCH ACTIVITY: click a plain-text chunk, then click the tag that
+  // belongs around it. No typing required — used when we're asking students
+  // to *apply* a tag family before they've been shown how to *type* its
+  // syntax. State (assignments + attempt count) lives on the tagMatch object
+  // itself so it persists for the rest of this page view even if the
+  // student switches tabs or sub-lessons and comes back.
+  // =========================================================================
+  function renderTagMatchActivity(card, tm) {
+    if (!tm.__assignments) {
+      tm.__assignments = {};
+      tm.chunks.forEach(function (chunk) {
+        tm.__assignments[chunk.id] = null;
+      });
+    }
+    if (typeof tm.__attempts !== "number") tm.__attempts = 0;
+    var assignments = tm.__assignments;
+    var selectedChunkId = null;
+
+    var wrap = document.createElement("div");
+    wrap.className = "tagmatch-wrap";
+
+    var instructions = document.createElement("p");
+    instructions.className = "tagmatch-instructions";
+    instructions.textContent = "Tap a piece of text below, then tap the tag that belongs around it.";
+    wrap.appendChild(instructions);
+
+    // ---- Tag palette ----
+    var palette = document.createElement("div");
+    palette.className = "tagmatch-palette";
+    tm.tagOptions.forEach(function (opt) {
+      var chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "tagmatch-chip";
+      chip.textContent = opt.label;
+      chip.setAttribute("data-tag", opt.tag);
+      chip.disabled = true;
+      palette.appendChild(chip);
+    });
+    wrap.appendChild(palette);
+
+    // ---- Chunk list ----
+    var chunksEl = document.createElement("div");
+    chunksEl.className = "tagmatch-chunks";
+    wrap.appendChild(chunksEl);
+
+    function renderChunks() {
+      chunksEl.innerHTML = "";
+      tm.chunks.forEach(function (chunk) {
+        var row = document.createElement("button");
+        row.type = "button";
+        row.className = "tagmatch-chunk";
+        row.setAttribute("data-chunk-id", chunk.id);
+        if (selectedChunkId === chunk.id) row.classList.add("is-selected");
+
+        var textEl = document.createElement("span");
+        textEl.className = "tagmatch-chunk-text";
+        textEl.textContent = chunk.text;
+        row.appendChild(textEl);
+
+        var badge = document.createElement("span");
+        badge.className = "tagmatch-chunk-badge";
+        var assigned = assignments[chunk.id];
+        badge.textContent = assigned ? "<" + assigned + ">" : "no tag yet";
+        if (assigned) badge.classList.add("has-tag");
+        row.appendChild(badge);
+
+        row.addEventListener("click", function () {
+          selectedChunkId = chunk.id;
+          renderChunks();
+          updatePaletteEnabled();
+        });
+
+        chunksEl.appendChild(row);
+      });
+    }
+
+    function updatePaletteEnabled() {
+      var chips = palette.querySelectorAll(".tagmatch-chip");
+      chips.forEach(function (chip) {
+        chip.disabled = !selectedChunkId;
+        chip.classList.toggle(
+          "is-active",
+          !!selectedChunkId && assignments[selectedChunkId] === chip.getAttribute("data-tag")
+        );
+      });
+    }
+
+    palette.querySelectorAll(".tagmatch-chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        if (!selectedChunkId) return;
+        var tag = chip.getAttribute("data-tag");
+        assignments[selectedChunkId] = assignments[selectedChunkId] === tag ? null : tag;
+        renderChunks();
+        updatePaletteEnabled();
+        renderPreview();
+      });
+    });
+
+    // ---- Live preview (builds real HTML from current tag assignments) ----
+    var previewLabel = document.createElement("span");
+    previewLabel.className = "tryit-col-label";
+    previewLabel.style.marginTop = "var(--space-3)";
+    previewLabel.textContent = "Preview";
+    wrap.appendChild(previewLabel);
+
+    var previewShell = document.createElement("div");
+    previewShell.className = "tagmatch-preview-shell";
+    var previewFrame = document.createElement("iframe");
+    previewFrame.setAttribute("sandbox", "");
+    previewFrame.title = card.heading + " tag preview";
+    previewShell.appendChild(previewFrame);
+    wrap.appendChild(previewShell);
+
+    function buildPreviewHtml() {
+      var parts = [];
+      var inList = false;
+      tm.chunks.forEach(function (chunk) {
+        var tag = assignments[chunk.id];
+        if (tag === "li") {
+          if (!inList) {
+            parts.push("<ul>");
+            inList = true;
+          }
+          parts.push("<li>" + escapeHtml(chunk.text) + "</li>");
+        } else {
+          if (inList) {
+            parts.push("</ul>");
+            inList = false;
+          }
+          if (tag) {
+            parts.push("<" + tag + ">" + escapeHtml(chunk.text) + "</" + tag + ">");
+          } else {
+            parts.push('<p class="tagmatch-untagged">' + escapeHtml(chunk.text) + "</p>");
+          }
+        }
+      });
+      if (inList) parts.push("</ul>");
+      return parts.join("\n");
+    }
+
+    function renderPreview() {
+      var doc =
+        '<style>body{font-family:sans-serif;margin:0;padding:12px;color:#23283f;background:#fff;} .tagmatch-untagged{color:#9aa0b4;font-style:italic;} h1{margin:0 0 8px;} p{margin:0 0 8px;} ul{margin:0 0 8px;padding-left:22px;}</style>' +
+        buildPreviewHtml();
+      previewFrame.setAttribute("srcdoc", doc);
+    }
+
+    // ---- Check + feedback ----
+    var feedbackEl = document.createElement("div");
+    feedbackEl.className = "tagmatch-feedback";
+
+    var checkBtn = document.createElement("button");
+    checkBtn.type = "button";
+    checkBtn.className = "tryit-btn";
+    checkBtn.style.marginTop = "var(--space-4)";
+    checkBtn.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Check My Tags</span>';
+    wrap.appendChild(checkBtn);
+    wrap.appendChild(feedbackEl);
+
+    checkBtn.addEventListener("click", function () {
+      var allCorrect = true;
+      var wrongTags = {};
+      tm.chunks.forEach(function (chunk) {
+        if (assignments[chunk.id] !== chunk.correctTag) {
+          allCorrect = false;
+          wrongTags[chunk.correctTag] = true;
+        }
+      });
+
+      feedbackEl.innerHTML = "";
+
+      if (allCorrect) {
+        tm.__attempts = 0;
+        var successEl = document.createElement("div");
+        successEl.className = "tagmatch-feedback-banner tagmatch-feedback-success";
+        successEl.textContent = tm.successMessage || "Nice work \u2014 every tag is correct!";
+        feedbackEl.appendChild(successEl);
+        return;
+      }
+
+      tm.__attempts += 1;
+      var retryEl = document.createElement("div");
+      retryEl.className = "tagmatch-feedback-banner tagmatch-feedback-retry";
+      retryEl.textContent = tm.retryMessage || "Not quite yet \u2014 give it another try!";
+      feedbackEl.appendChild(retryEl);
+
+      if (tm.__attempts >= 2 && tm.hints) {
+        var hintBox = document.createElement("div");
+        hintBox.className = "tagmatch-hints";
+        var hintTitle = document.createElement("p");
+        hintTitle.className = "tagmatch-hints-title";
+        hintTitle.textContent = "Hints \u2014 ask yourself:";
+        hintBox.appendChild(hintTitle);
+        var ul = document.createElement("ul");
+        Object.keys(wrongTags).forEach(function (tag) {
+          if (tm.hints[tag]) {
+            var li = document.createElement("li");
+            li.textContent = tm.hints[tag];
+            ul.appendChild(li);
+          }
+        });
+        hintBox.appendChild(ul);
+        feedbackEl.appendChild(hintBox);
+      }
+    });
+
+    renderChunks();
+    updatePaletteEnabled();
+    renderPreview();
+    tryItPanel.appendChild(wrap);
+
+    activeTryIt = {
+      destroy: function () {},
+      refresh: function () {},
+    };
+  }
+
   function renderTryIt(card) {
     teardownActiveTryIt();
     tryItPanel.innerHTML = "";
+
+    // ---- Tag-matching activity: click-to-tag instead of free code entry.
+    // Used for activities that ask students to apply tags they haven't been
+    // shown how to *type* yet (e.g. lists before list syntax is modeled).
+    if (card.tagMatch) {
+      if (tryItTabBtn) {
+        tryItTabBtn.disabled = false;
+        tryItTabBtn.classList.remove("is-disabled");
+        tryItTabBtn.setAttribute("aria-disabled", "false");
+        tryItTabBtn.removeAttribute("title");
+      }
+      renderTagMatchActivity(card, card.tagMatch);
+      return;
+    }
 
     var pg = card.playground;
 
