@@ -861,6 +861,11 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
 }
 .site-footer .reset-btn:hover { color: var(--color-error); }
 
+.site-footer p {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* Utility */
 .visually-hidden-focusable:not(:focus) {
   position: absolute;
