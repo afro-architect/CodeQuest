@@ -114,7 +114,7 @@ const LESSON_CONTENT = [
       {
         heading: "Vibe Coding Extension",
         videoSrc: "assets/video/placeholder-header-body-footer.mp4",
-        body: "An AI was given this prompt: \"Build a homepage for a student skate club with a header, nav, hero section, 3 content cards, heading hierarchy, and footer.\" Below is what it actually produced. Your job isn't to build it yourself \u2014 it's to diagnose it. Look at the preview, answer the diagnostic questions, check off anything you'd fix for clarity, then write a short final reflection.",
+        body: "An AI tool was given this prompt: \"Build a homepage for a student skate club with a header, nav, hero section, 3 content cards, heading hierarchy, and footer.\" Below is what it actually produced. Your job isn't to build it yourself \u2014 it's to diagnose it. Look at the preview, answer the diagnostic questions, check off anything you'd fix for clarity, then write a short final reflection.",
         vibeCoding: {
           starterPrompt: "Build a homepage for a student skate club with:\n- header\n- nav\n- hero section\n- 3 content cards\n- heading hierarchy\n- footer",
           aiOutputHtml:
@@ -130,7 +130,7 @@ const LESSON_CONTENT = [
           diagnosticQuestions: [
             {
               id: "hierarchy",
-              prompt: "Did the AI include a working heading hierarchy (one clear H1, then smaller headings below it)?",
+              prompt: "Did the AI tool include a working heading hierarchy (one clear H1, then smaller headings below it)?",
               options: [
                 { label: "Yes, it's solid", correct: false },
                 { label: "No, hierarchy is missing or broken", correct: true }
