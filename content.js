@@ -3,6 +3,44 @@
 // Each lesson object matches a node in progress.js (same id).
 // Swap in real text/media/links later and structure is ready to use as-is.
 
+// Shared "Grind & Grow Skate Crew" sample site \u2014 the same real, semantic
+// HTML markup reused across the Website Anatomy Lab (hover + click-to-quiz)
+// and the Remix Challenge (click-to-identify + reflection) so students are
+// always working with one consistent, real page instead of a static picture.
+const SKATE_SITE_HTML =
+  '<div class="ssx-site">' +
+  '<header class="ssx-header"><span class="ssx-logo">\uD83C\uDEF9 Grind &amp; Grow Skate Crew</span></header>' +
+  '<nav class="ssx-nav"><a href="#">Home</a><a href="#">Tricks</a><a href="#">Crew</a><a href="#">Shop</a><a href="#">Contact</a></nav>' +
+  '<section class="ssx-hero">' +
+  '<h1 class="ssx-hero-heading">Land Your First Kickflip This Summer</h1>' +
+  '<p class="ssx-hero-body">Free weekend clinics at the park bowl \u2014 no board required, we\u2019ve got extras to borrow.</p>' +
+  '<button class="ssx-cta" type="button">Join a Clinic</button>' +
+  '</section>' +
+  '<section class="ssx-cards">' +
+  '<article class="ssx-card"><h2 class="ssx-card-heading">Weekly Tricks</h2><p>A new trick breakdown every Friday, from ollies to 360 flips.</p></article>' +
+  '<article class="ssx-card"><h2 class="ssx-card-heading">Meet the Crew</h2><p>Twelve skaters, one park, zero attitude \u2014 just help landing tricks.</p></article>' +
+  '<article class="ssx-card"><h2 class="ssx-card-heading">Shop Gear</h2><p>Decks, grip tape, and pads at crew-only prices.</p></article>' +
+  '</section>' +
+  '<footer class="ssx-footer">' +
+  '<form class="ssx-form"><label for="ssx-email">Get clinic reminders</label><input id="ssx-email" type="email" placeholder="you@email.com" /><button type="submit">Sign Up</button></form>' +
+  '<p class="ssx-copy">\u00A9 Grind &amp; Grow Skate Crew</p>' +
+  '</footer>' +
+  '</div>';
+
+// The 8 real, teachable parts of SKATE_SITE_HTML used by the Anatomy Lab's
+// hover-then-quiz flow. Each hotspot's name/job also feeds the shared chip
+// option pools, so decoys always come from real parts of this same page.
+const SKATE_SITE_HOTSPOTS = [
+  { id: "header", selector: ".ssx-header", name: "Header (<header>)", job: "Sits at the top of the page and introduces the site \u2014 usually a logo or site name." },
+  { id: "nav", selector: ".ssx-nav", name: "Navigation (<nav>)", job: "Holds the links that let visitors jump to other pages or sections." },
+  { id: "hero", selector: ".ssx-hero", name: "Hero section", job: "The big attention-grabbing area right under the header \u2014 usually the first thing visitors notice." },
+  { id: "h1", selector: ".ssx-hero-heading", name: "Main heading (<h1>)", job: "The single most important heading on the page \u2014 biggest, and used only once." },
+  { id: "heroBody", selector: ".ssx-hero-body", name: "Body text (<p>)", job: "Regular paragraph text that explains or supports the heading above it." },
+  { id: "card", selector: ".ssx-card", name: "Card", job: "One self-contained chunk of content, grouped with its own mini-heading and text." },
+  { id: "footer", selector: ".ssx-footer", name: "Footer (<footer>)", job: "Sits at the very bottom of the page \u2014 usually copyright, contact info, or small links." },
+  { id: "form", selector: ".ssx-form", name: "Form (<form>)", job: "Collects input from a visitor, like an email address, and does something with it when submitted." }
+];
+
 const LESSON_CONTENT = [
   {
     id: "lesson-1",
@@ -32,9 +70,104 @@ const LESSON_CONTENT = [
       { heading: "Text Hierarchy On a Page", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Most pages follow the same skeleton: a header up top, main content in the middle, footer info at the bottom." },
       { heading: "Layout and Grid", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Most pages follow the same skeleton: a header up top, main content in the middle, footer info at the bottom." },
       { heading: "Forms As Interactive Parts", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Most pages follow the same skeleton: a header up top, main content in the middle, footer info at the bottom." },
-      { heading: "Activity: Website Anatomy Lab", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Most pages follow the same skeleton: a header up top, main content in the middle, footer info at the bottom." }, 
-      { heading: "Remix Challenge", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Most pages follow the same skeleton: a header up top, main content in the middle, footer info at the bottom." },
-      { heading: "Vibe Coding Extension", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Most pages follow the same skeleton: a header up top, main content in the middle, footer info at the bottom." },
+      {
+        heading: "Activity: Website Anatomy Lab",
+        videoSrc: "assets/video/placeholder-header-body-footer.mp4",
+        body: "Below is a real sample website for a skate crew. Hover over any part \u2014 header, nav, hero, cards, footer, form \u2014 to see its boundary outlined. Click a highlighted part to answer two questions about it: what is this part called, and what job does it do? Pick your answers from the buttons; no typing needed. Get both right and that part gets checked off. Work through all 8 parts.",
+        anatomyLab: {
+          siteHtml: SKATE_SITE_HTML,
+          hotspots: SKATE_SITE_HOTSPOTS
+        }
+      },
+      {
+        heading: "Remix Challenge",
+        videoSrc: "assets/video/placeholder-header-body-footer.mp4",
+        body: "Here's that same skate crew site again. This time, click directly on the page to answer three quick questions: where's the hero, which text is the H1, and which text is the body copy. Then there's an open reflection question \u2014 no right answer, just your thinking: if this were a music site instead of a skate site, what would you move, rename, or restyle first, and why?",
+        remixChallenge: {
+          siteHtml: SKATE_SITE_HTML,
+          clickQuestions: [
+            {
+              id: "findHero",
+              prompt: "Where is the hero? Click it on the sample site below.",
+              targetSelector: ".ssx-hero",
+              correctFeedback: "That's it \u2014 the hero, right under the header.",
+              retryFeedback: "Not quite \u2014 look for the big attention-grabbing block just under the header."
+            },
+            {
+              id: "findH1",
+              prompt: "Which text is the H1? Click directly on it.",
+              targetSelector: ".ssx-hero-heading",
+              correctFeedback: "Yep \u2014 that's the H1, the single biggest heading on the page.",
+              retryFeedback: "Look for the biggest, boldest line of text on the page and click right on it."
+            },
+            {
+              id: "findBody",
+              prompt: "Now click the body text right below that heading.",
+              targetSelector: ".ssx-hero-body",
+              correctFeedback: "Right \u2014 that's body text, just a regular paragraph.",
+              retryFeedback: "Body text is the smaller, regular sentence \u2014 not a heading. Click right on it."
+            }
+          ],
+          reflectionPrompt: "This site is built for a skate crew. If this were a music site instead, what would you move, rename, or restyle first \u2014 and why?"
+        }
+      },
+      {
+        heading: "Vibe Coding Extension",
+        videoSrc: "assets/video/placeholder-header-body-footer.mp4",
+        body: "An AI was given this prompt: \"Build a homepage for a student skate club with a header, nav, hero section, 3 content cards, heading hierarchy, and footer.\" Below is what it actually produced. Your job isn't to build it yourself \u2014 it's to diagnose it. Look at the preview, answer the diagnostic questions, check off anything you'd fix for clarity, then write a short final reflection.",
+        vibeCoding: {
+          starterPrompt: "Build a homepage for a student skate club with:\n- header\n- nav\n- hero section\n- 3 content cards\n- heading hierarchy\n- footer",
+          aiOutputHtml:
+            '<style>body{font-family:sans-serif;margin:0;padding:14px;color:#23283f;background:#fff;} .box1{font-weight:bold;font-size:16px;margin-bottom:10px;} .tinytext{font-size:11px;color:#555;margin:2px 0;} .box3{display:flex;gap:8px;margin:14px 0;} .card{border:1px solid #ddd;padding:8px;flex:1;font-size:13px;} .cardtitle{font-weight:bold;margin-bottom:4px;} .box3 h2{font-size:13px;margin:0 0 4px;} .box4{font-size:11px;color:#888;margin-top:14px;}</style>' +
+            '<div class="box1"><div>Skate Club</div></div>' +
+            '<div class="box2"><div class="tinytext">Come check out our club!</div><div class="tinytext">Meetups every Tuesday after school.</div></div>' +
+            '<div class="box3">' +
+            '<div class="card"><div class="cardtitle">Upcoming Meets</div><div>See the schedule for this month.</div></div>' +
+            '<div class="card"><div class="cardtitle">Gear Swap</div><div>Trade boards, wheels, and pads with the crew.</div></div>' +
+            '<div class="card"><h2>New Members</h2><div>Sign up any Tuesday, no experience needed.</div></div>' +
+            '</div>' +
+            '<div class="box4"><div>\u00A9 Skate Club</div></div>',
+          diagnosticQuestions: [
+            {
+              id: "hierarchy",
+              prompt: "Did the AI include a working heading hierarchy (one clear H1, then smaller headings below it)?",
+              options: [
+                { label: "Yes, it's solid", correct: false },
+                { label: "No, hierarchy is missing or broken", correct: true }
+              ],
+              explanation: "There's no <h1> anywhere, and only one stray <h2> shows up on a single card \u2014 the rest of the \u201cheadings\u201d are just bold-looking divs."
+            },
+            {
+              id: "hero",
+              prompt: "Is the hero section actually acting like a hero?",
+              options: [
+                { label: "Yes", correct: false },
+                { label: "No", correct: true }
+              ],
+              explanation: "It's technically there, but it's just tiny 11px text with no big heading and no button \u2014 it doesn't do a hero's job of grabbing attention."
+            },
+            {
+              id: "missing",
+              prompt: "Which required part is missing entirely from this output?",
+              options: [
+                { label: "Header", correct: false },
+                { label: "Nav", correct: true },
+                { label: "Cards", correct: false },
+                { label: "Footer", correct: false }
+              ],
+              explanation: "There's no navigation at all \u2014 no links to Home, Tricks, Crew, or anything else."
+            }
+          ],
+          checklistOptions: [
+            "Swap the divs for real header / nav / hero / footer tags",
+            "Add one clear H1 for the page",
+            "Make the hero look like a hero \u2014 bigger heading plus a button",
+            "Add the missing nav links",
+            "Give every card the same heading level"
+          ],
+          reflectionPrompt: "What did the AI understand about page structure, and what did it get wrong?"
+        }
+      },
       { heading: "Responsive Design", videoSrc: "assets/video/placeholder-responsive-design.mp4", body: "A good site looks great on a phone or a laptop and adapting to any terrain, just like a good skater." },
       { heading: "Recap", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
       { heading: "What's Next?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
