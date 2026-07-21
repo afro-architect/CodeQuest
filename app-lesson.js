@@ -613,6 +613,453 @@
     };
   }
 
+  // ---- Website Anatomy Lab: hover a real sample site to see its boundary,
+  // click a highlighted part to answer "what is this called?" and "what job
+  // does it do?" via chips (no typing). Reused across Remix/Vibe below.
+  function renderAnatomyLab(card, data) {
+    if (!data.__done) data.__done = {};
+
+    var wrap = document.createElement("div");
+    wrap.className = "anatomy-wrap";
+
+    var instructions = document.createElement("p");
+    instructions.className = "tagmatch-instructions";
+    instructions.textContent =
+      "Hover any part of the sample site to see its boundary. Click a highlighted part to answer what it's called and what job it does.";
+    wrap.appendChild(instructions);
+
+    var progressEl = document.createElement("p");
+    progressEl.className = "anatomy-progress";
+    wrap.appendChild(progressEl);
+
+    var siteShell = document.createElement("div");
+    siteShell.className = "anatomy-site-shell ssx-scope";
+    siteShell.innerHTML = data.siteHtml;
+    wrap.appendChild(siteShell);
+
+    var quizHost = document.createElement("div");
+    quizHost.className = "anatomy-quiz-host";
+    wrap.appendChild(quizHost);
+
+    siteShell.addEventListener("submit", function (e) {
+      e.preventDefault();
+    });
+
+    function updateProgress() {
+      var doneCount = Object.keys(data.__done).length;
+      progressEl.textContent = doneCount + " of " + data.hotspots.length + " parts identified.";
+    }
+
+    function markHotspotState() {
+      data.hotspots.forEach(function (h) {
+        var els = siteShell.querySelectorAll(h.selector);
+        els.forEach(function (el) {
+          el.classList.add("anatomy-hotspot");
+          el.classList.toggle("anatomy-hotspot-done", !!data.__done[h.id]);
+          el.setAttribute("data-hotspot-id", h.id);
+        });
+      });
+    }
+
+    function renderQuizFor(hotspot) {
+      quizHost.innerHTML = "";
+      var qWrap = document.createElement("div");
+      qWrap.className = "anatomy-quiz";
+
+      var title = document.createElement("p");
+      title.className = "anatomy-quiz-title";
+      title.textContent = "What is this called, and what job does it do?";
+      qWrap.appendChild(title);
+
+      var nameLabel = document.createElement("p");
+      nameLabel.className = "tryit-col-label";
+      nameLabel.textContent = "What is this called?";
+      qWrap.appendChild(nameLabel);
+
+      var namePalette = document.createElement("div");
+      namePalette.className = "tagmatch-palette";
+      var selectedName = null;
+      data.hotspots
+        .map(function (h) {
+          return h.name;
+        })
+        .forEach(function (n) {
+          var chip = document.createElement("button");
+          chip.type = "button";
+          chip.className = "tagmatch-chip";
+          chip.textContent = n;
+          chip.addEventListener("click", function () {
+            selectedName = n;
+            namePalette.querySelectorAll(".tagmatch-chip").forEach(function (c) {
+              c.classList.toggle("is-active", c === chip);
+            });
+          });
+          namePalette.appendChild(chip);
+        });
+      qWrap.appendChild(namePalette);
+
+      var jobLabel = document.createElement("p");
+      jobLabel.className = "tryit-col-label";
+      jobLabel.style.marginTop = "var(--space-3)";
+      jobLabel.textContent = "What job does it do?";
+      qWrap.appendChild(jobLabel);
+
+      var jobPalette = document.createElement("div");
+      jobPalette.className = "tagmatch-palette";
+      var selectedJob = null;
+      data.hotspots
+        .map(function (h) {
+          return h.job;
+        })
+        .forEach(function (j) {
+          var chip = document.createElement("button");
+          chip.type = "button";
+          chip.className = "tagmatch-chip tagmatch-chip--wide";
+          chip.textContent = j;
+          chip.addEventListener("click", function () {
+            selectedJob = j;
+            jobPalette.querySelectorAll(".tagmatch-chip").forEach(function (c) {
+              c.classList.toggle("is-active", c === chip);
+            });
+          });
+          jobPalette.appendChild(chip);
+        });
+      qWrap.appendChild(jobPalette);
+
+      var feedbackEl = document.createElement("div");
+      feedbackEl.className = "tagmatch-feedback";
+
+      var checkBtn = document.createElement("button");
+      checkBtn.type = "button";
+      checkBtn.className = "tryit-btn";
+      checkBtn.style.marginTop = "var(--space-4)";
+      checkBtn.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Check My Answer</span>';
+      qWrap.appendChild(checkBtn);
+      qWrap.appendChild(feedbackEl);
+
+      checkBtn.addEventListener("click", function () {
+        feedbackEl.innerHTML = "";
+        var correct = selectedName === hotspot.name && selectedJob === hotspot.job;
+        var banner = document.createElement("div");
+        if (correct) {
+          data.__done[hotspot.id] = true;
+          banner.className = "tagmatch-feedback-banner tagmatch-feedback-success";
+          banner.textContent = "Nailed it \u2014 that's the " + hotspot.name + ".";
+          feedbackEl.appendChild(banner);
+          markHotspotState();
+          updateProgress();
+        } else {
+          banner.className = "tagmatch-feedback-banner tagmatch-feedback-retry";
+          banner.textContent = "Not quite \u2014 take another look and give it another try. You've got this!";
+          feedbackEl.appendChild(banner);
+        }
+      });
+
+      quizHost.appendChild(qWrap);
+    }
+
+    siteShell.addEventListener("click", function (e) {
+      e.preventDefault();
+      var target = e.target.closest(".anatomy-hotspot");
+      if (!target) return;
+      var id = target.getAttribute("data-hotspot-id");
+      var hotspot = data.hotspots.find(function (h) {
+        return h.id === id;
+      });
+      if (!hotspot) return;
+      siteShell.querySelectorAll(".anatomy-hotspot").forEach(function (el) {
+        el.classList.toggle("is-active-hotspot", el.getAttribute("data-hotspot-id") === id);
+      });
+      renderQuizFor(hotspot);
+    });
+
+    markHotspotState();
+    updateProgress();
+    tryItPanel.appendChild(wrap);
+
+    activeTryIt = {
+      destroy: function () {},
+      refresh: function () {},
+    };
+  }
+
+  // ---- Remix Challenge: same sample site, click-to-identify questions in
+  // sequence, then an open (ungraded) reflection textarea.
+  function renderRemixChallenge(card, data) {
+    if (typeof data.__step !== "number") data.__step = 0;
+
+    var wrap = document.createElement("div");
+    wrap.className = "remix-wrap";
+
+    var instructions = document.createElement("p");
+    instructions.className = "tagmatch-instructions";
+    instructions.textContent =
+      "This is the same sample site from the last activity. Answer each question by clicking directly on the site.";
+    wrap.appendChild(instructions);
+
+    var promptEl = document.createElement("p");
+    promptEl.className = "anatomy-quiz-title";
+    wrap.appendChild(promptEl);
+
+    var siteShell = document.createElement("div");
+    siteShell.className = "anatomy-site-shell ssx-scope";
+    siteShell.innerHTML = data.siteHtml;
+    wrap.appendChild(siteShell);
+
+    var feedbackEl = document.createElement("div");
+    feedbackEl.className = "tagmatch-feedback";
+    wrap.appendChild(feedbackEl);
+
+    var reflectionSection = document.createElement("div");
+    reflectionSection.className = "remix-reflection";
+    wrap.appendChild(reflectionSection);
+
+    siteShell.addEventListener("submit", function (e) {
+      e.preventDefault();
+    });
+
+    function renderReflection() {
+      reflectionSection.innerHTML = "";
+      var label = document.createElement("p");
+      label.className = "tryit-col-label";
+      label.textContent = "Reflect";
+      reflectionSection.appendChild(label);
+
+      var promptText = document.createElement("p");
+      promptText.className = "anatomy-quiz-title";
+      promptText.textContent = data.reflectionPrompt;
+      reflectionSection.appendChild(promptText);
+
+      var textarea = document.createElement("textarea");
+      textarea.className = "remix-textarea";
+      textarea.placeholder = "Type your thoughts here...";
+      textarea.value = data.__reflectionText || "";
+      reflectionSection.appendChild(textarea);
+
+      var saveBtn = document.createElement("button");
+      saveBtn.type = "button";
+      saveBtn.className = "tryit-btn";
+      saveBtn.style.marginTop = "var(--space-3)";
+      saveBtn.textContent = "Save My Reflection";
+      reflectionSection.appendChild(saveBtn);
+
+      var savedNote = document.createElement("p");
+      savedNote.className = "remix-saved-note";
+      if (data.__reflectionSaved) savedNote.textContent = "Saved \u2014 nice thinking!";
+      reflectionSection.appendChild(savedNote);
+
+      saveBtn.addEventListener("click", function () {
+        data.__reflectionText = textarea.value;
+        if (textarea.value.trim().length > 0) {
+          data.__reflectionSaved = true;
+          savedNote.textContent = "Saved \u2014 nice thinking!";
+        } else {
+          savedNote.textContent = "Type a few thoughts before saving.";
+        }
+      });
+    }
+
+    function renderStep() {
+      feedbackEl.innerHTML = "";
+      if (data.__step >= data.clickQuestions.length) {
+        promptEl.textContent = "Nice work \u2014 you've mapped every part!";
+        wrap.classList.add("is-complete");
+        renderReflection();
+        return;
+      }
+      var q = data.clickQuestions[data.__step];
+      promptEl.textContent = q.prompt;
+    }
+
+    siteShell.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (data.__step >= data.clickQuestions.length) return;
+      var q = data.clickQuestions[data.__step];
+      var hit = e.target.closest(q.targetSelector);
+      feedbackEl.innerHTML = "";
+      var banner = document.createElement("div");
+      if (hit) {
+        banner.className = "tagmatch-feedback-banner tagmatch-feedback-success";
+        banner.textContent = q.correctFeedback;
+        feedbackEl.appendChild(banner);
+        data.__step += 1;
+        setTimeout(renderStep, 900);
+      } else {
+        banner.className = "tagmatch-feedback-banner tagmatch-feedback-retry";
+        banner.textContent = q.retryFeedback;
+        feedbackEl.appendChild(banner);
+      }
+    });
+
+    renderStep();
+    tryItPanel.appendChild(wrap);
+
+    activeTryIt = {
+      destroy: function () {},
+      refresh: function () {},
+    };
+  }
+
+  // ---- Vibe Coding Extension: static "AI output" preview (deliberately
+  // flawed) + chip-based diagnostic questions + a self-assessment checklist
+  // + an open (ungraded) final reflection.
+  function renderVibeCoding(card, data) {
+    if (!data.__checked) data.__checked = {};
+    if (!data.__checklist) data.__checklist = {};
+
+    var wrap = document.createElement("div");
+    wrap.className = "vibe-wrap";
+
+    var promptLabel = document.createElement("p");
+    promptLabel.className = "tryit-col-label";
+    promptLabel.textContent = "Starter prompt given to the AI";
+    wrap.appendChild(promptLabel);
+
+    var promptBox = document.createElement("pre");
+    promptBox.className = "vibe-prompt-box";
+    promptBox.textContent = data.starterPrompt;
+    wrap.appendChild(promptBox);
+
+    var previewLabel = document.createElement("p");
+    previewLabel.className = "tryit-col-label";
+    previewLabel.style.marginTop = "var(--space-3)";
+    previewLabel.textContent = "What the AI actually produced";
+    wrap.appendChild(previewLabel);
+
+    var previewShell = document.createElement("div");
+    previewShell.className = "tagmatch-preview-shell vibe-preview-shell";
+    var iframe = document.createElement("iframe");
+    iframe.setAttribute("sandbox", "");
+    iframe.title = "AI output preview";
+    iframe.setAttribute("srcdoc", data.aiOutputHtml);
+    previewShell.appendChild(iframe);
+    wrap.appendChild(previewShell);
+
+    var diagLabel = document.createElement("p");
+    diagLabel.className = "tryit-col-label";
+    diagLabel.style.marginTop = "var(--space-4)";
+    diagLabel.textContent = "Diagnose the output";
+    wrap.appendChild(diagLabel);
+
+    var diagHost = document.createElement("div");
+    diagHost.className = "vibe-diagnostics";
+    wrap.appendChild(diagHost);
+
+    data.diagnosticQuestions.forEach(function (q) {
+      var qEl = document.createElement("div");
+      qEl.className = "vibe-question";
+      var qTitle = document.createElement("p");
+      qTitle.className = "anatomy-quiz-title";
+      qTitle.textContent = q.prompt;
+      qEl.appendChild(qTitle);
+
+      var palette = document.createElement("div");
+      palette.className = "tagmatch-palette";
+
+      var feedbackEl = document.createElement("div");
+      feedbackEl.className = "tagmatch-feedback vibe-q-feedback";
+
+      q.options.forEach(function (opt) {
+        var chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "tagmatch-chip";
+        chip.textContent = opt.label;
+        chip.addEventListener("click", function () {
+          if (data.__checked[q.id]) return;
+          feedbackEl.innerHTML = "";
+          var banner = document.createElement("div");
+          if (opt.correct) {
+            data.__checked[q.id] = true;
+            banner.className = "tagmatch-feedback-banner tagmatch-feedback-success";
+            banner.textContent = q.explanation;
+            palette.querySelectorAll(".tagmatch-chip").forEach(function (c) {
+              c.disabled = true;
+            });
+            chip.classList.add("is-active");
+          } else {
+            banner.className = "tagmatch-feedback-banner tagmatch-feedback-retry";
+            banner.textContent = "Take another look at the preview above and try again.";
+          }
+          feedbackEl.appendChild(banner);
+        });
+        palette.appendChild(chip);
+      });
+      qEl.appendChild(palette);
+      qEl.appendChild(feedbackEl);
+
+      diagHost.appendChild(qEl);
+    });
+
+    var checklistLabel = document.createElement("p");
+    checklistLabel.className = "tryit-col-label";
+    checklistLabel.style.marginTop = "var(--space-4)";
+    checklistLabel.textContent = "What would you fix for clarity? (select all that apply)";
+    wrap.appendChild(checklistLabel);
+
+    var checklistHost = document.createElement("div");
+    checklistHost.className = "tagmatch-palette vibe-checklist";
+    data.checklistOptions.forEach(function (opt, idx) {
+      var chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "tagmatch-chip tagmatch-chip--wide";
+      chip.textContent = opt;
+      if (data.__checklist[idx]) chip.classList.add("is-active");
+      chip.addEventListener("click", function () {
+        data.__checklist[idx] = !data.__checklist[idx];
+        chip.classList.toggle("is-active", !!data.__checklist[idx]);
+      });
+      checklistHost.appendChild(chip);
+    });
+    wrap.appendChild(checklistHost);
+
+    var reflectionLabel = document.createElement("p");
+    reflectionLabel.className = "tryit-col-label";
+    reflectionLabel.style.marginTop = "var(--space-4)";
+    reflectionLabel.textContent = "Final reflection";
+    wrap.appendChild(reflectionLabel);
+
+    var reflectionPrompt = document.createElement("p");
+    reflectionPrompt.className = "anatomy-quiz-title";
+    reflectionPrompt.textContent = data.reflectionPrompt;
+    wrap.appendChild(reflectionPrompt);
+
+    var textarea = document.createElement("textarea");
+    textarea.className = "remix-textarea";
+    textarea.placeholder = "Type your thoughts here...";
+    textarea.value = data.__reflectionText || "";
+    wrap.appendChild(textarea);
+
+    var saveBtn = document.createElement("button");
+    saveBtn.type = "button";
+    saveBtn.className = "tryit-btn";
+    saveBtn.style.marginTop = "var(--space-3)";
+    saveBtn.textContent = "Save My Reflection";
+    wrap.appendChild(saveBtn);
+
+    var savedNote = document.createElement("p");
+    savedNote.className = "remix-saved-note";
+    if (data.__reflectionSaved) savedNote.textContent = "Saved \u2014 nice thinking!";
+    wrap.appendChild(savedNote);
+
+    saveBtn.addEventListener("click", function () {
+      data.__reflectionText = textarea.value;
+      if (textarea.value.trim().length > 0) {
+        data.__reflectionSaved = true;
+        savedNote.textContent = "Saved \u2014 nice thinking!";
+      } else {
+        savedNote.textContent = "Type a few thoughts before saving.";
+      }
+    });
+
+    tryItPanel.appendChild(wrap);
+
+    activeTryIt = {
+      destroy: function () {},
+      refresh: function () {},
+    };
+  }
+
   function renderTryIt(card) {
     teardownActiveTryIt();
     tryItPanel.innerHTML = "";
@@ -628,6 +1075,43 @@
         tryItTabBtn.removeAttribute("title");
       }
       renderTagMatchActivity(card, card.tagMatch);
+      return;
+    }
+
+    // ---- Website Anatomy Lab: hover/click a real sample site instead of
+    // free code entry.
+    if (card.anatomyLab) {
+      if (tryItTabBtn) {
+        tryItTabBtn.disabled = false;
+        tryItTabBtn.classList.remove("is-disabled");
+        tryItTabBtn.setAttribute("aria-disabled", "false");
+        tryItTabBtn.removeAttribute("title");
+      }
+      renderAnatomyLab(card, card.anatomyLab);
+      return;
+    }
+
+    // ---- Remix Challenge: click-to-identify + open reflection.
+    if (card.remixChallenge) {
+      if (tryItTabBtn) {
+        tryItTabBtn.disabled = false;
+        tryItTabBtn.classList.remove("is-disabled");
+        tryItTabBtn.setAttribute("aria-disabled", "false");
+        tryItTabBtn.removeAttribute("title");
+      }
+      renderRemixChallenge(card, card.remixChallenge);
+      return;
+    }
+
+    // ---- Vibe Coding Extension: diagnose a flawed "AI output" sample.
+    if (card.vibeCoding) {
+      if (tryItTabBtn) {
+        tryItTabBtn.disabled = false;
+        tryItTabBtn.classList.remove("is-disabled");
+        tryItTabBtn.setAttribute("aria-disabled", "false");
+        tryItTabBtn.removeAttribute("title");
+      }
+      renderVibeCoding(card, card.vibeCoding);
       return;
     }
 
