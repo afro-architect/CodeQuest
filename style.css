@@ -806,6 +806,7 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
   background: oklch(from var(--color-bg) l c h / 0.92);
   backdrop-filter: blur(10px);
   border-top: 1px solid oklch(from var(--color-text) l c h / 0.08);
+  pointer-events: none;   /* ADD THIS LINE */
 }
 .stamp-btn {
   width: 100%;
@@ -827,6 +828,9 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
 .stamp-btn:hover:not(:disabled) {
   background: var(--color-gold-hover);
   transform: translateY(-1px);
+}
+.stamp-btn:not(:disabled) {   /* ADD THIS RULE */
+  pointer-events: auto;
 }
 .stamp-btn:active:not(:disabled) { transform: translateY(0); }
 .stamp-btn:disabled {
