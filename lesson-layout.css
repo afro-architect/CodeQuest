@@ -719,6 +719,118 @@ body { overflow-x: hidden; }
 }
 .tryit-disabled-note svg { width: 18px; height: 18px; flex-shrink: 0; }
 
+/* ============ TAG-MATCH ACTIVITY (click-to-tag, no typing) ============ */
+.tagmatch-wrap { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.tagmatch-instructions {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.tagmatch-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.tagmatch-chip {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-border);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.tagmatch-chip:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.tagmatch-chip:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+.tagmatch-chip.is-active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.tagmatch-chunks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.tagmatch-chunk {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  text-align: left;
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  transition: border-color 120ms ease, background 120ms ease;
+}
+.tagmatch-chunk:hover { background: var(--color-surface-offset); }
+.tagmatch-chunk.is-selected { border-color: var(--color-primary); background: var(--color-primary-highlight); }
+.tagmatch-chunk-text { flex: 1; }
+.tagmatch-chunk-badge {
+  flex-shrink: 0;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-offset-2);
+  color: var(--color-text-faint);
+}
+.tagmatch-chunk-badge.has-tag { background: var(--color-teal-highlight); color: var(--color-teal); }
+
+.tagmatch-preview-shell {
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #fff;
+  height: 220px;
+}
+.tagmatch-preview-shell iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+.tagmatch-feedback { display: flex; flex-direction: column; gap: var(--space-3); }
+.tagmatch-feedback-banner {
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+.tagmatch-feedback-success {
+  background: var(--color-teal-highlight);
+  border: 1px solid var(--color-teal);
+  color: var(--color-teal);
+}
+.tagmatch-feedback-retry {
+  background: var(--color-pink-highlight);
+  border: 1px solid var(--color-pink);
+  color: var(--color-pink);
+}
+.tagmatch-hints {
+  background: var(--color-gold-highlight);
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+}
+.tagmatch-hints-title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+.tagmatch-hints ul { margin: 0; padding-left: var(--space-5); display: flex; flex-direction: column; gap: var(--space-1); }
+.tagmatch-hints li { font-size: var(--text-sm); color: var(--color-text); }
+
 /* ============ RESPONSIVE: desktop sidebar always visible ============ */
 @media (min-width: 768px) {
   .course-shell { align-items: flex-start; }
