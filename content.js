@@ -184,6 +184,7 @@ const LESSON_CONTENT = [
       { heading: "HTML = The Ingredients", videoSrc: "assets/video/placeholder-html-the-ingredients.mp4", body: "Tags are like ingredients you line up and combine to build a page." },
       { heading: "Tags & Elements", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "Tags come in pairs: <p>...</p>, <h1>...</h1>. What's between the tags is the content." },
       { heading: "The IDE", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "An IDE is your coding workspace. It’s where you write and organize your HTML, CSS, and JavaScript files, see errors, and run or preview your project." },
+      { heading: "Your First HTML Page", videoSrc: "assets/video/placeholder-your-first-html-page.mp4", body: "In the Try It tab, change the text between the <h1>...</h1> tags to say Hello World!", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Your text goes here. </h1>\n <p>Feel free to type other things.</p>\n <p>Click the red button that says Run to see your result.</p>\n  </body>\n</html>" } },
       { heading: "Containers & Sections", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "Webpages are organized into containers and sections—like headers, main content areas, and footers. These sections help you group related content so it’s easier to design, style, and understand."  },      
       { heading: "Nesting", videoSrc: "assets/video/placeholder-nesting.mp4", body: "Tags can go inside other tags and like a burrito wrapped in foil wrapped in a bag." },
       {
@@ -213,7 +214,6 @@ const LESSON_CONTENT = [
           retryMessage: "Not quite yet \u2014 take another look and give it another try. You've got this!",
         },
       },
-      { heading: "Your First HTML Page", videoSrc: "assets/video/placeholder-your-first-html-page.mp4", body: "In the Try It tab, change the text between the <h1>...</h1> tags to say Hello World!", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Your text goes here. </h1>\n <p>Feel free to type other things.</p>\n <p>Click the red button that says Run to see your result.</p>\n  </body>\n</html>" } },
       { heading: "Practice: Build a Menu", videoSrc: "assets/video/placeholder-practice-build-a-menu.mp4", body: "Try listing 3 of your own favorite snacks using <ul> and <li> tags. \n You'll see placeholder snacks in the Try It section on the next tab.", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <body>\n    <h2>My Favorite Snacks</h2>\n    <ul>\n      <li>Popcorn</li>\n      <li>Churros</li>\n    </ul>\n  </body>\n</html>" } },
       { heading: "Recap", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
       { heading: "What's Next?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
