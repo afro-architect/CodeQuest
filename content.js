@@ -53,8 +53,35 @@ const LESSON_CONTENT = [
       { heading: "The IDE", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "Tags come in pairs: <p>...</p>, <h1>...</h1>. What's between the tags is the content." },
       { heading: "Activity: Recipe Tags", videoSrc: "assets/video/placeholder-tags-elements.mp4",  body: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Practice Activity</h1>\n  </body>\n</html>", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Practice Activity</h1>\n  </body>\n</html>" } },
       { heading: "Containers & Sections", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "Tags come in pairs: <p>...</p>, <h1>...</h1>. What's between the tags is the content." },      
-      { heading: "Nesting & Lists", videoSrc: "assets/video/placeholder-nesting.mp4", body: "Tags can go inside other tags and like a burrito wrapped in foil wrapped in a bag." },
-      { heading: "Activity: Big List, Little List", videoSrc: "assets/video/placeholder-tags-elements.mp4",  body: "<h1>Make a List!</h1>\n  <p>Write a mini recipe in plain text. It should have: <ul><li>A title </li>\n <li>One sentence description </li>\n <li>Then have \u201ctag\u201d it </li>\n <ul><li>Put <h1> ... </h1> around the title. </li>\n <li>Put <p> ... </p> around the description. </li>\n <li>Turn the three steps into a list with <ul> and <li> tags. </li>\n </ul> </ul>\n </p>\n </body>\n</html>", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Hello, world!</h1>\n  </body>\n</html>" } },      { heading: "Your First HTML Page", videoSrc: "assets/video/placeholder-your-first-html-page.mp4", body: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Hello, world!</h1>\n  </body>\n</html>", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Hello, world!</h1>\n  </body>\n</html>" } },
+      { heading: "Nesting", videoSrc: "assets/video/placeholder-nesting.mp4", body: "Tags can go inside other tags and like a burrito wrapped in foil wrapped in a bag." },
+      {
+        heading: "Activity: Big List, Little List",
+        videoSrc: "assets/video/placeholder-tags-elements.mp4",
+        body:
+          "Below are three untagged pieces of a mini recipe: a title, a one-sentence description, and three steps. Tap a piece of text, then tap the tag that belongs around it \u2014 <h1> for the title, <p> for the description, and <li> for each step (your three steps will automatically be wrapped together in a <ul> list). Hit Check My Tags when you're ready. If something's off, you'll get an encouraging nudge to try again, and a hint if you need one.",
+        tagMatch: {
+          chunks: [
+            { id: "title", text: "My After-School Snack", correctTag: "h1" },
+            { id: "desc", text: "This quesadilla is ready in five minutes flat.", correctTag: "p" },
+            { id: "step1", text: "Grab a tortilla and lay it flat.", correctTag: "li" },
+            { id: "step2", text: "Sprinkle on cheese and beans.", correctTag: "li" },
+            { id: "step3", text: "Fold it up and heat until golden.", correctTag: "li" },
+          ],
+          tagOptions: [
+            { tag: "h1", label: "<h1> Big Heading" },
+            { tag: "p", label: "<p> Paragraph" },
+            { tag: "li", label: "<li> List Item" },
+          ],
+          hints: {
+            h1: "Which tag makes text act like a big, bold heading \u2014 the kind you'd use for a title?",
+            p: "Which tag holds a regular sentence of paragraph text?",
+            li: "Which tag wraps a single item inside a list? (Remember, the whole group of items also needs a <ul> around them \u2014 that part happens automatically.)",
+          },
+          successMessage: "\ud83c\udf89 Boom \u2014 every piece is wearing the right tag! Your title, description, and steps are all set.",
+          retryMessage: "Not quite yet \u2014 take another look and give it another try. You've got this!",
+        },
+      },
+      { heading: "Your First HTML Page", videoSrc: "assets/video/placeholder-your-first-html-page.mp4", body: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Hello, world!</h1>\n  </body>\n</html>", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Hello, world!</h1>\n  </body>\n</html>" } },
       { heading: "Practice: Build a Menu", videoSrc: "assets/video/placeholder-practice-build-a-menu.mp4", body: "Try listing your 3 favorite snacks using <ul> and <li> tags.", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <body>\n    <h2>My Favorite Snacks</h2>\n    <ul>\n      <li>Popcorn</li>\n      <li>Churros</li>\n    </ul>\n  </body>\n</html>" } },
       { heading: "Recap", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
       { heading: "What's Next?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
