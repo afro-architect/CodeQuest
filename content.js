@@ -331,7 +331,17 @@ const LESSON_CONTENT = [
       body: "Reuse patterns like console.log, score = score + 1, if/else checks, and simple function calls."
     },
     {
-      heading: ,
+      heading: "Recap",
+      videoSrc: "assets/video/placeholder-course-intro.mp4",
+      body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them."
+    },
+    {
+      heading: "What's Next?",
+      videoSrc: "assets/video/placeholder-course-intro.mp4",
+      body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them."
+    },
+  ]
+  },
   {
     id: "lesson-7",
     title: "What do you need before building Python projects?",
@@ -349,7 +359,7 @@ const LESSON_CONTENT = [
       { heading: "Recap", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
       { heading: "What's Next?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
 ]
-  }
+  },
   {
     id: "lesson-8",
     title: "Python in Websites",
