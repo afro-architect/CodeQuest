@@ -456,7 +456,20 @@ const LESSON_CONTENT = [
       },     
       { heading: "Print & Input", videoSrc: "assets/video/placeholder-print-input.mp4", body: "print('Hello!') and input('What's your name? ') are your first two Python commands.", playground: { lang: "python", code: "print('Hello!')\nname = 'Explorer'\nprint('What is your name? (edit the name variable above and Run again)')\nprint('Nice to meet you, ' + name + '!')" } },
       { heading: "Mini Challenge: Say Hello", videoSrc: "assets/video/placeholder-mini-challenge-say-hello.mp4", body: "Write a script that asks for your name and prints a custom greeting back.", playground: { lang: "python", code: "name = 'Explorer'\n\ndef greet(who):\n    print('Hey there, ' + who + '! Welcome to the trail.')\n\ngreet(name)" } },
-      { heading: "Running a Script vs a REPL", videoSrc: "assets/video/placeholder-variables-types-data.mp4", body: "Running a script means saving your code in a file and running the whole thing at once. A REPL (Read-Evaluate-Print-Loop) runs one line at a time and shows you the result immediately, more like a conversation with the computer.", playground: { lang: "python", code: "# In a REPL, you could type this one line at a time and see the result immediately:\nprint(2 + 2)\n\n# In a script, all of these lines run together, top to bottom, in one go:\nname = 'Explorer'\nprint('Hello, ' + name + '!')\nprint('Scripts are great for saving and reusing your work.')" } },
+      {
+  heading: "Running a Script vs a REPL",
+  videoSrc: "assets/video/placeholder-variables-types-data.mp4",
+  body: "Running a script means saving your code in a file and running the whole thing at once. A REPL (Read-Evaluate-Print-Loop) runs one line at a time and shows you the result immediately, more like a conversation with the computer. Head to the Try It tab to see the exact same three lines run both ways.",
+  replVsScript: {
+    filename: "greet.py",
+    prompt: ">>>",
+    lines: [
+      { code: "name = 'Explorer'" },
+      { code: "print('Hello, ' + name + '!')", output: "Hello, Explorer!" },
+      { code: "print('Scripts are great for saving and reusing your work.')", output: "Scripts are great for saving and reusing your work." },
+    ],
+  },
+},
       { heading: "Variables & Data Types", videoSrc: "assets/video/placeholder-variables-types-data.mp4", body: "Numbers, strings, booleans; and the basic 'gear' every Python project uses.", playground: { lang: "python", code: "age = 13                  # int (whole number)\nheight = 5.2               # float (decimal number)\nname = 'Explorer'          # string (text)\nis_hiking = True           # boolean (True or False)\n\nprint(name, 'is', age, 'years old and', height, 'feet tall.')\nprint('Currently hiking:', is_hiking)" } },
       { heading: "Basic Operations", videoSrc: "assets/video/placeholder-variables-types-data.mp4", body: "Python can do math (+, -, *, /) and combine text (+) just like a calculator and a word processor rolled into one.", playground: { lang: "python", code: "trail_miles = 8\nmiles_hiked = 3\n\nprint('Miles left:', trail_miles - miles_hiked)\nprint('Total snacks needed:', trail_miles * 2)\n\nfirst_name = 'Alex'\nlast_name = 'Rivera'\nprint('Hiker: ' + first_name + ' ' + last_name)" } },
       { heading: "Naming Conventions", videoSrc: "assets/video/placeholder-variables-types-data.mp4", body: "Variable names should be lowercase with underscores between words (like trail_miles), start with a letter, and describe what they hold. Good names make your code easier for you (and everyone else) to read.", playground: { lang: "python", code: "# Good names: clear and describe what they hold\ntrail_miles = 8\nhiker_name = 'Alex'\n\n# Avoid names like these — they work, but they're confusing later on\nx = 8\nthing2 = 'Alex'\n\nprint(hiker_name, 'has', trail_miles, 'miles to go.')" } },
