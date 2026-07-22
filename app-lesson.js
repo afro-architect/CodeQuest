@@ -1,4 +1,4 @@
-<p>// app-lesson.js Ã¢â‚¬â€ shared behavior for every lesson-N.html page: renders the
+// app-lesson.js Ã¢â‚¬â€ shared behavior for every lesson-N.html page: renders the
 // sidebar mini-course (stop accordion + sub-lesson list), the video player +
 // tabs content browser for the active sub-lesson, wires the fixed
 // Stamp My Passport button, dark-mode toggle, and the locked-page guard.
