@@ -1316,6 +1316,310 @@
     };
   }
 
+  // ---- REPL vs Script Simulator: a guided, click-through comparison of
+  // running code one line at a time (REPL) versus all at once (a saved
+  // script). Not a real interpreter \u2014 every line's output is pre-scripted
+  // in the data so the *timing* of when output appears is always correct
+  // and pedagogically clean. Data shape:
+  //   {
+  //     filename: "greet.py",       // optional, shown on the script tab
+  //     prompt: ">>>",              // optional REPL prompt symbol
+  //     lines: [ { code: "name = 'Explorer'" },
+  //              { code: "print('Hello, ' + name + '!')", output: "Hello, Explorer!" } ]
+  //   }
+  function renderReplVsScript(card, rv) {
+    var promptSymbol = rv.prompt || ">>>";
+    var filename = rv.filename || "script.py";
+    var lines = rv.lines || [];
+
+    var wrap = document.createElement("div");
+    wrap.className = "rvs-wrap";
+
+    var instructions = document.createElement("p");
+    instructions.className = "tagmatch-instructions";
+    instructions.textContent =
+      "Same lines of code, run two different ways. Switch modes, then step through each one to see when output actually shows up.";
+    wrap.appendChild(instructions);
+
+    var toggleRow = document.createElement("div");
+    toggleRow.className = "rvs-toggle";
+    var replToggleBtn = document.createElement("button");
+    replToggleBtn.type = "button";
+    replToggleBtn.className = "rvs-toggle-btn";
+    replToggleBtn.textContent = "REPL \u2014 line by line";
+    var scriptToggleBtn = document.createElement("button");
+    scriptToggleBtn.type = "button";
+    scriptToggleBtn.className = "rvs-toggle-btn";
+    scriptToggleBtn.textContent = "Script \u2014 all at once";
+    toggleRow.appendChild(replToggleBtn);
+    toggleRow.appendChild(scriptToggleBtn);
+    wrap.appendChild(toggleRow);
+
+    var stage = document.createElement("div");
+    stage.className = "rvs-stage";
+    wrap.appendChild(stage);
+
+    var caption = document.createElement("div");
+    caption.className = "syntax-annot-caption rvs-caption";
+    wrap.appendChild(caption);
+
+    function setCaption(text) {
+      caption.textContent = text;
+    }
+
+    var CAPTIONS = {
+      replIdle:
+        'Click \u201cType next line\u201d to see what happens right after each line runs.',
+      replProgress:
+        "Notice \u2014 you get a result (or a quiet moment with no output) immediately after every single line, before you even type the next one.",
+      replDone:
+        "That's the REPL loop: Read your line, Evaluate it, Print any result, then Loop back for the next line \u2014 one line at a time, with feedback after each one.",
+      scriptIdle:
+        "The whole file is already written, top to bottom. Nothing runs until you press Run.",
+      scriptDone:
+        "Notice \u2014 nothing appeared until the entire file finished running, then every print showed up together, in the order it was written. Lines with no print (like line 1) never show anything on their own.",
+    };
+
+    // ---- REPL panel ----
+    var replPanel = document.createElement("div");
+
+    var replWin = document.createElement("div");
+    replWin.className = "syntax-annot-window rvs-window";
+    var replTitlebar = document.createElement("div");
+    replTitlebar.className = "syntax-annot-titlebar";
+    ["red", "yellow", "green"].forEach(function (c) {
+      var dot = document.createElement("span");
+      dot.className = "syntax-annot-dot syntax-annot-dot--" + c;
+      replTitlebar.appendChild(dot);
+    });
+    var replLabel = document.createElement("span");
+    replLabel.className = "syntax-annot-filename";
+    replLabel.textContent = "Python REPL";
+    replTitlebar.appendChild(replLabel);
+    replWin.appendChild(replTitlebar);
+
+    var replTranscript = document.createElement("div");
+    replTranscript.className = "rvs-transcript";
+    replWin.appendChild(replTranscript);
+    replPanel.appendChild(replWin);
+
+    var replControls = document.createElement("div");
+    replControls.className = "rvs-controls";
+    var replStepBtn = document.createElement("button");
+    replStepBtn.type = "button";
+    replStepBtn.className = "tryit-btn";
+    replStepBtn.textContent = "Type next line \u25b8";
+    var replResetBtn = document.createElement("button");
+    replResetBtn.type = "button";
+    replResetBtn.className = "tryit-btn tryit-btn--ghost";
+    replResetBtn.textContent = "\u21ba Start over";
+    var replProgress = document.createElement("span");
+    replProgress.className = "rvs-progress";
+    replControls.appendChild(replStepBtn);
+    replControls.appendChild(replResetBtn);
+    replControls.appendChild(replProgress);
+    replPanel.appendChild(replControls);
+
+    var replStep = 0;
+
+    function appendPromptGhost() {
+      var ghost = document.createElement("div");
+      ghost.className = "rvs-line rvs-line--ghost";
+      ghost.textContent = promptSymbol + " ";
+      var cursor = document.createElement("span");
+      cursor.className = "rvs-cursor";
+      ghost.appendChild(cursor);
+      replTranscript.appendChild(ghost);
+    }
+
+    function resetRepl() {
+      replStep = 0;
+      replTranscript.innerHTML = "";
+      replStepBtn.disabled = false;
+      replStepBtn.textContent = "Type next line \u25b8";
+      replProgress.textContent = "Line 1 of " + lines.length;
+      appendPromptGhost();
+      if (mode === "repl") setCaption(CAPTIONS.replIdle);
+    }
+
+    function stepRepl() {
+      var ghost = replTranscript.querySelector(".rvs-line--ghost");
+      if (ghost) ghost.remove();
+
+      var line = lines[replStep];
+      var inputRow = document.createElement("div");
+      inputRow.className = "rvs-line rvs-line--input";
+      inputRow.textContent = promptSymbol + " " + line.code;
+      replTranscript.appendChild(inputRow);
+
+      if (line.output) {
+        var outRow = document.createElement("div");
+        outRow.className = "rvs-line rvs-line--output";
+        outRow.textContent = line.output;
+        replTranscript.appendChild(outRow);
+      } else {
+        var noteRow = document.createElement("div");
+        noteRow.className = "rvs-line rvs-line--note";
+        noteRow.textContent = "(no output \u2014 this line just stored a value)";
+        replTranscript.appendChild(noteRow);
+      }
+
+      replStep++;
+      replTranscript.scrollTop = replTranscript.scrollHeight;
+
+      if (replStep < lines.length) {
+        appendPromptGhost();
+        replProgress.textContent = "Line " + (replStep + 1) + " of " + lines.length;
+        setCaption(CAPTIONS.replProgress);
+      } else {
+        replStepBtn.disabled = true;
+        replStepBtn.textContent = "All lines typed \u2713";
+        replProgress.textContent = "Done";
+        setCaption(CAPTIONS.replDone);
+      }
+    }
+
+    replStepBtn.addEventListener("click", stepRepl);
+    replResetBtn.addEventListener("click", resetRepl);
+
+    // ---- Script panel ----
+    var scriptPanel = document.createElement("div");
+
+    var scriptWin = document.createElement("div");
+    scriptWin.className = "syntax-annot-window rvs-window";
+    var scriptTitlebar = document.createElement("div");
+    scriptTitlebar.className = "syntax-annot-titlebar";
+    ["red", "yellow", "green"].forEach(function (c) {
+      var dot = document.createElement("span");
+      dot.className = "syntax-annot-dot syntax-annot-dot--" + c;
+      scriptTitlebar.appendChild(dot);
+    });
+    var scriptFilename = document.createElement("span");
+    scriptFilename.className = "syntax-annot-filename";
+    scriptFilename.textContent = filename;
+    scriptTitlebar.appendChild(scriptFilename);
+    scriptWin.appendChild(scriptTitlebar);
+
+    var scriptBody = document.createElement("div");
+    scriptBody.className = "syntax-annot-body rvs-scriptbody";
+    lines.forEach(function (line, i) {
+      var row = document.createElement("div");
+      row.className = "rvs-scriptline";
+      var no = document.createElement("span");
+      no.className = "syntax-annot-lineno";
+      no.textContent = String(i + 1);
+      row.appendChild(no);
+      var code = document.createElement("span");
+      code.className = "rvs-scriptcode";
+      code.textContent = line.code;
+      row.appendChild(code);
+      scriptBody.appendChild(row);
+    });
+    scriptWin.appendChild(scriptBody);
+    scriptPanel.appendChild(scriptWin);
+
+    var scriptControls = document.createElement("div");
+    scriptControls.className = "rvs-controls";
+    var runBtn = document.createElement("button");
+    runBtn.type = "button";
+    runBtn.className = "tryit-btn";
+    runBtn.textContent = "\u25b6 Run " + filename;
+    var scriptResetBtn = document.createElement("button");
+    scriptResetBtn.type = "button";
+    scriptResetBtn.className = "tryit-btn tryit-btn--ghost";
+    scriptResetBtn.textContent = "\u21ba Reset";
+    scriptControls.appendChild(runBtn);
+    scriptControls.appendChild(scriptResetBtn);
+    scriptPanel.appendChild(scriptControls);
+
+    var scriptOutputLabel = document.createElement("p");
+    scriptOutputLabel.className = "tryit-col-label";
+    scriptOutputLabel.style.marginTop = "var(--space-3)";
+    scriptOutputLabel.textContent = "Terminal output";
+    scriptPanel.appendChild(scriptOutputLabel);
+
+    var scriptOutputShell = document.createElement("div");
+    scriptOutputShell.className = "syntax-annot-output-shell rvs-output-shell";
+    scriptPanel.appendChild(scriptOutputShell);
+
+    function resetScript() {
+      scriptOutputShell.innerHTML = "";
+      var ph = document.createElement("span");
+      ph.className = "rvs-output-placeholder";
+      ph.textContent = "(nothing yet \u2014 " + filename + " hasn't been run)";
+      scriptOutputShell.appendChild(ph);
+      runBtn.disabled = false;
+      runBtn.textContent = "\u25b6 Run " + filename;
+      if (mode === "script") setCaption(CAPTIONS.scriptIdle);
+    }
+
+    function runScript() {
+      scriptOutputShell.innerHTML = "";
+      var any = false;
+      lines.forEach(function (line) {
+        if (line.output) {
+          any = true;
+          var row = document.createElement("div");
+          row.className = "rvs-output-line";
+          row.textContent = line.output;
+          scriptOutputShell.appendChild(row);
+        }
+      });
+      if (!any) {
+        var none = document.createElement("span");
+        none.className = "rvs-output-placeholder";
+        none.textContent = "(the file ran, but nothing was printed)";
+        scriptOutputShell.appendChild(none);
+      }
+      runBtn.disabled = true;
+      runBtn.textContent = "Ran \u2713";
+      setCaption(CAPTIONS.scriptDone);
+    }
+
+    runBtn.addEventListener("click", runScript);
+    scriptResetBtn.addEventListener("click", resetScript);
+
+    // ---- mode switching ----
+    var mode = "repl";
+    function showMode(next) {
+      mode = next;
+      stage.innerHTML = "";
+      replToggleBtn.classList.toggle("is-active", mode === "repl");
+      scriptToggleBtn.classList.toggle("is-active", mode === "script");
+      if (mode === "repl") {
+        stage.appendChild(replPanel);
+        setCaption(
+          replStep === 0
+            ? CAPTIONS.replIdle
+            : replStep < lines.length
+            ? CAPTIONS.replProgress
+            : CAPTIONS.replDone
+        );
+      } else {
+        stage.appendChild(scriptPanel);
+        setCaption(runBtn.disabled ? CAPTIONS.scriptDone : CAPTIONS.scriptIdle);
+      }
+    }
+
+    replToggleBtn.addEventListener("click", function () {
+      showMode("repl");
+    });
+    scriptToggleBtn.addEventListener("click", function () {
+      showMode("script");
+    });
+
+    resetRepl();
+    resetScript();
+    showMode("repl");
+
+    tryItPanel.appendChild(wrap);
+
+    activeTryIt = {
+      destroy: function () {},
+      refresh: function () {},
+    };
+  }
+
   // ---- Remix Challenge: same sample site, click-to-identify questions in
   // sequence, then an open (ungraded) reflection textarea.
   function renderRemixChallenge(card, data) {
@@ -1647,6 +1951,18 @@
         tryItTabBtn.removeAttribute("title");
       }
       renderSyntaxAnnotate(card, card.syntaxAnnotate);
+      return;
+    }
+
+    // ---- REPL vs Script Simulator: guided click-through comparison.
+    if (card.replVsScript) {
+      if (tryItTabBtn) {
+        tryItTabBtn.disabled = false;
+        tryItTabBtn.classList.remove("is-disabled");
+        tryItTabBtn.setAttribute("aria-disabled", "false");
+        tryItTabBtn.removeAttribute("title");
+      }
+      renderReplVsScript(card, card.replVsScript);
       return;
     }
 
@@ -2163,4 +2479,3 @@
     });
   }
 })();
-  
