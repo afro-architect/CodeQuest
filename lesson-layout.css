@@ -1052,6 +1052,27 @@ mark.syntax-annot-highlight {
 .syntax-annot-output-note { font-size: var(--text-sm); color: var(--color-text); margin: 0; }
 .syntax-annot-output-note.is-dim { color: var(--color-text-faint); }
 
+/* ---- "How This Shows Up In the IDE" section: bridges the annotated
+   diagram above into a real, runnable editor below it on the same tab. ---- */
+.syntax-annot-ide-divider {
+  border: none;
+  border-top: 2px dashed var(--color-border);
+  margin: var(--space-6) 0 0;
+}
+.syntax-annot-ide-heading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-base);
+  color: var(--color-text);
+  margin: var(--space-4) 0 0;
+}
+.syntax-annot-ide-caption {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin: var(--space-2) 0 var(--space-4);
+}
+
 /* ============ SHARED SAMPLE SITE ("Grind & Grow Skate Crew") ============
    Real semantic HTML reused by the Anatomy Lab and Remix Challenge so
    students explore/click/relabel an actual page, not a static picture. */
