@@ -1095,12 +1095,19 @@
   // and (d) the exact slice of the output it produces, if any. Data shape:
   //   {
   //     filename: "trailhead.py",
+  //     language: "Python",   // optional, sensible default provided \u2014 shown in instructional copy
   //     lines: [ [tokenA, tokenB, ...], [tokenC, ...] ],   // one array per code line
   //     outputText: "Reached Ridge Line",
   //     legend: [ { type: "keyword", label: "Keyword" }, ... ]  // optional, sensible default provided
   //   }
   // token: { text, type, order, tip, output (optional), pairId (optional) }
-  function renderSyntaxAnnotate(card, sa) {
+  //
+  // buildSyntaxAnnotateEl() builds and wires up the widget's DOM but does NOT
+  // append it to tryItPanel or touch activeTryIt \u2014 that's left to the two
+  // callers below, since one of them (renderSyntaxAnnotateWithIde) needs to
+  // append a second section underneath before finalizing activeTryIt.
+  function buildSyntaxAnnotateEl(card, sa) {
+    var language = sa.language || "Python";
     var DEFAULT_LEGEND = [
       { type: "keyword", label: "Keyword" },
       { type: "string", label: "String" },
@@ -1117,7 +1124,7 @@
     var instructions = document.createElement("p");
     instructions.className = "tagmatch-instructions";
     instructions.textContent =
-      "Hover, tap, or tab through each highlighted piece of code below. The number shows the order Python reads it in, and the output panel lights up when that piece is part of what gets printed.";
+      "Hover, tap, or tab through each highlighted piece of code below. The number shows the order " + language + " reads it in, and the output panel lights up when that piece is part of what gets printed.";
     wrap.appendChild(instructions);
 
     var legendRow = document.createElement("div");
@@ -1147,7 +1154,7 @@
     });
     var filename = document.createElement("span");
     filename.className = "syntax-annot-filename";
-    filename.textContent = sa.filename || "syntax_demo.py";
+    filename.textContent = sa.filename || (language === "Python" ? "syntax_demo.py" : "syntax_demo.js");
     titlebar.appendChild(filename);
     win.appendChild(titlebar);
 
@@ -1245,7 +1252,7 @@
         outputText.textContent = full;
         if (activeToken) {
           outputNote.textContent =
-            "This piece doesn't show up in the output \u2014 it's an instruction for Python, not printed text.";
+            "This piece doesn't show up in the output \u2014 it's an instruction for " + language + ", not printed text.";
           outputNote.classList.remove("is-dim");
         } else {
           outputNote.textContent = "Hover, tap, or tab a piece of code above to see how it connects here.";
@@ -1308,12 +1315,51 @@
     });
 
     clearToShownOrPlaceholder();
+
+    return wrap;
+  }
+
+  // Standalone use: the annotated diagram is the whole Try It tab (e.g. the
+  // Python syntax intro card).
+  function renderSyntaxAnnotate(card, sa) {
+    var wrap = buildSyntaxAnnotateEl(card, sa);
     tryItPanel.appendChild(wrap);
 
     activeTryIt = {
       destroy: function () {},
       refresh: function () {},
     };
+  }
+
+  // Combined use: the annotated diagram sits above a real, runnable code
+  // editor (reusing the normal playground), separated by a "How This Shows
+  // Up In the IDE" section heading \u2014 so the abstract, hoverable breakdown
+  // scaffolds into the real, concrete tool right below it on the same tab.
+  // `pg` is a normal playground object, same shape used by card.playground.
+  function renderSyntaxAnnotateWithIde(card, sa, pg) {
+    var wrap = buildSyntaxAnnotateEl(card, sa);
+    tryItPanel.appendChild(wrap);
+
+    var divider = document.createElement("div");
+    divider.className = "syntax-annot-ide-divider";
+    tryItPanel.appendChild(divider);
+
+    var ideHeading = document.createElement("h4");
+    ideHeading.className = "syntax-annot-ide-heading";
+    ideHeading.textContent = sa.ideHeading || "How This Shows Up In the IDE";
+    tryItPanel.appendChild(ideHeading);
+
+    var ideCaption = document.createElement("p");
+    ideCaption.className = "syntax-annot-ide-caption";
+    ideCaption.textContent =
+      sa.ideCaption ||
+      "Same idea, real tool \u2014 here's that code (plus the extra setup it needs to run) in a live editor. Click Run to actually execute it.";
+    tryItPanel.appendChild(ideCaption);
+
+    // renderRunnableTryIt appends its own editor/output panel to tryItPanel
+    // and sets activeTryIt itself (with the real CodeMirror teardown), which
+    // is exactly the cleanup we want when this combined tab is torn down.
+    renderRunnableTryIt(card, pg);
   }
 
   // ---- REPL vs Script Simulator: a guided, click-through comparison of
@@ -1942,7 +1988,10 @@
     }
 
     // ---- Syntax Annotate Lab: hoverable/tappable annotated code diagram
-    // used to introduce syntax concepts before a match activity.
+    // used to introduce syntax concepts before a match activity. If the card
+    // ALSO has a playground, render the annotated diagram first, then a
+    // "How This Shows Up In the IDE" section with the real, runnable editor
+    // underneath it \u2014 scaffolding from the abstract breakdown to the real tool.
     if (card.syntaxAnnotate) {
       if (tryItTabBtn) {
         tryItTabBtn.disabled = false;
@@ -1950,7 +1999,11 @@
         tryItTabBtn.setAttribute("aria-disabled", "false");
         tryItTabBtn.removeAttribute("title");
       }
-      renderSyntaxAnnotate(card, card.syntaxAnnotate);
+      if (card.playground) {
+        renderSyntaxAnnotateWithIde(card, card.syntaxAnnotate, card.playground);
+      } else {
+        renderSyntaxAnnotate(card, card.syntaxAnnotate);
+      }
       return;
     }
 
