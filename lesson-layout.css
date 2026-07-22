@@ -1,4 +1,4 @@
-/* lesson-layout.css — sidebar + video-player + tabs "mini-course" layout for
+/* lesson-layout.css â€” sidebar + video-player + tabs "mini-course" layout for
    lesson-N.html pages. Extends style.css's adventure design tokens; does not
    redefine palette/fonts. Loaded after style.css on every lesson page. */
 
@@ -55,7 +55,7 @@ body { overflow-x: hidden; }
 
 @media (max-width: 767px) {
   .sidebar-toggle { display: inline-flex; }
-  /* align-items: stretch is required here — the base .course-shell rule uses
+  /* align-items: stretch is required here â€” the base .course-shell rule uses
      flex-start so the sidebar and content top-align on desktop's row layout.
      In column mode (mobile), flex-start lets flex children size to their own
      content width instead of the container's width, so a child with wide
@@ -885,6 +885,172 @@ body { overflow-x: hidden; }
   font-weight: 600;
   white-space: nowrap;
 }
+
+/* ============ SYNTAX ANNOTATE LAB: hoverable annotated code diagram ===== */
+.syntax-annot-wrap { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.syntax-annot-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+.syntax-annot-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-sm);
+  color: var(--color-text-faint);
+}
+.syntax-annot-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.syntax-annot-window {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  background: var(--color-navy);
+  border: 2px solid var(--color-navy);
+}
+[data-theme="dark"] .syntax-annot-window { border-color: var(--color-border); }
+.syntax-annot-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.syntax-annot-dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.syntax-annot-dot--red { background: #ff5f56; }
+.syntax-annot-dot--yellow { background: #ffbd2e; }
+.syntax-annot-dot--green { background: #27c93f; }
+.syntax-annot-filename {
+  margin-left: var(--space-2);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: var(--text-xs);
+  color: #b9c2e8;
+}
+
+.syntax-annot-body { padding: var(--space-4); }
+.syntax-annot-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: var(--text-base);
+  margin-bottom: var(--space-2);
+}
+.syntax-annot-line:last-child { margin-bottom: 0; }
+.syntax-annot-lineno {
+  color: #5a6494;
+  min-width: 16px;
+  text-align: right;
+  padding-top: 6px;
+  user-select: none;
+  flex-shrink: 0;
+}
+.syntax-annot-code {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.syntax-annot-token {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 1px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.04);
+  font: inherit;
+  cursor: pointer;
+  white-space: pre;
+}
+.syntax-annot-order {
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  margin-right: 1px;
+  color: #5a6494;
+}
+.syntax-annot-token.is-active .syntax-annot-order,
+.syntax-annot-token.is-paired .syntax-annot-order { color: inherit; }
+
+.syntax-annot-token.type-keyword { --tok-color: #6ea8ff; color: var(--tok-color); }
+.syntax-annot-token.type-string { --tok-color: #3ddc84; color: var(--tok-color); }
+.syntax-annot-token.type-number { --tok-color: #ffa94d; color: var(--tok-color); }
+.syntax-annot-token.type-variable { --tok-color: #b48cff; color: var(--tok-color); }
+.syntax-annot-token.type-operator { --tok-color: #ff6b6b; color: var(--tok-color); }
+.syntax-annot-token.type-punct { --tok-color: #f0c93b; color: var(--tok-color); }
+
+.syntax-annot-token.is-active {
+  background: var(--tok-color);
+  color: var(--color-navy);
+  border-color: var(--tok-color);
+}
+.syntax-annot-token.is-active .syntax-annot-order { color: var(--color-navy); }
+.syntax-annot-token.is-paired {
+  border-color: var(--tok-color);
+  background: rgba(255, 255, 255, 0.12);
+}
+.syntax-annot-token:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+
+.syntax-annot-swatch.type-keyword, .syntax-annot-caption-kicker.type-keyword { background: #2a6df5; }
+.syntax-annot-swatch.type-string, .syntax-annot-caption-kicker.type-string { background: #0f9d58; }
+.syntax-annot-swatch.type-number, .syntax-annot-caption-kicker.type-number { background: #e8790a; }
+.syntax-annot-swatch.type-variable, .syntax-annot-caption-kicker.type-variable { background: #8a5cf6; }
+.syntax-annot-swatch.type-operator, .syntax-annot-caption-kicker.type-operator { background: #e0433d; }
+.syntax-annot-swatch.type-punct, .syntax-annot-caption-kicker.type-punct { background: #caa000; }
+
+.syntax-annot-caption {
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  min-height: 60px;
+  background: var(--color-surface, #fff);
+}
+.syntax-annot-caption p { margin: 6px 0 0; line-height: 1.4; }
+.syntax-annot-caption p.is-dim { color: var(--color-text-faint); margin: 0; }
+.syntax-annot-caption-kicker {
+  display: inline-block;
+  color: #fff;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.syntax-annot-output-shell {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  border-radius: var(--radius-md);
+  background: #14172a;
+  color: #e9edff;
+  padding: var(--space-3) var(--space-4);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: var(--text-base);
+  min-height: 24px;
+}
+.syntax-annot-output-prompt { color: #3ddc84; flex-shrink: 0; }
+.syntax-annot-output-text { white-space: pre-wrap; word-break: break-word; }
+mark.syntax-annot-highlight {
+  background: #f0c93b;
+  color: #14172a;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+.syntax-annot-output-note { font-size: var(--text-sm); color: var(--color-text); margin: 0; }
+.syntax-annot-output-note.is-dim { color: var(--color-text-faint); }
 
 /* ============ SHARED SAMPLE SITE ("Grind & Grow Skate Crew") ============
    Real semantic HTML reused by the Anatomy Lab and Remix Challenge so
