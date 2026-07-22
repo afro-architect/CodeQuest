@@ -613,6 +613,308 @@
     };
   }
 
+  // =========================================================================
+  // MATCH ACTIVITY: a generalized version of the tag-match pattern above.
+  // Click a chunk, then click the option that describes it \u2014 works for
+  // CSS selectors, HTML attributes, or code syntax, not just HTML tags.
+  // Drop a `matchActivity` object on any card (instead of `tagMatch`) to
+  // reuse this same click-to-match UI for a brand-new concept:
+  //
+  //   matchActivity: {
+  //     previewType: "css-selector" | "css-attribute" | "syntax",
+  //     previewHtml: "..."   // only needed for previewType "css-selector"
+  //     instructions: "optional override of the default instruction line",
+  //     chunks: [ { id, text, correctKey } ],
+  //     options: [ { key, label, previewColor } ],
+  //     hints: { correctKey: "hint text" },
+  //     successMessage: "...",
+  //     retryMessage: "...",
+  //   }
+  //
+  // previewType "css-selector": previewHtml is a small mock page. Each
+  // chunk's text should be a full, valid CSS rule (e.g. ".sale { color:
+  // red; }"). Once a chunk is correctly matched, its rule is injected into
+  // a live <style> block above previewHtml, so students see the *real*
+  // effect land as they identify selectors correctly.
+  //
+  // previewType "css-attribute": each chunk's text should be a small HTML
+  // snippet (e.g. '<div class="storeCard">Sneaker Spot</div>'). Every
+  // chunk always renders, and correctly-matched ones get an outline in
+  // that option's previewColor so students see class vs id vs "no
+  // attribute" visually grouped.
+  //
+  // previewType "syntax": no previewHtml needed. Chunks are read as one
+  // line of code, left to right, in the order given. Correctly-matched
+  // tokens get a colored underline plus a small caption with the option's
+  // label, building up an annotated line of code piece by piece.
+  // =========================================================================
+  function renderMatchActivity(card, ma) {
+    if (!ma.__assignments) {
+      ma.__assignments = {};
+      ma.chunks.forEach(function (chunk) {
+        ma.__assignments[chunk.id] = null;
+      });
+    }
+    if (typeof ma.__attempts !== "number") ma.__attempts = 0;
+    var assignments = ma.__assignments;
+    var selectedChunkId = null;
+
+    function optionFor(key) {
+      return ma.options.filter(function (o) {
+        return o.key === key;
+      })[0];
+    }
+
+    var wrap = document.createElement("div");
+    wrap.className = "tagmatch-wrap";
+
+    var instructions = document.createElement("p");
+    instructions.className = "tagmatch-instructions";
+    instructions.textContent =
+      ma.instructions || "Tap a piece below, then tap the option that matches it.";
+    wrap.appendChild(instructions);
+
+    // ---- Option palette ----
+    var palette = document.createElement("div");
+    palette.className = "tagmatch-palette";
+    ma.options.forEach(function (opt) {
+      var chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "tagmatch-chip tagmatch-chip--wide";
+      chip.textContent = opt.label;
+      chip.setAttribute("data-key", opt.key);
+      chip.disabled = true;
+      palette.appendChild(chip);
+    });
+    wrap.appendChild(palette);
+
+    // ---- Chunk list ----
+    var chunksEl = document.createElement("div");
+    chunksEl.className = "tagmatch-chunks";
+    wrap.appendChild(chunksEl);
+
+    function renderChunks() {
+      chunksEl.innerHTML = "";
+      ma.chunks.forEach(function (chunk) {
+        var row = document.createElement("button");
+        row.type = "button";
+        row.className = "tagmatch-chunk";
+        row.setAttribute("data-chunk-id", chunk.id);
+        if (selectedChunkId === chunk.id) row.classList.add("is-selected");
+
+        var textEl = document.createElement("span");
+        textEl.className = "tagmatch-chunk-text tagmatch-chunk-text--code";
+        textEl.textContent = chunk.text;
+        row.appendChild(textEl);
+
+        var badge = document.createElement("span");
+        badge.className = "tagmatch-chunk-badge";
+        var assignedKey = assignments[chunk.id];
+        var assignedOpt = assignedKey ? optionFor(assignedKey) : null;
+        badge.textContent = assignedOpt ? (assignedOpt.shortLabel || assignedOpt.label) : "no match yet";
+        if (assignedOpt) badge.classList.add("has-tag");
+        row.appendChild(badge);
+
+        row.addEventListener("click", function () {
+          selectedChunkId = chunk.id;
+          renderChunks();
+          updatePaletteEnabled();
+        });
+
+        chunksEl.appendChild(row);
+      });
+    }
+
+    function updatePaletteEnabled() {
+      var chips = palette.querySelectorAll(".tagmatch-chip");
+      chips.forEach(function (chip) {
+        chip.disabled = !selectedChunkId;
+        chip.classList.toggle(
+          "is-active",
+          !!selectedChunkId && assignments[selectedChunkId] === chip.getAttribute("data-key")
+        );
+      });
+    }
+
+    palette.querySelectorAll(".tagmatch-chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        if (!selectedChunkId) return;
+        var key = chip.getAttribute("data-key");
+        assignments[selectedChunkId] = assignments[selectedChunkId] === key ? null : key;
+        renderChunks();
+        updatePaletteEnabled();
+        renderPreview();
+      });
+    });
+
+    // ---- Live preview (behavior depends on previewType) ----
+    var previewLabel = document.createElement("span");
+    previewLabel.className = "tryit-col-label";
+    previewLabel.style.marginTop = "var(--space-3)";
+    previewLabel.textContent = "Preview";
+    wrap.appendChild(previewLabel);
+
+    var previewHost;
+    var previewFrame;
+    if (ma.previewType === "syntax") {
+      previewHost = document.createElement("div");
+      previewHost.className = "syntaxmatch-shell";
+      wrap.appendChild(previewHost);
+    } else {
+      var previewShell = document.createElement("div");
+      previewShell.className = "tagmatch-preview-shell";
+      previewFrame = document.createElement("iframe");
+      previewFrame.setAttribute("sandbox", "");
+      previewFrame.title = card.heading + " preview";
+      previewShell.appendChild(previewFrame);
+      wrap.appendChild(previewShell);
+    }
+
+    function renderPreview() {
+      if (ma.previewType === "css-selector") {
+        var liveCss = "";
+        ma.chunks.forEach(function (chunk) {
+          if (assignments[chunk.id] === chunk.correctKey) liveCss += chunk.text + "\n";
+        });
+        var doc =
+          "<style>body{font-family:sans-serif;margin:0;padding:12px;color:#23283f;background:#fff;} p{margin:0 0 8px;}</style>" +
+          "<style>" + liveCss + "</style>" +
+          (ma.previewHtml || "");
+        previewFrame.setAttribute("srcdoc", doc);
+        return;
+      }
+
+      if (ma.previewType === "css-attribute") {
+        var rows = ma.chunks
+          .map(function (chunk) {
+            var isCorrect = assignments[chunk.id] === chunk.correctKey;
+            var opt = optionFor(chunk.correctKey);
+            var color = isCorrect && opt && opt.previewColor ? opt.previewColor : "#dcdfef";
+            var badgeText = opt ? opt.shortLabel || opt.label : "";
+            var tagHtml =
+              '<div style="border:2px solid ' +
+              color +
+              "; border-radius:10px; padding:10px 12px; margin:8px 0; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px;\">" +
+              '<div style="font-family:monospace; font-size:13px; min-width:0; word-break:break-word;">' +
+              chunk.text +
+              "</div>" +
+              (isCorrect && opt
+                ? '<div style="font-size:11px; font-weight:700; color:' +
+                  color +
+                  '; white-space:normal; text-align:right; max-width:100%;">' +
+                  escapeHtml(badgeText) +
+                  "</div>"
+                : "") +
+              "</div>";
+            return tagHtml;
+          })
+          .join("");
+        var doc2 =
+          "<style>body{font-family:sans-serif;margin:0;padding:12px;color:#23283f;background:#fff;}</style>" +
+          rows;
+        previewFrame.setAttribute("srcdoc", doc2);
+        return;
+      }
+
+      if (ma.previewType === "syntax") {
+        previewHost.innerHTML = "";
+        var line = document.createElement("div");
+        line.className = "syntaxmatch-line";
+        ma.chunks.forEach(function (chunk) {
+          var isCorrect = assignments[chunk.id] === chunk.correctKey;
+          var opt = optionFor(chunk.correctKey);
+          var token = document.createElement("span");
+          token.className = "syntaxmatch-token" + (isCorrect ? " is-tagged" : "");
+          if (isCorrect && opt && opt.previewColor) {
+            token.style.borderColor = opt.previewColor;
+            token.style.color = opt.previewColor;
+          }
+          var codeEl = document.createElement("span");
+          codeEl.className = "syntaxmatch-token-code";
+          codeEl.textContent = chunk.text;
+          token.appendChild(codeEl);
+          if (isCorrect && opt) {
+            var caption = document.createElement("small");
+            caption.textContent = opt.label;
+            token.appendChild(caption);
+          }
+          line.appendChild(token);
+        });
+        previewHost.appendChild(line);
+      }
+    }
+
+    // ---- Check + feedback ----
+    var feedbackEl = document.createElement("div");
+    feedbackEl.className = "tagmatch-feedback";
+
+    var checkBtn = document.createElement("button");
+    checkBtn.type = "button";
+    checkBtn.className = "tryit-btn";
+    checkBtn.style.marginTop = "var(--space-4)";
+    checkBtn.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Check My Matches</span>';
+    wrap.appendChild(checkBtn);
+    wrap.appendChild(feedbackEl);
+
+    checkBtn.addEventListener("click", function () {
+      var allCorrect = true;
+      var wrongKeys = {};
+      ma.chunks.forEach(function (chunk) {
+        if (assignments[chunk.id] !== chunk.correctKey) {
+          allCorrect = false;
+          wrongKeys[chunk.correctKey] = true;
+        }
+      });
+
+      feedbackEl.innerHTML = "";
+
+      if (allCorrect) {
+        ma.__attempts = 0;
+        var successEl = document.createElement("div");
+        successEl.className = "tagmatch-feedback-banner tagmatch-feedback-success";
+        successEl.textContent = ma.successMessage || "Nice work \u2014 every match is correct!";
+        feedbackEl.appendChild(successEl);
+        return;
+      }
+
+      ma.__attempts += 1;
+      var retryEl = document.createElement("div");
+      retryEl.className = "tagmatch-feedback-banner tagmatch-feedback-retry";
+      retryEl.textContent = ma.retryMessage || "Not quite yet \u2014 give it another try!";
+      feedbackEl.appendChild(retryEl);
+
+      if (ma.__attempts >= 2 && ma.hints) {
+        var hintBox = document.createElement("div");
+        hintBox.className = "tagmatch-hints";
+        var hintTitle = document.createElement("p");
+        hintTitle.className = "tagmatch-hints-title";
+        hintTitle.textContent = "Hints \u2014 ask yourself:";
+        hintBox.appendChild(hintTitle);
+        var ul = document.createElement("ul");
+        Object.keys(wrongKeys).forEach(function (key) {
+          if (ma.hints[key]) {
+            var li = document.createElement("li");
+            li.textContent = ma.hints[key];
+            ul.appendChild(li);
+          }
+        });
+        hintBox.appendChild(ul);
+        feedbackEl.appendChild(hintBox);
+      }
+    });
+
+    renderChunks();
+    updatePaletteEnabled();
+    renderPreview();
+    tryItPanel.appendChild(wrap);
+
+    activeTryIt = {
+      destroy: function () {},
+      refresh: function () {},
+    };
+  }
+
   // ---- Website Anatomy Lab: hover a real sample site to see its boundary,
   // click a highlighted part to answer "what is this called?" and "what job
   // does it do?" via chips (no typing). Reused across Remix/Vibe below.
@@ -1075,6 +1377,20 @@
         tryItTabBtn.removeAttribute("title");
       }
       renderTagMatchActivity(card, card.tagMatch);
+      return;
+    }
+
+    // ---- Match activity: click-to-match knowledge check, generalized for
+    // any concept (CSS selectors, attributes, code syntax, etc.) \u2014 see
+    // renderMatchActivity above for the full data shape.
+    if (card.matchActivity) {
+      if (tryItTabBtn) {
+        tryItTabBtn.disabled = false;
+        tryItTabBtn.classList.remove("is-disabled");
+        tryItTabBtn.setAttribute("aria-disabled", "false");
+        tryItTabBtn.removeAttribute("title");
+      }
+      renderMatchActivity(card, card.matchActivity);
       return;
     }
 
