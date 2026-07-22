@@ -1181,3 +1181,85 @@ mark.syntax-annot-highlight {
 @media (min-width: 768px) {
   .course-shell { align-items: flex-start; }
 }
+
+/* ============ REPL VS SCRIPT SIMULATOR ================================= */
+.rvs-wrap { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.rvs-toggle {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.rvs-toggle-btn {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-border);
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: background var(--transition-interactive), color var(--transition-interactive), border-color var(--transition-interactive);
+}
+.rvs-toggle-btn:hover { background: var(--color-surface-offset); }
+.rvs-toggle-btn.is-active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.rvs-stage { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.rvs-window.syntax-annot-window { background: var(--color-navy); }
+
+.rvs-transcript {
+  padding: var(--space-4);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: var(--text-base);
+  min-height: 140px;
+  max-height: 260px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.rvs-line { white-space: pre-wrap; word-break: break-word; line-height: 1.5; }
+.rvs-line--input { color: #6ea8ff; }
+.rvs-line--output { color: #e9edff; padding-left: var(--space-4); }
+.rvs-line--note { color: #5a6494; font-style: italic; padding-left: var(--space-4); }
+.rvs-line--ghost { color: #6ea8ff; opacity: 0.6; }
+.rvs-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 1em;
+  background: #6ea8ff;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: rvs-blink 1s steps(1) infinite;
+}
+@keyframes rvs-blink { 50% { opacity: 0; } }
+
+.rvs-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.rvs-progress { font-size: var(--text-sm); color: var(--color-text-faint); font-weight: 700; }
+
+.rvs-scriptbody { display: flex; flex-direction: column; gap: 6px; }
+.rvs-scriptline {
+  display: flex;
+  gap: var(--space-2);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: var(--text-base);
+  color: #e9edff;
+}
+.rvs-scriptcode { white-space: pre-wrap; word-break: break-word; }
+
+.rvs-output-shell.syntax-annot-output-shell { min-height: 60px; flex-direction: column; align-items: stretch; gap: 4px; }
+.rvs-output-placeholder { color: #5a6494; font-style: italic; }
+.rvs-output-line { color: #3ddc84; white-space: pre-wrap; word-break: break-word; }
+
+.rvs-caption.syntax-annot-caption { min-height: unset; }
