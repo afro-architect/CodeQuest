@@ -378,7 +378,31 @@ const LESSON_CONTENT = [
       { heading: "What You'll Learn", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
       { heading: "Icebreaker", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Think about a checklist or packing list you've used before a trip. Why does the order of steps matter? Python fundamentals work the same way and each piece builds on the one before it." },
       { heading: "Helpful Terms to Know", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Key words for this unit: variable, data type, conditional, loop, function, and import. You'll meet each one in this section, then use all of them together in your first real projects." },
-  {
+ {
+  heading: "Python Syntax: How the Pieces Fit Together",
+  videoSrc: "assets/video/placeholder-python-syntax.mp4",
+  body: "Every line of Python is built from small pieces â€” keywords, punctuation, operators, and values â€” and each piece has an exact spot in the line. Head to the Try It tab, then hover, tap, or tab through the code below to see what each piece is called, why its punctuation matters, and how it turns into the output on the right.",
+  syntaxAnnotate: {
+    filename: "trailhead.py",
+    lines: [
+      [
+        { text: "checkpoint", type: "variable", order: 1, tip: "A variable â€” a name you're choosing to label a piece of data so you can reuse it later." },
+        { text: "=", type: "operator", order: 2, tip: "The equals sign here means \"store the value on the right into the name on the left.\" It's an assignment, not a question." },
+        { text: "\"Ridge Line\"", type: "string", order: 3, tip: "Quotation marks tell Python this is literal text (a string), not a command or another variable's name." },
+      ],
+      [
+        { text: "print", type: "keyword", order: 4, tip: "A built-in keyword â€” it tells Python \"run the print tool and show whatever I hand you next.\"" },
+        { text: "(", type: "punct", order: 5, tip: "Opens the list of inputs you're handing to print. Every ( needs a matching ) â€” Python keeps track of the pair.", pairId: "parens1" },
+        { text: "\"Reached \"", type: "string", order: 6, tip: "This literal text appears in the output exactly as written, including the space before the closing quote.", output: "Reached " },
+        { text: "+", type: "operator", order: 7, tip: "Between two strings, + doesn't add numbers â€” it means \"join these pieces of text together.\"" },
+        { text: "checkpoint", type: "variable", order: 8, tip: "Reusing the name from line 1 hands Python the value stored there instead of retyping it.", output: "Ridge Line" },
+        { text: ")", type: "punct", order: 9, tip: "Closes the input list. Forget this closing parenthesis and Python raises a SyntaxError before your code even runs.", pairId: "parens1" },
+      ],
+    ],
+    outputText: "Reached Ridge Line",
+  },
+},
+      {
         heading: "Activity: Match the Syntax Rule",
         videoSrc: "assets/video/placeholder-python-syntax.mp4",
         body: "Python skips semicolons and curly braces entirely. Instead, a colon (:) announces that an indented block is coming, and the indentation itself (the spaces at the start of a line) is what tells Python which lines belong inside that block. Tap each line below, then tap the rule it's demonstrating.",
