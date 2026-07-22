@@ -373,6 +373,58 @@ const LESSON_CONTENT = [
       { heading: "What You'll Learn", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
       { heading: "Icebreaker", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Think about a checklist or packing list you've used before a trip. Why does the order of steps matter? Python fundamentals work the same way and each piece builds on the one before it." },
       { heading: "Helpful Terms to Know", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Key words for this unit: variable, data type, conditional, loop, function, and import. You'll meet each one in this section, then use all of them together in your first real projects." },
+  {
+        heading: "Activity: Match the Syntax Rule",
+        videoSrc: "assets/video/placeholder-python-syntax.mp4",
+        body: "Python skips semicolons and curly braces entirely. Instead, a colon (:) announces that an indented block is coming, and the indentation itself (the spaces at the start of a line) is what tells Python which lines belong inside that block. Tap each line below, then tap the rule it's demonstrating.",
+        matchActivity: {
+          previewType: "syntax",
+          instructions: "Tap a line of Python below, then tap the syntax rule it's demonstrating.",
+          chunks: [
+            { id: "ifLine", text: "if elevation >= 5000:", correctKey: "colon" },
+            { id: "printLine", text: "    print('You reached basecamp!')", correctKey: "indent" },
+            { id: "doneLine", text: "print('Hike complete')", correctKey: "noSemicolon" },
+          ],
+          options: [
+            { key: "colon", label: "Colon (:) — announces a new indented block is coming", shortLabel: "Colon", previewColor: "#2a6df5" },
+            { key: "indent", label: "Indentation — spaces showing this line lives inside the block above", shortLabel: "Indentation", previewColor: "#0f9d58" },
+            { key: "noSemicolon", label: "No semicolon needed — Python lines just end with a line break", shortLabel: "No semicolon", previewColor: "#caa000" },
+          ],
+          hints: {
+            colon: "Look for the punctuation mark right before the line ends — it's Python's signal that an indented block follows.",
+            indent: "Count the spaces before the code starts — that whitespace is what tells Python this line belongs inside something else.",
+            noSemicolon: "This line isn't starting a block and doesn't need a colon, and Python never needs a semicolon at the end either.",
+          },
+          successMessage: "\ud83c\udf89 You've spotted Python's core syntax rules \u2014 colon, indentation, and no semicolons needed!",
+          retryMessage: "Not quite \u2014 check whether each line starts a block, sits inside one, or stands alone, then try again.",
+        },
+      },
+      {
+        heading: "Activity: Match the Parts",
+        videoSrc: "assets/video/placeholder-print-input.mp4",
+        body: "Here's one line of Python: age = 13  Tap a piece of it below, then tap what that piece is doing. Notice Python doesn't need a keyword to declare a variable, and there's no semicolon at the end \u2014 that's different from JavaScript!",
+        matchActivity: {
+          previewType: "syntax",
+          instructions: "Tap a code piece below, then tap the role it plays in the line \"age = 13\"",
+          chunks: [
+            { id: "name", text: "age", correctKey: "variable" },
+            { id: "op", text: "=", correctKey: "operator" },
+            { id: "val", text: "13", correctKey: "value" },
+          ],
+          options: [
+            { key: "variable", label: "Variable Name", previewColor: "#0f9d58" },
+            { key: "operator", label: "Operator", previewColor: "#e0433d" },
+            { key: "value", label: "Value", previewColor: "#caa000" },
+          ],
+          hints: {
+            variable: "This is the name you chose to label your stored value.",
+            operator: "This symbol does an action, like assigning a value to a name.",
+            value: "This is the actual piece of data being stored, like a number or word.",
+          },
+          successMessage: "\ud83c\udf89 All three pieces matched \u2014 variable, operator, and value!",
+          retryMessage: "Not quite \u2014 look at each piece's job in the line again and try another match.",
+        },
+      },     
       { heading: "Print & Input", videoSrc: "assets/video/placeholder-print-input.mp4", body: "print('Hello!') and input('What's your name? ') are your first two Python commands.", playground: { lang: "python", code: "print('Hello!')\nname = 'Explorer'\nprint('What is your name? (edit the name variable above and Run again)')\nprint('Nice to meet you, ' + name + '!')" } },
       { heading: "Mini Challenge: Say Hello", videoSrc: "assets/video/placeholder-mini-challenge-say-hello.mp4", body: "Write a script that asks for your name and prints a custom greeting back.", playground: { lang: "python", code: "name = 'Explorer'\n\ndef greet(who):\n    print('Hey there, ' + who + '! Welcome to the trail.')\n\ngreet(name)" } },
       { heading: "Running a Script vs a REPL", videoSrc: "assets/video/placeholder-variables-types-data.mp4", body: "Running a script means saving your code in a file and running the whole thing at once. A REPL (Read-Evaluate-Print-Loop) runs one line at a time and shows you the result immediately, more like a conversation with the computer.", playground: { lang: "python", code: "# In a REPL, you could type this one line at a time and see the result immediately:\nprint(2 + 2)\n\n# In a script, all of these lines run together, top to bottom, in one go:\nname = 'Explorer'\nprint('Hello, ' + name + '!')\nprint('Scripts are great for saving and reusing your work.')" } },
