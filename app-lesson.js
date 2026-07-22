@@ -1,10 +1,10 @@
-// app-lesson.js â€” shared behavior for every lesson-N.html page: renders the
+<p>// app-lesson.js Ã¢â‚¬â€ shared behavior for every lesson-N.html page: renders the
 // sidebar mini-course (stop accordion + sub-lesson list), the video player +
 // tabs content browser for the active sub-lesson, wires the fixed
 // Stamp My Passport button, dark-mode toggle, and the locked-page guard.
 //
 // NOTE: completeLesson()/getProgress()/getLessonState() come from progress.js
-// and are NOT modified by this file â€” this file only reads/calls them exactly
+// and are NOT modified by this file Ã¢â‚¬â€ this file only reads/calls them exactly
 // as the previous carousel version did.
 
 (function () {
@@ -36,7 +36,7 @@
     bannerImg.src = nodeMeta.banner;
     bannerImg.alt = lesson.theme + " illustrated banner for " + lesson.title;
   }
-  document.title = lesson.title + " â€” Quest Map";
+  document.title = lesson.title + " Ã¢â‚¬â€ Quest Map";
 
   var cards = lesson.cards;
   var current = 0; // index of active sub-lesson within this stop
@@ -51,7 +51,7 @@
   function renderAccordion() {
     accordionEl.innerHTML = "";
 
-    // Only render THIS stop â€” other stops are intentionally hidden from the
+    // Only render THIS stop Ã¢â‚¬â€ other stops are intentionally hidden from the
     // sidebar so students stay focused on the current unit's sub-lessons.
     var nodeIdx = QUEST_NODES.findIndex(function (n) {
       return n.id === LESSON_ID;
@@ -150,7 +150,7 @@
     if (src) {
       videoEl.src = src;
       videoEl.play().catch(function () {
-        /* placeholder source may not resolve â€” poster stays as fallback */
+        /* placeholder source may not resolve Ã¢â‚¬â€ poster stays as fallback */
       });
     }
     videoPlayerEl.classList.add("is-playing");
@@ -237,7 +237,7 @@
     ul.querySelectorAll("[data-resource-placeholder]").forEach(function (link) {
       link.addEventListener("click", function (e) {
         e.preventDefault();
-        showToast("This is a placeholder resource â€” real files go here!");
+        showToast("This is a placeholder resource Ã¢â‚¬â€ real files go here!");
       });
     });
 
@@ -265,7 +265,7 @@
     }
   }
 
-  // giscus config â€” GitHub Discussions-powered comments for afro-architect/CodeQuest
+  // giscus config Ã¢â‚¬â€ GitHub Discussions-powered comments for afro-architect/CodeQuest
   var GISCUS_CONFIG = {
     repo: "afro-architect/CodeQuest",
     repoId: "R_kgDOTdW5Bg",
@@ -322,7 +322,7 @@
   // =========================================================================
   var tryItPanel = document.querySelector('[data-panel="tryit"]');
 
-  // Shared Pyodide instance â€” loaded lazily once per page view, reused across
+  // Shared Pyodide instance Ã¢â‚¬â€ loaded lazily once per page view, reused across
   // every Python sub-lesson card on this same lesson page.
   var pyodideInstance = null;
   var pyodidePromise = null;
@@ -396,7 +396,7 @@
 
   // =========================================================================
   // TAG-MATCH ACTIVITY: click a plain-text chunk, then click the tag that
-  // belongs around it. No typing required — used when we're asking students
+  // belongs around it. No typing required â€” used when we're asking students
   // to *apply* a tag family before they've been shown how to *type* its
   // syntax. State (assignments + attempt count) lives on the tagMatch object
   // itself so it persists for the rest of this page view even if the
@@ -1086,6 +1086,236 @@
     };
   }
 
+  // ---- Syntax Annotate Lab: a static, hoverable/tappable "annotated IDE"
+  // diagram (not a real code editor) used to introduce syntax concepts
+  // *before* students try a match activity. Each token in a short code
+  // sample is a button; hovering/tapping/focusing it reveals (a) what kind
+  // of syntax piece it is and why it matters, (b) its place in the read
+  // order Python follows, (c) its matching bracket/quote partner if any,
+  // and (d) the exact slice of the output it produces, if any. Data shape:
+  //   {
+  //     filename: "trailhead.py",
+  //     lines: [ [tokenA, tokenB, ...], [tokenC, ...] ],   // one array per code line
+  //     outputText: "Reached Ridge Line",
+  //     legend: [ { type: "keyword", label: "Keyword" }, ... ]  // optional, sensible default provided
+  //   }
+  // token: { text, type, order, tip, output (optional), pairId (optional) }
+  function renderSyntaxAnnotate(card, sa) {
+    var DEFAULT_LEGEND = [
+      { type: "keyword", label: "Keyword" },
+      { type: "string", label: "String" },
+      { type: "number", label: "Number" },
+      { type: "variable", label: "Variable" },
+      { type: "operator", label: "Operator" },
+      { type: "punct", label: "Punctuation" },
+    ];
+    var legend = sa.legend || DEFAULT_LEGEND;
+
+    var wrap = document.createElement("div");
+    wrap.className = "syntax-annot-wrap";
+
+    var instructions = document.createElement("p");
+    instructions.className = "tagmatch-instructions";
+    instructions.textContent =
+      "Hover, tap, or tab through each highlighted piece of code below. The number shows the order Python reads it in, and the output panel lights up when that piece is part of what gets printed.";
+    wrap.appendChild(instructions);
+
+    var legendRow = document.createElement("div");
+    legendRow.className = "syntax-annot-legend";
+    legend.forEach(function (item) {
+      var chip = document.createElement("span");
+      chip.className = "syntax-annot-legend-item";
+      var swatch = document.createElement("span");
+      swatch.className = "syntax-annot-swatch type-" + item.type;
+      chip.appendChild(swatch);
+      var label = document.createElement("span");
+      label.textContent = item.label;
+      chip.appendChild(label);
+      legendRow.appendChild(chip);
+    });
+    wrap.appendChild(legendRow);
+
+    var win = document.createElement("div");
+    win.className = "syntax-annot-window";
+
+    var titlebar = document.createElement("div");
+    titlebar.className = "syntax-annot-titlebar";
+    ["red", "yellow", "green"].forEach(function (c) {
+      var dot = document.createElement("span");
+      dot.className = "syntax-annot-dot syntax-annot-dot--" + c;
+      titlebar.appendChild(dot);
+    });
+    var filename = document.createElement("span");
+    filename.className = "syntax-annot-filename";
+    filename.textContent = sa.filename || "syntax_demo.py";
+    titlebar.appendChild(filename);
+    win.appendChild(titlebar);
+
+    var body = document.createElement("div");
+    body.className = "syntax-annot-body";
+
+    var tokenButtons = [];
+    (sa.lines || []).forEach(function (lineTokens, lineIdx) {
+      var lineEl = document.createElement("div");
+      lineEl.className = "syntax-annot-line";
+
+      var lineNo = document.createElement("span");
+      lineNo.className = "syntax-annot-lineno";
+      lineNo.textContent = String(lineIdx + 1);
+      lineEl.appendChild(lineNo);
+
+      var codeEl = document.createElement("span");
+      codeEl.className = "syntax-annot-code";
+
+      lineTokens.forEach(function (token) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "syntax-annot-token type-" + token.type;
+        btn.setAttribute("aria-label", token.text + " \u2014 " + token.tip);
+
+        var order = document.createElement("sup");
+        order.className = "syntax-annot-order";
+        order.textContent = token.order;
+        btn.appendChild(order);
+
+        var textEl = document.createElement("span");
+        textEl.textContent = token.text;
+        btn.appendChild(textEl);
+
+        btn._token = token;
+        tokenButtons.push(btn);
+        codeEl.appendChild(btn);
+        codeEl.appendChild(document.createTextNode(" "));
+      });
+
+      lineEl.appendChild(codeEl);
+      body.appendChild(lineEl);
+    });
+
+    win.appendChild(body);
+    wrap.appendChild(win);
+
+    var captionBox = document.createElement("div");
+    captionBox.className = "syntax-annot-caption";
+    wrap.appendChild(captionBox);
+
+    var outputLabel = document.createElement("p");
+    outputLabel.className = "tryit-col-label";
+    outputLabel.style.marginTop = "var(--space-3)";
+    outputLabel.textContent = "Output";
+    wrap.appendChild(outputLabel);
+
+    var outputShell = document.createElement("div");
+    outputShell.className = "syntax-annot-output-shell";
+    var outputPrompt = document.createElement("span");
+    outputPrompt.className = "syntax-annot-output-prompt";
+    outputPrompt.textContent = ">_";
+    outputShell.appendChild(outputPrompt);
+    var outputText = document.createElement("span");
+    outputText.className = "syntax-annot-output-text";
+    outputShell.appendChild(outputText);
+    wrap.appendChild(outputShell);
+
+    var outputNote = document.createElement("p");
+    outputNote.className = "syntax-annot-output-note";
+    wrap.appendChild(outputNote);
+
+    var typeLabelFor = {};
+    legend.forEach(function (item) {
+      typeLabelFor[item.type] = item.label;
+    });
+
+    var selectedBtn = null;
+
+    function renderOutput(activeToken) {
+      outputText.innerHTML = "";
+      var full = sa.outputText || "";
+      if (activeToken && activeToken.output && full.indexOf(activeToken.output) !== -1) {
+        var start = full.indexOf(activeToken.output);
+        var end = start + activeToken.output.length;
+        outputText.appendChild(document.createTextNode(full.slice(0, start)));
+        var mark = document.createElement("mark");
+        mark.className = "syntax-annot-highlight";
+        mark.textContent = full.slice(start, end);
+        outputText.appendChild(mark);
+        outputText.appendChild(document.createTextNode(full.slice(end)));
+        outputNote.textContent = "This piece prints directly into the output above.";
+        outputNote.classList.remove("is-dim");
+      } else {
+        outputText.textContent = full;
+        if (activeToken) {
+          outputNote.textContent =
+            "This piece doesn't show up in the output \u2014 it's an instruction for Python, not printed text.";
+          outputNote.classList.remove("is-dim");
+        } else {
+          outputNote.textContent = "Hover, tap, or tab a piece of code above to see how it connects here.";
+          outputNote.classList.add("is-dim");
+        }
+      }
+    }
+
+    function showToken(btn) {
+      var token = btn._token;
+      tokenButtons.forEach(function (b) {
+        b.classList.toggle("is-active", b === btn);
+        b.classList.toggle(
+          "is-paired",
+          b !== btn && !!token.pairId && b._token.pairId === token.pairId
+        );
+      });
+      var typeLabel = typeLabelFor[token.type] || token.type;
+      captionBox.innerHTML = "";
+      var kicker = document.createElement("strong");
+      kicker.className = "syntax-annot-caption-kicker type-" + token.type;
+      kicker.textContent = "#" + token.order + " \u00b7 " + typeLabel;
+      captionBox.appendChild(kicker);
+      var tip = document.createElement("p");
+      tip.textContent = token.tip;
+      captionBox.appendChild(tip);
+      renderOutput(token);
+    }
+
+    function clearToShownOrPlaceholder() {
+      if (selectedBtn) {
+        showToken(selectedBtn);
+        return;
+      }
+      tokenButtons.forEach(function (b) {
+        b.classList.remove("is-active", "is-paired");
+      });
+      captionBox.innerHTML =
+        '<p class="is-dim">Hover, tap, or tab through the code above to learn what each piece does.</p>';
+      renderOutput(null);
+    }
+
+    tokenButtons.forEach(function (btn) {
+      btn.addEventListener("mouseenter", function () {
+        showToken(btn);
+      });
+      btn.addEventListener("focus", function () {
+        showToken(btn);
+      });
+      btn.addEventListener("mouseleave", clearToShownOrPlaceholder);
+      btn.addEventListener("blur", clearToShownOrPlaceholder);
+      btn.addEventListener("click", function () {
+        selectedBtn = selectedBtn === btn ? null : btn;
+        if (selectedBtn) {
+          showToken(selectedBtn);
+        } else {
+          clearToShownOrPlaceholder();
+        }
+      });
+    });
+
+    clearToShownOrPlaceholder();
+    tryItPanel.appendChild(wrap);
+
+    activeTryIt = {
+      destroy: function () {},
+      refresh: function () {},
+    };
+  }
+
   // ---- Remix Challenge: same sample site, click-to-identify questions in
   // sequence, then an open (ungraded) reflection textarea.
   function renderRemixChallenge(card, data) {
@@ -1407,6 +1637,19 @@
       return;
     }
 
+    // ---- Syntax Annotate Lab: hoverable/tappable annotated code diagram
+    // used to introduce syntax concepts before a match activity.
+    if (card.syntaxAnnotate) {
+      if (tryItTabBtn) {
+        tryItTabBtn.disabled = false;
+        tryItTabBtn.classList.remove("is-disabled");
+        tryItTabBtn.setAttribute("aria-disabled", "false");
+        tryItTabBtn.removeAttribute("title");
+      }
+      renderSyntaxAnnotate(card, card.syntaxAnnotate);
+      return;
+    }
+
     // ---- Remix Challenge: click-to-identify + open reflection.
     if (card.remixChallenge) {
       if (tryItTabBtn) {
@@ -1448,7 +1691,7 @@
       return;
     }
 
-    // Playground exists â€” enable the tab.
+    // Playground exists Ã¢â‚¬â€ enable the tab.
     if (tryItTabBtn) {
       tryItTabBtn.disabled = false;
       tryItTabBtn.classList.remove("is-disabled");
@@ -1543,7 +1786,7 @@
       });
       cm.setValue(code || "");
       // Container may have been zero-width at mount time (e.g. tab panel was
-      // hidden with display:none) â€” refresh on the next frame so CodeMirror
+      // hidden with display:none) Ã¢â‚¬â€ refresh on the next frame so CodeMirror
       // re-measures itself and renders every line correctly.
       requestAnimationFrame(function () {
         cm.refresh();
@@ -1920,3 +2163,4 @@
     });
   }
 })();
+  
