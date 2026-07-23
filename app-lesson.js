@@ -216,6 +216,25 @@
       descPanel.appendChild(p);
     }
   }
+  if (card.uiBlock) {
+  var uiWrap = document.createElement("div");
+  uiWrap.className = "lesson-ui-block";
+
+  var uiHeader = document.createElement("div");
+  uiHeader.className = "lesson-ui-block__header";
+  uiHeader.textContent = card.uiBlock.label || "Code Block";
+
+  var pre = document.createElement("pre");
+  pre.className = "lesson-ui-block__code";
+
+  var code = document.createElement("code");
+  code.textContent = card.uiBlock.code || "";
+
+  pre.appendChild(code);
+  uiWrap.appendChild(uiHeader);
+  uiWrap.appendChild(pre);
+  descPanel.appendChild(uiWrap);
+}
 
   function renderResources(card, isLastSubLesson) {
     resourcesPanel.innerHTML = "";
@@ -2533,10 +2552,4 @@
   }
 })();
 
-// ui block
-${card.uiBlock ? `
-  <div class="lesson-ui-block">
-    <div class="lesson-ui-block__header">${card.uiBlock.label}</div>
-    <pre class="lesson-ui-block__code"><code>${card.uiBlock.code}</code></pre>
-  </div>
-` : ""}
+
