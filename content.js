@@ -186,12 +186,12 @@ const LESSON_CONTENT = [
       { heading: "The IDE", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "An IDE is your coding workspace. It’s where you write and organize your HTML, CSS, and JavaScript files, see errors, and run or preview your project." },
       { heading: "Your First HTML Page", videoSrc: "assets/video/placeholder-your-first-html-page.mp4", body: "In the Try It tab, change the text between the <h1>...</h1> tags to say Hello World!", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Your text goes here. </h1>\n <p>Feel free to type other things (e.g. What's for Lunch?).</p>\n <p>Click the red button that says Run to see your result.</p>\n  </body>\n</html>" } },
       { heading: "Containers & Sections", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "Webpages are organized into containers and sections—like headers, main content areas, and footers. These sections help you group related content so it’s easier to design, style, and understand."  },      
-     {
+    {
   heading: "Comments",
   videoSrc: "assets/video/placeholder-tags-elements.mp4",
-  body: "In HTML, comments are little notes you can leave in your code. The browser can read them, but it ignores them, so they won’t appear on the webpage. Comments help you explain your code, leave reminders, or hide something temporarily while you work.",
+  body: "In HTML, comments are little notes you can leave in your code. The browser ignores them, so they won’t show up on the webpage. They’re helpful when you want to explain something, leave yourself a reminder, or hide part of your code temporarily.",
   uiBlock: {
-    label: "Code Block",
+    label: "Trail Example",
     code: "<!-- This is a comment -->"
   }
 },
