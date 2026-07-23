@@ -396,7 +396,7 @@
 
   // =========================================================================
   // TAG-MATCH ACTIVITY: click a plain-text chunk, then click the tag that
-  // belongs around it. No typing required â€” used when we're asking students
+  // belongs around it. No typing required & used when we're asking students
   // to *apply* a tag family before they've been shown how to *type* its
   // syntax. State (assignments + attempt count) lives on the tagMatch object
   // itself so it persists for the rest of this page view even if the
