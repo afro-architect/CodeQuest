@@ -339,30 +339,30 @@ const LESSON_CONTENT = [
       {
   heading: "Syntax: How the Cook Writes Instructions",
   videoSrc: "assets/video/placeholder-js-the-controller.mp4",
-  body: "Every recipe has a format: ingredients, then steps. JavaScript syntax works the same way â€” statements end with a semicolon, code blocks live inside curly braces, and the computer reads everything top to bottom. Head to the Try It tab, then hover, tap, or tab through the code below to see what each piece is called and how it turns into real output â€” then scroll down to see that same idea running in an actual code editor.",
+  body: "Every recipe has a format: ingredients, then steps. JavaScript syntax works the same way & statements end with a semicolon, code blocks live inside curly braces, and the computer reads everything top to bottom. Head to the Try It tab, then hover, tap, or tab through the code below to see what each piece is called and how it turns into real output & then scroll down to see that same idea running in an actual code editor.",
   syntaxAnnotate: {
     language: "JavaScript",
     filename: "cook.js",
     lines: [
       [
-        { text: "let", type: "keyword", order: 1, tip: "A keyword that tells JavaScript you're creating a new variable â€” one whose value is allowed to change later." },
+        { text: "let", type: "keyword", order: 1, tip: "A keyword that tells JavaScript you're creating a new variable & one whose value is allowed to change later." },
         { text: "cook", type: "variable", order: 2, tip: "The name you're choosing to label this piece of data, so you can reuse it later in your code." },
-        { text: "=", type: "operator", order: 3, tip: "The equals sign here means \"store the value on the right into the name on the left\" â€” it's an assignment, not a math equals sign." },
+        { text: "=", type: "operator", order: 3, tip: "The equals sign here means \"store the value on the right into the name on the left\" & it's an assignment, not a math equals sign." },
         { text: "'Chef Byte'", type: "string", order: 4, tip: "Quotation marks tell JavaScript this is literal text (a string), not a variable name or a command." },
-        { text: ";", type: "punct", order: 5, tip: "Every JavaScript statement ends with a semicolon â€” it tells the computer \"this instruction is complete, move to the next one.\"" },
+        { text: ";", type: "punct", order: 5, tip: "Every JavaScript statement ends with a semicolon & it tells the computer \"this instruction is complete, move to the next one.\"" },
       ],
       [
         { text: "console.log", type: "keyword", order: 6, tip: "A built-in command that tells JavaScript \"print whatever I hand you next.\" (console is where JavaScript's messages get displayed.)" },
-        { text: "(", type: "punct", order: 7, tip: "Opens the list of inputs you're handing to console.log. Every ( needs a matching ) â€” JavaScript keeps track of the pair.", pairId: "parens1" },
+        { text: "(", type: "punct", order: 7, tip: "Opens the list of inputs you're handing to console.log. Every ( needs a matching ) & JavaScript keeps track of the pair.", pairId: "parens1" },
         { text: "cook", type: "variable", order: 8, tip: "Reusing the name from line 1 hands JavaScript the value stored there instead of retyping it.", output: "Chef Byte" },
-        { text: "+", type: "operator", order: 9, tip: "Between two strings, + doesn't add numbers â€” it means \"join these pieces of text together.\"" },
+        { text: "+", type: "operator", order: 9, tip: "Between two strings, + doesn't add numbers & it means \"join these pieces of text together.\"" },
         { text: "' is ready to cook!'", type: "string", order: 10, tip: "This literal text appears in the output exactly as written, including the leading space.", output: " is ready to cook!" },
         { text: ")", type: "punct", order: 11, tip: "Closes the input list. Forget this closing parenthesis and JavaScript raises a SyntaxError before your code even runs.", pairId: "parens1" },
-        { text: ";", type: "punct", order: 12, tip: "Ends this statement too â€” every complete instruction needs one, even the last line in a block." },
+        { text: ";", type: "punct", order: 12, tip: "Ends this statement too & every complete instruction needs one, even the last line in a block." },
       ],
     ],
     outputText: "Chef Byte is ready to cook!",
-    ideCaption: "Same idea, real tool â€” here's that code (wired up to update the page instead of a console) in a live editor. Click Run to actually execute it.",
+    ideCaption: "Same idea, real tool & here's that code (wired up to update the page instead of a console) in a live editor. Click Run to actually execute it.",
   },
   playground: {
     lang: "web",
@@ -413,20 +413,20 @@ const LESSON_CONTENT = [
  {
   heading: "Python Syntax: How the Pieces Fit Together",
   videoSrc: "assets/video/placeholder-python-syntax.mp4",
-  body: "Every line of Python is built from small pieces â€” keywords, punctuation, operators, and values â€” and each piece has an exact spot in the line. Head to the Try It tab, then hover, tap, or tab through the code below to see what each piece is called, why its punctuation matters, and how it turns into the output on the right.",
+  body: "Every line of Python is built from small pieces & keywords, punctuation, operators, and values & and each piece has an exact spot in the line. Head to the Try It tab, then hover, tap, or tab through the code below to see what each piece is called, why its punctuation matters, and how it turns into the output on the right.",
   syntaxAnnotate: {
     filename: "trailhead.py",
     lines: [
       [
-        { text: "checkpoint", type: "variable", order: 1, tip: "A variable â€” a name you're choosing to label a piece of data so you can reuse it later." },
+        { text: "checkpoint", type: "variable", order: 1, tip: "A variable & a name you're choosing to label a piece of data so you can reuse it later." },
         { text: "=", type: "operator", order: 2, tip: "The equals sign here means \"store the value on the right into the name on the left.\" It's an assignment, not a question." },
         { text: "\"Ridge Line\"", type: "string", order: 3, tip: "Quotation marks tell Python this is literal text (a string), not a command or another variable's name." },
       ],
       [
-        { text: "print", type: "keyword", order: 4, tip: "A built-in keyword â€” it tells Python \"run the print tool and show whatever I hand you next.\"" },
-        { text: "(", type: "punct", order: 5, tip: "Opens the list of inputs you're handing to print. Every ( needs a matching ) â€” Python keeps track of the pair.", pairId: "parens1" },
+        { text: "print", type: "keyword", order: 4, tip: "A built-in keyword & it tells Python \"run the print tool and show whatever I hand you next.\"" },
+        { text: "(", type: "punct", order: 5, tip: "Opens the list of inputs you're handing to print. Every ( needs a matching ) & Python keeps track of the pair.", pairId: "parens1" },
         { text: "\"Reached \"", type: "string", order: 6, tip: "This literal text appears in the output exactly as written, including the space before the closing quote.", output: "Reached " },
-        { text: "+", type: "operator", order: 7, tip: "Between two strings, + doesn't add numbers â€” it means \"join these pieces of text together.\"" },
+        { text: "+", type: "operator", order: 7, tip: "Between two strings, + doesn't add numbers & it means \"join these pieces of text together.\"" },
         { text: "checkpoint", type: "variable", order: 8, tip: "Reusing the name from line 1 hands Python the value stored there instead of retyping it.", output: "Ridge Line" },
         { text: ")", type: "punct", order: 9, tip: "Closes the input list. Forget this closing parenthesis and Python raises a SyntaxError before your code even runs.", pairId: "parens1" },
       ],
