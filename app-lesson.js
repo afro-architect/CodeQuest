@@ -2532,3 +2532,11 @@
     });
   }
 })();
+
+// ui block
+${card.uiBlock ? `
+  <div class="lesson-ui-block">
+    <div class="lesson-ui-block__header">${card.uiBlock.label}</div>
+    <pre class="lesson-ui-block__code"><code>${card.uiBlock.code}</code></pre>
+  </div>
+` : ""}
