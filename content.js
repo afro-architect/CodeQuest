@@ -325,7 +325,7 @@ const LESSON_CONTENT = [
   }
 },
       {
-        heading: "Activity: Match the Selector",
+        heading: "Basic selectors: element, class, ID",
         videoSrc: "assets/video/placeholder-selectors.mp4",
         body: "Below are three CSS rules. Tap a rule, then tap whether it's an Element, Class, or ID selector. Get it right and watch it take real effect on the mock storefront below.",
         matchActivity: {
@@ -350,8 +350,7 @@ const LESSON_CONTENT = [
           retryMessage: "Not quite \u2014 check the very first character of each rule (nothing, a dot, or a hash) and try again.",
         },
       },
-      { heading: "Basic selectors: element, class, ID", videoSrc: "assets/video/placeholder-selectors.mp4", body: "You’ll learn how to target elements by type, class, or id—like choosing a style for all headers vs. one specific header — so you can control exactly what gets styled.", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      /* Element selector: targets every <p> on the page */\n      p { color: gray; }\n\n      /* Class selector: targets anything with class=\"sale\" */\n      .sale { color: red; font-weight: bold; }\n\n      /* ID selector: targets the one element with id=\"hero\" */\n      #hero { color: white; background: navy; padding: 10px; }\n    </style>\n  </head>\n  <body>\n    <p id=\"hero\">Grand Opening This Weekend!</p>\n    <p class=\"sale\">50% off shoes</p>\n    <p>Regular store hours apply.</p>\n  </body>\n</html>" } },
-      { heading: "Attributes in HTML: especially class and id, and how selectors use them", videoSrc: "assets/video/placeholder-css-the-outfit.mp4", body: "You’ll see how HTML attributes like class and id label elements, and how CSS selectors use those labels to apply styles to the right parts of the page. Tap an HTML snippet, then tap what kind of attribute (if any) it's using. Correct matches will get outlined below so you can see class, id, and no-attribute elements grouped by color.",
+            { heading: "Attributes in HTML: especially class and id, and how selectors use them", videoSrc: "assets/video/placeholder-css-the-outfit.mp4", body: "You’ll see how HTML attributes like class and id label elements, and how CSS selectors use those labels to apply styles to the right parts of the page. Tap an HTML snippet, then tap what kind of attribute (if any) it's using. Correct matches will get outlined below so you can see class, id, and no-attribute elements grouped by color.",
         matchActivity: {
           previewType: "css-attribute",
           chunks: [
