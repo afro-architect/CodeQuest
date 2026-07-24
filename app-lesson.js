@@ -256,7 +256,7 @@
     ul.querySelectorAll("[data-resource-placeholder]").forEach(function (link) {
       link.addEventListener("click", function (e) {
         e.preventDefault();
-        showToast("This is a placeholder resource â€” real files go here!");
+        showToast("This is a placeholder resource -- real files go here!");
       });
     });
 
