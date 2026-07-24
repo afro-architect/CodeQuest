@@ -317,7 +317,66 @@ const LESSON_CONTENT = [
         playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      .storeCard { border: 2px solid #ccc; padding: 12px; margin: 8px; }\n      #featuredStore { border-color: gold; background: #fff8dc; }\n    </style>\n  </head>\n  <body>\n    <!-- class=\"storeCard\" labels this element so CSS can find it -->\n    <div class=\"storeCard\">Sneaker Spot</div>\n\n    <!-- id=\"featuredStore\" is a unique label, only one per page -->\n    <div class=\"storeCard\" id=\"featuredStore\">Arcade Zone (Featured!)</div>\n\n    <!-- Try adding class=\"storeCard\" to a new div and see it pick up the style -->\n  </body>\n</html>" },
       },
       { heading: "Core visual properties: color, fonts, paragraphs, spacing", videoSrc: "assets/video/placeholder-colors-fonts-spacing.mp4", body: "You’ll play with core properties like color, font-family, line-height, margin, and padding to shape how text and sections look and feel on the page.", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      body { font-family: Georgia, serif; }\n      .sign {\n        color: darkorange;\n        font-size: 24px;\n        line-height: 1.6;\n        margin: 20px;\n        padding: 16px;\n      }\n    </style>\n  </head>\n  <body>\n    <p class=\"sign\">Food Court → Second Floor, Past the Escalators</p>\n    <!-- Try changing color, font-size, margin, or padding above -->\n  </body>\n</html>" } },
-      { heading: "Comments", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "In CSS, comments are like little notes you can add inside your code that the browser will ignore and won’t show on the webpage. They’re there to help you and other people who might read your code later."  },      
+     {
+  heading: "CSS Rule Syntax: How the Pieces Fit Together",
+  videoSrc: "assets/video/placeholder-css-the-outfit.mp4",
+  body: "A CSS rule has two main parts: a selector that chooses what to style, and a declaration block that says how it should look. Explore each piece below to see how one full CSS rule is built.",
+  syntaxAnnotate: {
+    language: "CSS",
+    filename: "styles.css",
+    lines: [
+      [
+        {
+          text: "h2",
+          type: "selector",
+          order: 1,
+          tip: "This selector chooses which HTML elements get styled. Here, it targets every h2 heading."
+        },
+        {
+          text: " {",
+          type: "opening-brace",
+          order: 2,
+          tip: "This opening brace starts the declaration block, where the styling instructions go."
+        }
+      ],
+      [
+        {
+          text: "  color",
+          type: "property-name",
+          order: 3,
+          tip: "This property name tells CSS what part of the element you want to change."
+        },
+        {
+          text: ":",
+          type: "colon",
+          order: 4,
+          tip: "The colon separates the property name from its value."
+        },
+        {
+          text: " teal",
+          type: "value",
+          order: 5,
+          tip: "This value tells CSS what setting to use for that property. Here, the text color becomes teal."
+        },
+        {
+          text: ";",
+          type: "declaration-end",
+          order: 6,
+          tip: "This semicolon ends one declaration. It tells CSS that this styling instruction is complete."
+        }
+      ],
+      [
+        {
+          text: "}",
+          type: "closing-brace",
+          order: 7,
+          tip: "This closing brace ends the declaration block and finishes the CSS rule."
+        }
+      ]
+    ],
+    outputText: "Visible result: all h2 headings would appear teal."
+  }
+}
       { heading: "Activity: Style the Storefront Sign", videoSrc: "assets/video/placeholder-css-the-outfit.mp4", body: "Hands-on tweaks to the colors, fonts, and spacing of a simple page, so you can see how a few property changes transform the overall vibe.", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      body { background: #f0f0f0; }\n      .sign {\n        font-family: sans-serif;\n        color: #333;\n        font-size: 20px;\n        margin: 16px;\n        padding: 12px;\n      }\n    </style>\n  </head>\n  <body>\n    <p class=\"sign\">Sale Ends Sunday!</p>\n\n    <!-- Challenge: change the background color, font-family, and font-size\n         until this sign feels like it belongs in a fun mall storefront -->\n  </body>\n</html>" } },
       { heading: "The Box Model", videoSrc: "assets/video/placeholder-the-box-model.mp4", body: "You’ll learn that every element is a box—with content, padding, border, and margin—and see how those layers interact like packaging around a product.", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      .product {\n        width: 150px;\n        padding: 10px;      /* space inside the border, around the content */\n        border: 4px solid navy;\n        margin: 20px;        /* space outside the border, pushing other boxes away */\n        background: lightyellow;\n      }\n    </style>\n  </head>\n  <body>\n    <div class=\"product\">Backpack — $24.99</div>\n    <!-- Try changing padding, border, and margin one at a time to see each layer -->\n  </body>\n</html>" } },
       { heading: "Mini Challenge: Restyle a Card", videoSrc: "assets/video/placeholder-mini-challenge-restyle-a-card.mp4", body: "Change the color, font, and spacing of a sample card for an online store item (with starter code for a fake site provided).", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      body { font-family: sans-serif; background: #fdeed0; }\n      .card {\n        max-width: 260px;\n        margin: 24px auto;\n        padding: 16px;\n        background: white;\n        border-radius: 12px;\n        box-shadow: 0 4px 14px rgba(0,0,0,0.15);\n        text-align: center;\n      }\n      .card h3 { color: #ff5a3d; margin: 8px 0 4px; }\n      .card p { color: #5b5f78; font-size: 14px; }\n    </style>\n  </head>\n  <body>\n    <div class=\"card\">\n      <h3>Jordan Rivera</h3>\n      <p>Skate Park Regular</p>\n    </div>\n  </body>\n</html>" } },
