@@ -1010,12 +1010,13 @@ body { overflow-x: hidden; }
 .syntax-annot-swatch.type-operator, .syntax-annot-caption-kicker.type-operator { background: #e0433d; }
 .syntax-annot-swatch.type-punct, .syntax-annot-caption-kicker.type-punct { background: #caa000; }
 
+/* HTML tag pieces */
 .syntax-annot-token.type-opening-tag { --tok-color: #6ea8ff; color: var(--tok-color); }
-.syntax-annot-token.type-closing-tag { --tok-color: #4c86e0; color: var(--tok-color); }
-.syntax-annot-token.type-tag-name { --tok-color: #3ddc84; color: var(--tok-color); }
+.syntax-annot-token.type-closing-tag { --tok-color: #ff6b6b; color: var(--tok-color); }
+.syntax-annot-token.type-tag-name { --tok-color: #b48cff; color: var(--tok-color); }
 .syntax-annot-token.type-attribute-name { --tok-color: #b48cff; color: var(--tok-color); }
 .syntax-annot-token.type-attribute-value { --tok-color: #ffa94d; color: var(--tok-color); }
-.syntax-annot-token.type-content { --tok-color: #9aa2c7; color: var(--tok-color); }
+.syntax-annot-token.type-content { --tok-color: #3ddc84; color: var(--tok-color); }
 .syntax-annot-token.type-comment-open { --tok-color: #6ea8ff; color: var(--tok-color); }
 .syntax-annot-token.type-comment-text { --tok-color: #3ddc84; color: var(--tok-color); }
 .syntax-annot-token.type-comment-close { --tok-color: #ff6b6b; color: var(--tok-color); }
@@ -1029,12 +1030,13 @@ body { overflow-x: hidden; }
 .syntax-annot-token.type-value { --tok-color: #ffa94d; color: var(--tok-color); }
 .syntax-annot-token.type-declaration-end { --tok-color: #f0c93b; color: var(--tok-color); }
 
+/* HTML tag pieces */
 .syntax-annot-swatch.type-opening-tag, .syntax-annot-caption-kicker.type-opening-tag { background: #2a6df5; }
-.syntax-annot-swatch.type-closing-tag, .syntax-annot-caption-kicker.type-closing-tag { background: #1f56c9; }
-.syntax-annot-swatch.type-tag-name, .syntax-annot-caption-kicker.type-tag-name { background: #0f9d58; }
+.syntax-annot-swatch.type-closing-tag, .syntax-annot-caption-kicker.type-closing-tag { background: #e0433d; }
+.syntax-annot-swatch.type-tag-name, .syntax-annot-caption-kicker.type-tag-name { background: #8a5cf6; }
 .syntax-annot-swatch.type-attribute-name, .syntax-annot-caption-kicker.type-attribute-name { background: #8a5cf6; }
 .syntax-annot-swatch.type-attribute-value, .syntax-annot-caption-kicker.type-attribute-value { background: #e8790a; }
-.syntax-annot-swatch.type-content, .syntax-annot-caption-kicker.type-content { background: #6b7394; }
+.syntax-annot-swatch.type-content, .syntax-annot-caption-kicker.type-content { background: #0f9d58; }
 .syntax-annot-swatch.type-comment-open, .syntax-annot-caption-kicker.type-comment-open { background: #2a6df5; }
 .syntax-annot-swatch.type-comment-text, .syntax-annot-caption-kicker.type-comment-text { background: #0f9d58; }
 .syntax-annot-swatch.type-comment-close, .syntax-annot-caption-kicker.type-comment-close { background: #e0433d; }
