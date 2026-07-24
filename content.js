@@ -194,7 +194,6 @@ const LESSON_CONTENT = [
     label: "Trail Example",
     code: "<!-- This is a comment -->"
   },
-],
       { heading: "Nesting", videoSrc: "assets/video/placeholder-nesting.mp4", body: "Tags can go inside other tags and like a burrito wrapped in foil wrapped in a bag." },
       {
         heading: "Activity: Big List, Little List",
