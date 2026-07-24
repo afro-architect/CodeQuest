@@ -80,7 +80,7 @@ const LESSON_CONTENT = [
         }
       },
       {
-        heading: "Remix Challenge",
+        heading: "Checkpoint",
         videoSrc: "assets/video/placeholder-header-body-footer.mp4",
         body: "Here's that same skate crew site again. This time, click directly on the page to answer three quick questions: where's the hero, which text is the H1, and which text is the body copy. Then there's an open reflection question \u2014 no right answer, just your thinking: if this were a music site instead of a skate site, what would you move, rename, or restyle first, and why?",
         remixChallenge: {
