@@ -212,17 +212,19 @@ function renderDescription(card) {
     bodyCodeEl.textContent = bodyText;
     bodyPre.appendChild(bodyCodeEl);
     descPanel.appendChild(bodyPre);
-} else {
-  bodyText
-    .split(/\n\s*\n/)
-    .map(function (chunk) { return chunk.trim(); })
-    .filter(Boolean)
-    .forEach(function (chunk) {
-      var p = document.createElement("p");
-      p.textContent = chunk;
-      descPanel.appendChild(p);
-    });
-}
+  } else {
+    bodyText
+      .split(/\n\s*\n/)
+      .map(function (chunk) {
+        return chunk.trim();
+      })
+      .filter(Boolean)
+      .forEach(function (chunk) {
+        var p = document.createElement("p");
+        p.textContent = chunk;
+        descPanel.appendChild(p);
+      });
+  }
 
   if (card.uiBlock) {
     var uiWrap = document.createElement("div");
