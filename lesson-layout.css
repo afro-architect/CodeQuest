@@ -1324,3 +1324,27 @@ mark.syntax-annot-highlight {
 .rvs-output-line { color: #3ddc84; white-space: pre-wrap; word-break: break-word; }
 
 .rvs-caption.syntax-annot-caption { min-height: unset; }
+
+/* ---- Where CSS Lives: 3-way toggle comparison ---- */
+.css-lives-files {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.css-lives-line.is-highlight {
+  background: rgba(240, 201, 59, 0.16);
+  border-radius: var(--radius-sm);
+  box-shadow: inset 3px 0 0 #f0c93b;
+  padding-left: 6px;
+}
+.css-lives-preview-wrap { margin-top: var(--space-1); }
+.css-lives-preview {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  background: var(--color-surface-2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.css-lives-preview h2, .css-lives-preview h3 { margin: 0; }
