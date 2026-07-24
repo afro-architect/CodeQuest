@@ -2258,6 +2258,30 @@ tokenButtons.forEach(function (b) {
       return;
     }
 
+    // ---- Where CSS Lives: guided click-through comparison (inline vs
+    // internal <style> vs external stylesheet). If the card ALSO has a
+    // playground, follow it with a "How This Shows Up In the IDE" section
+    // with the real, runnable editor underneath — same scaffolding pattern
+    // used for Syntax Annotate + playground above.
+    if (card.cssWhereLives) {
+      if (tryItTabBtn) {
+        tryItTabBtn.disabled = false;
+        tryItTabBtn.classList.remove("is-disabled");
+        tryItTabBtn.setAttribute("aria-disabled", "false");
+        tryItTabBtn.removeAttribute("title");
+      }
+      renderCssWhereLives(card, card.cssWhereLives);
+      if (card.playground) {
+        appendIdeSection(
+          card,
+          card.playground,
+          card.cssWhereLives.ideHeading,
+          card.cssWhereLives.ideCaption
+        );
+      }
+      return;
+    }
+    
     // ---- Remix Challenge: click-to-identify + open reflection.
     if (card.remixChallenge) {
       if (tryItTabBtn) {
