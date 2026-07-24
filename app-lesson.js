@@ -1345,26 +1345,27 @@ function buildSyntaxAnnotateEl(card, sa) {
   }
 
   function showToken(btn) {
-    var token = btn._token;
-    tokenButtons.forEach(function (b) {
-      b.classList.toggle("is-active", b === btn);
-      b.classList.toggle("is-paired", b !== btn && !!token.pairId && b._token.pairId === token.pairId);
-    });
+  var token = btn._token;
+  tokenButtons.forEach(function (b) {
+    b.classList.toggle("is-active", b === btn);
+    b.classList.toggle("is-selected", b === selectedBtn);
+    b.classList.toggle("is-paired", b !== btn && !!token.pairId && b._token.pairId === token.pairId);
+  });
 
-    var typeLabel = typeLabelFor[token.type] || humanizeType(token.type);
+  var typeLabel = typeLabelFor[token.type] || humanizeType(token.type);
 
-    captionBox.innerHTML = "";
-    var kicker = document.createElement("strong");
-    kicker.className = "syntax-annot-caption-kicker type-" + token.type;
-    kicker.textContent = "#" + token.order + " · " + typeLabel;
-    captionBox.appendChild(kicker);
+  captionBox.innerHTML = "";
+  var kicker = document.createElement("strong");
+  kicker.className = "syntax-annot-caption-kicker type-" + token.type;
+  kicker.textContent = "#" + token.order + " · " + typeLabel;
+  captionBox.appendChild(kicker);
 
-    var tip = document.createElement("p");
-    tip.textContent = token.tip;
-    captionBox.appendChild(tip);
+  var tip = document.createElement("p");
+  tip.textContent = token.tip;
+  captionBox.appendChild(tip);
 
-    renderOutput(token);
-  }
+  renderOutput(token);
+}
 
   function clearToShownOrPlaceholder() {
     if (selectedBtn) {
