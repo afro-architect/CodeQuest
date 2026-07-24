@@ -931,3 +931,38 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
   border-color: oklch(from var(--color-text) l c h / 0.22);
   background: oklch(from var(--color-text) l c h / 0.04);
 }
+
+.syntax-annot-token.type-comment-open,
+.syntax-annot-swatch.type-comment-open,
+.syntax-annot-caption-kicker.type-comment-open {
+  color: #4c6fff;
+  border-color: #4c6fff;
+}
+
+.syntax-annot-token.type-comment-text,
+.syntax-annot-swatch.type-comment-text,
+.syntax-annot-caption-kicker.type-comment-text {
+  color: #43b05c;
+  border-color: #43b05c;
+}
+
+.syntax-annot-token.type-comment-close,
+.syntax-annot-swatch.type-comment-close,
+.syntax-annot-caption-kicker.type-comment-close {
+  color: #d98a2b;
+  border-color: #d98a2b;
+}
+
+.syntax-annot-swatch {
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.syntax-annot-token.is-active {
+  background: color-mix(in oklab, currentColor 10%, transparent);
+  transform: translateY(-1px);
+}
