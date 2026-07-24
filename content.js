@@ -263,8 +263,81 @@ const LESSON_CONTENT = [
       { heading: "Icebreaker", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "A quick warm-up to share how you already use websites and apps, and to imagine what you’d change or build if you had the tools." },
       { heading: "Helpful Terms to Know", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "A short glossary of words you’ll see a lot in this course—like HTML, CSS, JavaScript, element, and browser—so the rest of the lessons feel more familiar." },
       { heading: "What is CSS?", videoSrc: "assets/video/placeholder-css-the-outfit.mp4", body: "CSS is the coding language that dresses up your HTML structure with color, fonts, spacing, and layout so a page feels designed, not just plain text." },
-      { heading: "Where CSS Lives: inline, <style>, external stylesheet", videoSrc: "assets/video/placeholder-css-the-outfit.mp4", body: "You’ll see the three main places CSS can live—directly on an element, inside a <style> block, or in a separate stylesheet—and when each approach is used in real projects.", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      /* This is an INTERNAL stylesheet, inside a <style> block */\n      .storefront { color: purple; }\n    </style>\n  </head>\n  <body>\n    <!-- This is INLINE CSS, written directly on one element -->\n    <h2 style=\"color: hotpink;\">Welcome to the Mall!</h2>\n\n    <!-- This heading gets its style from the <style> block above -->\n    <h3 class=\"storefront\">Store Directory</h3>\n\n    <!-- An EXTERNAL stylesheet would be linked like this in the <head>: -->\n    <!-- <link rel=\"stylesheet\" href=\"styles.css\"> -->\n\n    <p>Try changing the inline color above, then the .storefront color in the style block.</p>\n  </body>\n</html>" } },
-     {
+            { heading: "Where CSS Lives: inline, <style>, external stylesheet", videoSrc: "assets/video/placeholder-css-the-outfit.mp4", body: "You’ll see the three main places CSS can live—directly on an element, inside a <style> block, or in a separate stylesheet—and when each approach is used in real projects.",
+        cssWhereLives: {
+          instructions: "Same heading, same final look, three different places to write the CSS. Switch tabs to compare — the rendered result below never changes.",
+          modes: [
+            {
+              key: "inline",
+              label: "Inline",
+              files: [
+                {
+                  filename: "index.html",
+                  lines: [
+                    "<body>",
+                    "  <h2 style=\"color: hotpink;\">Welcome to the Mall!</h2>",
+                    "</body>",
+                  ],
+                  highlight: [1],
+                },
+              ],
+              caption: "Written directly on the element with the style attribute. Fastest for a one-off tweak, but it only affects this exact tag — copy the tag somewhere else and the style doesn't come with it.",
+            },
+            {
+              key: "internal",
+              label: "Internal <style>",
+              files: [
+                {
+                  filename: "index.html",
+                  lines: [
+                    "<head>",
+                    "  <style>",
+                    "    .storefront { color: purple; }",
+                    "  </style>",
+                    "</head>",
+                    "<body>",
+                    "  <h3 class=\"storefront\">Store Directory</h3>",
+                    "</body>",
+                  ],
+                  highlight: [1, 2, 3],
+                },
+              ],
+              caption: "Lives in a <style> block in the <head>. Every matching element on THIS page picks it up, but a second page wouldn't see it unless you paste the block there too.",
+            },
+            {
+              key: "external",
+              label: "External stylesheet",
+              files: [
+                {
+                  filename: "index.html",
+                  lines: [
+                    "<head>",
+                    "  <link rel=\"stylesheet\" href=\"styles.css\">",
+                    "</head>",
+                    "<body>",
+                    "  <h3 class=\"storefront\">Store Directory</h3>",
+                    "</body>",
+                  ],
+                  highlight: [1],
+                },
+                {
+                  filename: "styles.css",
+                  lines: [".storefront { color: purple; }"],
+                  highlight: [0],
+                },
+              ],
+              caption: "Lives in its own .css file, linked once with <link>. Every page that links to styles.css shares the same rule — this is what real, multi-page projects use almost all the time.",
+            },
+          ],
+          preview: [
+            { tag: "h2", text: "Welcome to the Mall!", color: "hotpink" },
+            { tag: "h3", text: "Store Directory", color: "purple" },
+          ],
+          ideHeading: "How This Shows Up In the IDE",
+          ideCaption: "Same three approaches, real tool — here they all live together in one file so you can see them side by side. Click Run, then try changing the inline color above and the .storefront color in the style block.",
+        },
+        playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      /* This is an INTERNAL stylesheet, inside a <style> block */\n      .storefront { color: purple; }\n    </style>\n  </head>\n  <body>\n    <!-- This is INLINE CSS, written directly on one element -->\n    <h2 style=\"color: hotpink;\">Welcome to the Mall!</h2>\n\n    <!-- This heading gets its style from the <style> block above -->\n    <h3 class=\"storefront\">Store Directory</h3>\n\n    <!-- An EXTERNAL stylesheet would be linked like this in the <head>: -->\n    <!-- <link rel=\"stylesheet\" href=\"styles.css\"> -->\n\n    <p>Try changing the inline color above, then the .storefront color in the style block.</p>\n  </body>\n</html>" } },
+      {
   heading: "CSS Syntax",
   videoSrc: "assets/video/placeholder-css-the-outfit.mp4",
   body: "A CSS rule has two main parts: a selector that chooses what to style, and a declaration block that says how it should look. Explore each piece below to see how one full CSS rule is built.",
