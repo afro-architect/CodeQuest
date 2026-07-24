@@ -1769,6 +1769,142 @@ tokenButtons.forEach(function (b) {
     };
   }
 
+    // ---- Where CSS Lives: guided click-through comparison of the three
+  // places CSS can be written (inline / internal <style> / external
+  // stylesheet). Data shape:
+  //   {
+  //     instructions: "...",
+  //     modes: [ { key, label, files: [ { filename, lines: [...], highlight: [i,...] } ], caption } ],
+  //     preview: [ { tag: "h2", text: "...", color: "hotpink" }, ... ],
+  //     ideHeading, ideCaption   // optional, passed to appendIdeSection if card.playground exists
+  //   }
+  function renderCssWhereLives(card, data) {
+    var modes = data.modes || [];
+
+    var wrap = document.createElement("div");
+    wrap.className = "rvs-wrap";
+
+    var instructions = document.createElement("p");
+    instructions.className = "tagmatch-instructions";
+    instructions.textContent =
+      data.instructions ||
+      "Same visual result, three different places to write the CSS. Switch tabs to see what changes — and what doesn't.";
+    wrap.appendChild(instructions);
+
+    var toggleRow = document.createElement("div");
+    toggleRow.className = "rvs-toggle";
+    wrap.appendChild(toggleRow);
+
+    var stage = document.createElement("div");
+    stage.className = "rvs-stage";
+    wrap.appendChild(stage);
+
+    var caption = document.createElement("div");
+    caption.className = "syntax-annot-caption rvs-caption";
+    wrap.appendChild(caption);
+
+    if (data.preview && data.preview.length) {
+      var previewWrap = document.createElement("div");
+      previewWrap.className = "css-lives-preview-wrap";
+      var previewLabel = document.createElement("p");
+      previewLabel.className = "tryit-col-label";
+      previewLabel.textContent = "Rendered result (identical every time)";
+      previewWrap.appendChild(previewLabel);
+      var preview = document.createElement("div");
+      preview.className = "css-lives-preview";
+      data.preview.forEach(function (item) {
+        var el = document.createElement(item.tag || "p");
+        el.textContent = item.text;
+        el.style.color = item.color || "inherit";
+        preview.appendChild(el);
+      });
+      previewWrap.appendChild(preview);
+      wrap.appendChild(previewWrap);
+    }
+
+    function buildFileWindow(file) {
+      var win = document.createElement("div");
+      win.className = "syntax-annot-window rvs-window";
+
+      var titlebar = document.createElement("div");
+      titlebar.className = "syntax-annot-titlebar";
+      ["red", "yellow", "green"].forEach(function (c) {
+        var dot = document.createElement("span");
+        dot.className = "syntax-annot-dot syntax-annot-dot--" + c;
+        titlebar.appendChild(dot);
+      });
+      var label = document.createElement("span");
+      label.className = "syntax-annot-filename";
+      label.textContent = file.filename;
+      titlebar.appendChild(label);
+      win.appendChild(titlebar);
+
+      var body = document.createElement("div");
+      body.className = "syntax-annot-body rvs-scriptbody";
+      var highlightSet = {};
+      (file.highlight || []).forEach(function (i) {
+        highlightSet[i] = true;
+      });
+      (file.lines || []).forEach(function (lineText, i) {
+        var row = document.createElement("div");
+        row.className =
+          "rvs-scriptline css-lives-line" + (highlightSet[i] ? " is-highlight" : "");
+        var no = document.createElement("span");
+        no.className = "syntax-annot-lineno";
+        no.textContent = String(i + 1);
+        row.appendChild(no);
+        var code = document.createElement("span");
+        code.className = "rvs-scriptcode";
+        code.textContent = lineText;
+        row.appendChild(code);
+        body.appendChild(row);
+      });
+      win.appendChild(body);
+      return win;
+    }
+
+    var toggleBtns = [];
+
+    function showMode(index) {
+      var m = modes[index];
+      stage.innerHTML = "";
+      toggleBtns.forEach(function (btn, i) {
+        btn.classList.toggle("is-active", i === index);
+      });
+
+      var filesRow = document.createElement("div");
+      filesRow.className =
+        "css-lives-files" + (m.files && m.files.length > 1 ? " css-lives-files--multi" : "");
+      (m.files || []).forEach(function (file) {
+        filesRow.appendChild(buildFileWindow(file));
+      });
+      stage.appendChild(filesRow);
+
+      caption.textContent = m.caption || "";
+    }
+
+    modes.forEach(function (m, i) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "rvs-toggle-btn";
+      btn.textContent = m.label;
+      btn.addEventListener("click", function () {
+        showMode(i);
+      });
+      toggleRow.appendChild(btn);
+      toggleBtns.push(btn);
+    });
+
+    if (modes.length) showMode(0);
+
+    tryItPanel.appendChild(wrap);
+
+    activeTryIt = {
+      destroy: function () {},
+      refresh: function () {},
+    };
+  }
+
   // ---- Remix Challenge: same sample site, click-to-identify questions in
   // sequence, then an open (ungraded) reflection textarea.
   function renderRemixChallenge(card, data) {
