@@ -186,10 +186,10 @@ const LESSON_CONTENT = [
       { heading: "The IDE", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "An IDE is your coding workspace. It’s where you write and organize your HTML, CSS, and JavaScript files, see errors, and run or preview your project." },
       { heading: "Your First HTML Page", videoSrc: "assets/video/placeholder-your-first-html-page.mp4", body: "In the Try It tab, change the text between the <h1>...</h1> tags to say Hello World!", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Your text goes here. </h1>\n <p>Feel free to type other things (e.g. What's for Lunch?).</p>\n <p>Click the red button that says Run to see your result.</p>\n  </body>\n</html>" } },
       { heading: "Containers & Sections", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "Webpages are organized into containers and sections—like headers, main content areas, and footers. These sections help you group related content so it’s easier to design, style, and understand."  },      
-   {
+  {
   heading: "HTML Comment Syntax: How the Pieces Fit Together",
   videoSrc: "assets/video/placeholder-tags-elements.mp4",
-  body: "An HTML comment is built from a few small pieces, and each one has to be in the right place. Head to the Try It tab, then hover, tap, or tab through the code below to see what each piece does and why the browser ignores the note inside.",
+  body: "An HTML comment is made from an opening comment marker, a note in the middle, and a closing comment marker. Explore each piece below to see how the browser knows where the hidden note starts and stops.",
   syntaxAnnotate: {
     language: "HTML",
     filename: "index.html",
@@ -197,27 +197,27 @@ const LESSON_CONTENT = [
       [
         {
           text: "<!--",
-          type: "punct",
+          type: "comment-open",
           order: 1,
-          tip: "This opening marker starts the HTML comment. It begins with <, then !, then two dashes."
+          tip: "This opening comment marker starts the hidden note. It begins with <, then !, then two dashes."
         },
         {
           text: " This is a comment ",
-          type: "comment",
+          type: "comment-text",
           order: 2,
-          tip: "This is the hidden note inside the comment. The browser reads past it, so it does not appear on the webpage."
+          tip: "This is the note inside the comment. The browser ignores it, so it does not show on the webpage."
         },
         {
           text: "-->",
-          type: "punct",
+          type: "comment-close",
           order: 3,
-          tip: "This closing marker ends the comment. It uses two dashes and a > to tell HTML the note is finished."
+          tip: "This closing comment marker ends the hidden note. Once HTML sees this, the comment is over."
         }
       ]
     ],
-    outputText: "Visible result: nothing from this line appears on the webpage."
+    outputText: "Visible result: this line does not display anything on the page."
   }
-},
+}
       { heading: "Nesting", videoSrc: "assets/video/placeholder-nesting.mp4", body: "Tags can go inside other tags and like a burrito wrapped in foil wrapped in a bag." },
       {
         heading: "Activity: Big List, Little List",
