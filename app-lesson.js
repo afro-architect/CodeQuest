@@ -1134,33 +1134,29 @@
     // into a readable label ("Comment Open") automatically, so new lesson
     // cards never need to hand-roll a legend just to get sensible copy.
     var KNOWN_TYPE_LABELS = {
-      // Python / JavaScript-style tokens
-      keyword: "Keyword",
-      string: "String",
-      number: "Number",
-      variable: "Variable",
-      operator: "Operator",
-      punct: "Punctuation",
-      // HTML tag pieces
-      "opening-tag": "Opening Tag",
-      "closing-tag": "Closing Tag",
-      "tag-name": "Tag Name",
-      "attribute-name": "Attribute Name",
-      "attribute-value": "Attribute Value",
-      content: "Content",
-      // HTML / CSS comment pieces
-      "comment-open": "Opening Comment Marker",
-      "comment-text": "Comment Text",
-      "comment-close": "Closing Comment Marker",
-      // CSS rule pieces
-      selector: "Selector",
-      "opening-brace": "Opening Brace",
-      "closing-brace": "Closing Brace",
-      "property-name": "Property Name",
-      colon: "Colon",
-      value: "Value",
-      "declaration-end": "Semicolon",
-    };
+    
+      const TOKEN_META = {
+  // Python / JavaScript-style tokens
+  keyword: { label: "Keyword", color: "#4c6fff" },
+  string: { label: "String", color: "#43b05c" },
+  number: { label: "Number", color: "#d98a2b" },
+  variable: { label: "Variable", color: "#8b5cf6" },
+  operator: { label: "Operator", color: "#e25555" },
+  punct: { label: "Punctuation", color: "#c7a32b" },
+
+  // HTML / CSS-style tokens
+  "comment-open": { label: "Opening Comment Marker", color: "#4c6fff" },
+  "comment-text": { label: "Comment Text", color: "#43b05c" },
+  "comment-close": { label: "Closing Comment Marker", color: "#d98a2b" },
+
+  "selector": { label: "Selector", color: "#4c6fff" },
+  "opening-brace": { label: "Opening Brace", color: "#8b5cf6" },
+  "property-name": { label: "Property Name", color: "#43b05c" },
+  "colon": { label: "Colon", color: "#e25555" },
+  "value": { label: "Value", color: "#d98a2b" },
+  "declaration-end": { label: "Semicolon", color: "#c7a32b" },
+  "closing-brace": { label: "Closing Brace", color: "#7c89ff" }
+};
 
     function humanizeType(type) {
       return String(type)
