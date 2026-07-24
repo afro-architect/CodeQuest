@@ -1351,6 +1351,9 @@ function buildSyntaxAnnotateEl(card, sa) {
     b.classList.toggle("is-selected", b === selectedBtn);
     b.classList.toggle("is-paired", b !== btn && !!token.pairId && b._token.pairId === token.pairId);
   });
+ tokenButtons.forEach(function (b) {
+  b.classList.remove("is-active", "is-selected", "is-paired");
+});
 
   var typeLabel = typeLabelFor[token.type] || humanizeType(token.type);
 
