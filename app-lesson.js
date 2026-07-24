@@ -1437,26 +1437,31 @@ tokenButtons.forEach(function (b) {
   function renderSyntaxAnnotateWithIde(card, sa, pg) {
     var wrap = buildSyntaxAnnotateEl(card, sa);
     tryItPanel.appendChild(wrap);
+    appendIdeSection(card, pg, sa.ideHeading, sa.ideCaption);
+  }
 
+  // Shared by any Try-It mode that wants to scaffold from an abstract/
+  // guided breakdown into a real, runnable editor underneath it, separated
+  // by a "How This Shows Up In the IDE" heading + caption. `pg` is a normal
+  // playground object, same shape used by card.playground. Appends directly
+  // to tryItPanel and lets renderRunnableTryIt set activeTryIt itself.
+  function appendIdeSection(card, pg, heading, caption) {
     var divider = document.createElement("div");
     divider.className = "syntax-annot-ide-divider";
     tryItPanel.appendChild(divider);
 
     var ideHeading = document.createElement("h4");
     ideHeading.className = "syntax-annot-ide-heading";
-    ideHeading.textContent = sa.ideHeading || "How This Shows Up In the IDE";
+    ideHeading.textContent = heading || "How This Shows Up In the IDE";
     tryItPanel.appendChild(ideHeading);
 
     var ideCaption = document.createElement("p");
     ideCaption.className = "syntax-annot-ide-caption";
     ideCaption.textContent =
-      sa.ideCaption ||
-      "Same idea, real tool \u2014 here's that code (plus the extra setup it needs to run) in a live editor. Click Run to actually execute it.";
+      caption ||
+      "Same idea, real tool — here's that code (plus the extra setup it needs to run) in a live editor. Click Run to actually execute it.";
     tryItPanel.appendChild(ideCaption);
 
-    // renderRunnableTryIt appends its own editor/output panel to tryItPanel
-    // and sets activeTryIt itself (with the real CodeMirror teardown), which
-    // is exactly the cleanup we want when this combined tab is torn down.
     renderRunnableTryIt(card, pg);
   }
 
