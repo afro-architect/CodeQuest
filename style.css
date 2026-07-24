@@ -872,17 +872,17 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
   width: 1px;
   height: 1px;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
+}
 
-
-  /* lesson ui block */
-  .lesson-ui-block {
+/* lesson ui block */
+.lesson-ui-block {
   margin-top: 16px;
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 18px;
   overflow: hidden;
   background: #f7f1eb;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 }
 
 .lesson-ui-block__header {
@@ -905,10 +905,12 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
 }
 
 .syntax-token {
+  display: inline-block;
+  padding: 0.08em 0.22em;
   background: transparent;
   border: 3px dashed transparent;
   border-radius: 8px;
-  transition: border-color 160ms ease, color 160ms ease;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
 }
 
 .syntax-token:hover,
