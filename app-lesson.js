@@ -1130,11 +1130,9 @@ function renderDescription(card) {
   // append a second section underneath before finalizing activeTryIt.
 
 
-    // KNOWN_TYPE_LABELS gives friendly labels for every token "type" we
-    // teach with, across every language. When a card uses a type that isn't
-    // listed here, humanizeType() turns the raw string (e.g. "comment-open")
-    // into a readable label ("Comment Open") automatically, so new lesson
-    // cards never need to hand-roll a legend just to get sensible copy.
+  // TOKEN_META gives friendly labels and colors for every token "type" we
+// teach with. When a card uses a type that isn't listed here,
+// humanizeType() turns the raw string into a readable label automatically.
   
 function buildSyntaxAnnotateEl(card, sa) {
   var language = sa.language || "Python";
