@@ -189,7 +189,7 @@ const LESSON_CONTENT = [
   {
   heading: "HTML Comments",
   videoSrc: "assets/video/placeholder-tags-elements.mp4",
-  body: "In HTML, comments are little notes you can leave in your code. The browser ignores them, so they won’t show up on the webpage. They’re helpful when you want to explain something, leave yourself a reminder, or hide part of your code temporarily. \n  \n An HTML comment is made from an opening comment marker, a note in the middle, and a closing comment marker. Explore each piece below to see how the browser knows where the hidden note starts and stops.",
+  body: "In HTML, comments are little notes you can leave in your code. The browser ignores them, so they won’t show up on the webpage. They’re helpful when you want to explain something, leave yourself a reminder, or hide part of your code temporarily. \n  <br> An HTML comment is made from an opening comment marker, a note in the middle, and a closing comment marker. Explore each piece below to see how the browser knows where the hidden note starts and stops.",
   syntaxAnnotate: {
     language: "HTML",
     filename: "index.html",
@@ -318,7 +318,7 @@ const LESSON_CONTENT = [
       },
       { heading: "Core visual properties: color, fonts, paragraphs, spacing", videoSrc: "assets/video/placeholder-colors-fonts-spacing.mp4", body: "You’ll play with core properties like color, font-family, line-height, margin, and padding to shape how text and sections look and feel on the page.", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      body { font-family: Georgia, serif; }\n      .sign {\n        color: darkorange;\n        font-size: 24px;\n        line-height: 1.6;\n        margin: 20px;\n        padding: 16px;\n      }\n    </style>\n  </head>\n  <body>\n    <p class=\"sign\">Food Court → Second Floor, Past the Escalators</p>\n    <!-- Try changing color, font-size, margin, or padding above -->\n  </body>\n</html>" } },
  {
-  heading: "CSS Rule Syntax: How the Pieces Fit Together",
+  heading: "CSS Syntax Rules",
   videoSrc: "assets/video/placeholder-css-the-outfit.mp4",
   body: "A CSS rule has two main parts: a selector that chooses what to style, and a declaration block that says how it should look. Explore each piece below to see how one full CSS rule is built.",
   syntaxAnnotate: {
