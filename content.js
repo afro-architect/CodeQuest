@@ -218,17 +218,6 @@ const LESSON_CONTENT = [
     outputText: "Visible result: nothing from this line appears on the webpage."
   }
 },
-        {
-          text: "-->",
-          type: "punct",
-          order: 3,
-          tip: "This closing marker ends the comment. It uses two dashes and a > to tell HTML the note is finished."
-        }
-      ]
-    ],
-    outputText: "Nothing from this line appears on the webpage."
-  }
-},
       { heading: "Nesting", videoSrc: "assets/video/placeholder-nesting.mp4", body: "Tags can go inside other tags and like a burrito wrapped in foil wrapped in a bag." },
       {
         heading: "Activity: Big List, Little List",
