@@ -36,7 +36,7 @@
     bannerImg.src = nodeMeta.banner;
     bannerImg.alt = lesson.theme + " illustrated banner for " + lesson.title;
   }
-  document.title = lesson.title + " â€” Quest Map";
+  document.title = lesson.title + "CodeQuest";
 
   var cards = lesson.cards;
   var current = 0; // index of active sub-lesson within this stop
