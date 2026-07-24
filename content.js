@@ -189,7 +189,7 @@ const LESSON_CONTENT = [
   {
   heading: "HTML Comments",
   videoSrc: "assets/video/placeholder-tags-elements.mp4",
-  body: "In HTML, comments are little notes you can leave in your code. The browser ignores them, so they won’t show up on the webpage. They’re helpful when you want to explain something, leave yourself a reminder, or hide part of your code temporarily. An HTML comment is made from an opening comment marker, a note in the middle, and a closing comment marker. Explore each piece below to see how the browser knows where the hidden note starts and stops.",
+  body: "In HTML, comments are little notes you can leave in your code. The browser ignores them, so they won’t show up on the webpage. They’re helpful when you want to explain something, leave yourself a reminder, or hide part of your code temporarily.\n\nAn HTML comment is made from an opening comment marker, a note in the middle, and a closing comment marker. Explore each piece below to see how the browser knows where the hidden note starts and stops.",
   syntaxAnnotate: {
     language: "HTML",
     filename: "index.html",
