@@ -187,7 +187,7 @@ const LESSON_CONTENT = [
       { heading: "Your First HTML Page", videoSrc: "assets/video/placeholder-your-first-html-page.mp4", body: "In the Try It tab, change the text between the <h1>...</h1> tags to say Hello World!", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Your text goes here. </h1>\n <p>Feel free to type other things (e.g. What's for Lunch?).</p>\n <p>Click the red button that says Run to see your result.</p>\n  </body>\n</html>" } },
       { heading: "Containers & Sections", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "Webpages are organized into containers and sections—like headers, main content areas, and footers. These sections help you group related content so it’s easier to design, style, and understand."  },      
   {
-  heading: "HTML Comment Syntax: How the Pieces Fit Together",
+  heading: "HTML Comments",
   videoSrc: "assets/video/placeholder-tags-elements.mp4",
   body: "In HTML, comments are little notes you can leave in your code. The browser ignores them, so they won’t show up on the webpage. They’re helpful when you want to explain something, leave yourself a reminder, or hide part of your code temporarily. \n An HTML comment is made from an opening comment marker, a note in the middle, and a closing comment marker. Explore each piece below to see how the browser knows where the hidden note starts and stops.",
   syntaxAnnotate: {
