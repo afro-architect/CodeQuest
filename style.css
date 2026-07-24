@@ -903,4 +903,20 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
   background: #fdfaf7;
   white-space: pre-wrap;
 }
+
+  .syntax-token {
+  background: transparent;
+  border-radius: 8px;
+  outline: 0 solid transparent;
+  outline-offset: 2px;
+  transition: outline-color 160ms ease, outline-width 160ms ease, color 160ms ease;
+}
+
+.syntax-token:hover,
+.syntax-token.is-active,
+.syntax-token:focus-visible {
+  outline: 3px dashed var(--token-color, #7c89ff);
+  outline-offset: 2px;
+  background: transparent;
+}
 }
