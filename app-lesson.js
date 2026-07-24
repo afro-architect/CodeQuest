@@ -1,10 +1,10 @@
-// app-lesson.js Ã¢â‚¬â€ shared behavior for every lesson-N.html page: renders the
+// app-lesson.js â€” shared behavior for every lesson-N.html page: renders the
 // sidebar mini-course (stop accordion + sub-lesson list), the video player +
 // tabs content browser for the active sub-lesson, wires the fixed
 // Stamp My Passport button, dark-mode toggle, and the locked-page guard.
 //
 // NOTE: completeLesson()/getProgress()/getLessonState() come from progress.js
-// and are NOT modified by this file Ã¢â‚¬â€ this file only reads/calls them exactly
+// and are NOT modified by this file â€” this file only reads/calls them exactly
 // as the previous carousel version did.
 
 (function () {
@@ -36,7 +36,7 @@
     bannerImg.src = nodeMeta.banner;
     bannerImg.alt = lesson.theme + " illustrated banner for " + lesson.title;
   }
-  document.title = lesson.title + " Ã¢â‚¬â€ Quest Map";
+  document.title = lesson.title + " â€” Quest Map";
 
   var cards = lesson.cards;
   var current = 0; // index of active sub-lesson within this stop
@@ -51,7 +51,7 @@
   function renderAccordion() {
     accordionEl.innerHTML = "";
 
-    // Only render THIS stop Ã¢â‚¬â€ other stops are intentionally hidden from the
+    // Only render THIS stop â€” other stops are intentionally hidden from the
     // sidebar so students stay focused on the current unit's sub-lessons.
     var nodeIdx = QUEST_NODES.findIndex(function (n) {
       return n.id === LESSON_ID;
@@ -150,7 +150,7 @@
     if (src) {
       videoEl.src = src;
       videoEl.play().catch(function () {
-        /* placeholder source may not resolve Ã¢â‚¬â€ poster stays as fallback */
+        /* placeholder source may not resolve â€” poster stays as fallback */
       });
     }
     videoPlayerEl.classList.add("is-playing");
@@ -215,26 +215,26 @@
       p.textContent = bodyText;
       descPanel.appendChild(p);
     }
+    if (card.uiBlock) {
+    var uiWrap = document.createElement("div");
+    uiWrap.className = "lesson-ui-block";
+
+    var uiHeader = document.createElement("div");
+    uiHeader.className = "lesson-ui-block__header";
+    uiHeader.textContent = card.uiBlock.label || "Code Block";
+
+    var pre = document.createElement("pre");
+    pre.className = "lesson-ui-block__code";
+
+    var code = document.createElement("code");
+    code.textContent = card.uiBlock.code || "";
+
+    pre.appendChild(code);
+    uiWrap.appendChild(uiHeader);
+    uiWrap.appendChild(pre);
+    descPanel.appendChild(uiWrap);
   }
-  if (card.uiBlock) {
-  var uiWrap = document.createElement("div");
-  uiWrap.className = "lesson-ui-block";
-
-  var uiHeader = document.createElement("div");
-  uiHeader.className = "lesson-ui-block__header";
-  uiHeader.textContent = card.uiBlock.label || "Code Block";
-
-  var pre = document.createElement("pre");
-  pre.className = "lesson-ui-block__code";
-
-  var code = document.createElement("code");
-  code.textContent = card.uiBlock.code || "";
-
-  pre.appendChild(code);
-  uiWrap.appendChild(uiHeader);
-  uiWrap.appendChild(pre);
-  descPanel.appendChild(uiWrap);
-}
+  }
 
   function renderResources(card, isLastSubLesson) {
     resourcesPanel.innerHTML = "";
@@ -256,7 +256,7 @@
     ul.querySelectorAll("[data-resource-placeholder]").forEach(function (link) {
       link.addEventListener("click", function (e) {
         e.preventDefault();
-        showToast("This is a placeholder resource Ã¢â‚¬â€ real files go here!");
+        showToast("This is a placeholder resource â€” real files go here!");
       });
     });
 
@@ -284,7 +284,7 @@
     }
   }
 
-  // giscus config Ã¢â‚¬â€ GitHub Discussions-powered comments for afro-architect/CodeQuest
+  // giscus config â€” GitHub Discussions-powered comments for afro-architect/CodeQuest
   var GISCUS_CONFIG = {
     repo: "afro-architect/CodeQuest",
     repoId: "R_kgDOTdW5Bg",
@@ -341,7 +341,7 @@
   // =========================================================================
   var tryItPanel = document.querySelector('[data-panel="tryit"]');
 
-  // Shared Pyodide instance Ã¢â‚¬â€ loaded lazily once per page view, reused across
+  // Shared Pyodide instance â€” loaded lazily once per page view, reused across
   // every Python sub-lesson card on this same lesson page.
   var pyodideInstance = null;
   var pyodidePromise = null;
@@ -2079,7 +2079,7 @@
       return;
     }
 
-    // Playground exists Ã¢â‚¬â€ enable the tab.
+    // Playground exists â€” enable the tab.
     if (tryItTabBtn) {
       tryItTabBtn.disabled = false;
       tryItTabBtn.classList.remove("is-disabled");
@@ -2174,7 +2174,7 @@
       });
       cm.setValue(code || "");
       // Container may have been zero-width at mount time (e.g. tab panel was
-      // hidden with display:none) Ã¢â‚¬â€ refresh on the next frame so CodeMirror
+      // hidden with display:none) â€” refresh on the next frame so CodeMirror
       // re-measures itself and renders every line correctly.
       requestAnimationFrame(function () {
         cm.refresh();
