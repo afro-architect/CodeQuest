@@ -908,7 +908,6 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
   background: transparent;
   border: 1px solid transparent;
   color: inherit;
-  transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
 }
 
 .syntax-annot-token:hover,
@@ -919,6 +918,12 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
 }
 
 .syntax-annot-token.is-active {
+  background: transparent;
+  border: 1px dashed currentColor;
+  color: inherit;
+}
+
+.syntax-annot-token.is-selected {
   background: color-mix(in oklab, currentColor 12%, transparent);
   border: 1px solid currentColor;
   color: inherit;
