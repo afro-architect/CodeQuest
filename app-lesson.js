@@ -1127,23 +1127,89 @@
   // append a second section underneath before finalizing activeTryIt.
   function buildSyntaxAnnotateEl(card, sa) {
     var language = sa.language || "Python";
-    var DEFAULT_LEGEND = [
-      { type: "keyword", label: "Keyword" },
-      { type: "string", label: "String" },
-      { type: "number", label: "Number" },
-      { type: "variable", label: "Variable" },
-      { type: "operator", label: "Operator" },
-      { type: "punct", label: "Punctuation" },
-    ];
-    var legend = sa.legend || DEFAULT_LEGEND;
+
+    // KNOWN_TYPE_LABELS gives friendly labels for every token "type" we
+    // teach with, across every language. When a card uses a type that isn't
+    // listed here, humanizeType() turns the raw string (e.g. "comment-open")
+    // into a readable label ("Comment Open") automatically, so new lesson
+    // cards never need to hand-roll a legend just to get sensible copy.
+    var KNOWN_TYPE_LABELS = {
+      // Python / JavaScript-style tokens
+      keyword: "Keyword",
+      string: "String",
+      number: "Number",
+      variable: "Variable",
+      operator: "Operator",
+      punct: "Punctuation",
+      // HTML tag pieces
+      "opening-tag": "Opening Tag",
+      "closing-tag": "Closing Tag",
+      "tag-name": "Tag Name",
+      "attribute-name": "Attribute Name",
+      "attribute-value": "Attribute Value",
+      content: "Content",
+      // HTML / CSS comment pieces
+      "comment-open": "Opening Comment Marker",
+      "comment-text": "Comment Text",
+      "comment-close": "Closing Comment Marker",
+      // CSS rule pieces
+      selector: "Selector",
+      "opening-brace": "Opening Brace",
+      "closing-brace": "Closing Brace",
+      "property-name": "Property Name",
+      colon: "Colon",
+      value: "Value",
+      "declaration-end": "Semicolon",
+    };
+
+    function humanizeType(type) {
+      return String(type)
+        .split(/[-_]/)
+        .filter(Boolean)
+        .map(function (word) {
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(" ");
+    }
+
+    // Build the legend from whichever token types this specific card
+    // actually uses (in the order they first appear), instead of assuming
+    // every card is teaching Python/JS-style keyword/string/number tokens.
+    // A card can still pass an explicit sa.legend to override this.
+    function legendFromTokens() {
+      var seen = {};
+      var order = [];
+      (sa.lines || []).forEach(function (lineTokens) {
+        lineTokens.forEach(function (token) {
+          if (!seen[token.type]) {
+            seen[token.type] = true;
+            order.push(token.type);
+          }
+        });
+      });
+      return order.map(function (type) {
+        return { type: type, label: KNOWN_TYPE_LABELS[type] || humanizeType(type) };
+      });
+    }
+
+    var legend = sa.legend || legendFromTokens();
+
+    // Only frame the walkthrough around "printed output" when at least one
+    // token actually maps to a slice of outputText — markup/style syntax
+    // (HTML comments, CSS rules, etc.) doesn't print anything, so that
+    // phrasing would be misleading for those cards.
+    var hasPrintedOutput = (sa.lines || []).some(function (lineTokens) {
+      return lineTokens.some(function (token) { return !!token.output; });
+    });
 
     var wrap = document.createElement("div");
     wrap.className = "syntax-annot-wrap";
 
     var instructions = document.createElement("p");
     instructions.className = "tagmatch-instructions";
-    instructions.textContent =
-      "Hover, tap, or tab through each highlighted piece of code below. The number shows the order " + language + " reads it in, and the output panel lights up when that piece is part of what gets printed.";
+    instructions.textContent = hasPrintedOutput
+      ? "Hover, tap, or tab through each highlighted piece of code below. The number shows the order " + language + " reads it in, and the output panel lights up when that piece is part of what gets printed."
+      : "Hover, tap, or tab through each highlighted piece of code below. The number shows the order " + language + " reads it in, and the panel below explains what job each piece does.";
     wrap.appendChild(instructions);
 
     var legendRow = document.createElement("div");
@@ -1256,18 +1322,12 @@
     function renderOutput(activeToken) {
       outputText.innerHTML = "";
       var full = sa.outputText || "";
-      if (activeToken && activeToken.output && full.indexOf(activeToken.output) !== -1) {
-        var start = full.indexOf(activeToken.output);
-        var end = start + activeToken.output.length;
-        outputText.appendChild(document.createTextNode(full.slice(0, start)));
-        var mark = document.createElement("mark");
-        mark.className = "syntax-annot-highlight";
-        mark.textContent = full.slice(start, end);
-        outputText.appendChild(mark);
-        outputText.appendChild(document.createTextNode(full.slice(end)));
-        outputNote.textContent = "This piece prints directly into the output above.";
-        outputNote.classList.remove("is-dim");
-      } else {
+              if (activeToken) {
+          outputNote.textContent = hasPrintedOutput
+            ? "This piece doesn't show up in the output — it's an instruction for " + language + ", not printed text."
+            : "This piece doesn't change what's shown here — see the explanation above for what it does.";
+          outputNote.classList.remove("is-dim");
+        } else {
         outputText.textContent = full;
         if (activeToken) {
           outputNote.textContent =
