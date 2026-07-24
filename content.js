@@ -187,13 +187,36 @@ const LESSON_CONTENT = [
       { heading: "Your First HTML Page", videoSrc: "assets/video/placeholder-your-first-html-page.mp4", body: "In the Try It tab, change the text between the <h1>...</h1> tags to say Hello World!", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Your text goes here. </h1>\n <p>Feel free to type other things (e.g. What's for Lunch?).</p>\n <p>Click the red button that says Run to see your result.</p>\n  </body>\n</html>" } },
       { heading: "Containers & Sections", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "Webpages are organized into containers and sections—like headers, main content areas, and footers. These sections help you group related content so it’s easier to design, style, and understand."  },      
     {
-  heading: "Comments",
+  heading: "HTML Comment Syntax: How the Pieces Fit Together",
   videoSrc: "assets/video/placeholder-tags-elements.mp4",
-  body: "In HTML, comments are little notes you can leave in your code. The browser ignores them, so they won’t show up on the webpage. They’re helpful when you want to explain something, leave yourself a reminder, or hide part of your code temporarily." \n,
-  uiBlock: {
-    label: "Example",
-    code: "<!-- This is a comment -->"
-  },
+  body: "An HTML comment is built from three easy pieces: an opening marker, the note you want to leave, and a closing marker. Head to the Try It tab, then hover, tap, or tab through the code below to see what each piece does and why the punctuation has to be in the right order.",
+  syntaxAnnotate: {
+    language: "HTML",
+    filename: "index.html",
+    lines: [
+      [
+        {
+          text: "<!--",
+          type: "punct",
+          order: 1,
+          tip: "This opening marker starts the HTML comment. It begins with <, then !, then two dashes."
+        },
+        {
+          text: " This is a comment ",
+          type: "comment",
+          order: 2,
+          tip: "This is the note inside the comment. The browser ignores it, so it won’t appear on the page."
+        },
+        {
+          text: "-->",
+          type: "punct",
+          order: 3,
+          tip: "This closing marker ends the comment. It uses two dashes and a > to tell HTML the note is finished."
+        }
+      ]
+    ],
+    outputText: "Nothing from this line appears on the webpage."
+  }
 },
       { heading: "Nesting", videoSrc: "assets/video/placeholder-nesting.mp4", body: "Tags can go inside other tags and like a burrito wrapped in foil wrapped in a bag." },
       {
