@@ -216,7 +216,7 @@ const LESSON_CONTENT = [
       ]
     ],
     outputText: "Visible result: this line does not display anything on the page."
-  
+  }
 },
       { heading: "Nesting", videoSrc: "assets/video/placeholder-nesting.mp4", body: "Tags can go inside other tags and like a burrito wrapped in foil wrapped in a bag." },
       {
@@ -375,7 +375,7 @@ const LESSON_CONTENT = [
       ]
     ],
     outputText: "Visible result: all h2 headings would appear teal."
-  
+  }
 },
       { heading: "Activity: Style the Storefront Sign", videoSrc: "assets/video/placeholder-css-the-outfit.mp4", body: "Hands-on tweaks to the colors, fonts, and spacing of a simple page, so you can see how a few property changes transform the overall vibe.", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      body { background: #f0f0f0; }\n      .sign {\n        font-family: sans-serif;\n        color: #333;\n        font-size: 20px;\n        margin: 16px;\n        padding: 12px;\n      }\n    </style>\n  </head>\n  <body>\n    <p class=\"sign\">Sale Ends Sunday!</p>\n\n    <!-- Challenge: change the background color, font-family, and font-size\n         until this sign feels like it belongs in a fun mall storefront -->\n  </body>\n</html>" } },
       { heading: "The Box Model", videoSrc: "assets/video/placeholder-the-box-model.mp4", body: "You’ll learn that every element is a box—with content, padding, border, and margin—and see how those layers interact like packaging around a product.", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      .product {\n        width: 150px;\n        padding: 10px;      /* space inside the border, around the content */\n        border: 4px solid navy;\n        margin: 20px;        /* space outside the border, pushing other boxes away */\n        background: lightyellow;\n      }\n    </style>\n  </head>\n  <body>\n    <div class=\"product\">Backpack — $24.99</div>\n    <!-- Try changing padding, border, and margin one at a time to see each layer -->\n  </body>\n</html>" } },
