@@ -905,31 +905,23 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
 }
 
 .syntax-annot-token {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.15em;
-  padding: 0.08em 0.22em;
   background: transparent;
-  border: 3px dashed transparent;
-  border-radius: 8px;
-  color: var(--color-text);
-  transition:
-    border-color 160ms ease,
-    color 160ms ease,
-    background 160ms ease,
-    transform 160ms ease;
+  border: 1px solid transparent;
+  color: inherit;
+  transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
 }
 
 .syntax-annot-token:hover,
-.syntax-annot-token.is-active,
 .syntax-annot-token:focus-visible {
-  border-color: currentColor;
   background: transparent;
+  color: inherit;
+  border: 1px dashed currentColor;
 }
 
 .syntax-annot-token.is-active {
-  background: color-mix(in oklab, currentColor 10%, transparent);
-  transform: translateY(-1px);
+  background: color-mix(in oklab, currentColor 12%, transparent);
+  border: 1px solid currentColor;
+  color: inherit;
 }
 
 .syntax-annot-token.is-paired {
