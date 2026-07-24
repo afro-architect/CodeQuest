@@ -196,26 +196,29 @@
   var descPanel = document.querySelector('[data-panel="description"]');
   var resourcesPanel = document.querySelector('[data-panel="resources"]');
 
-  function renderDescription(card) {
-    descPanel.innerHTML = "";
-    var h2 = document.createElement("h2");
-    h2.textContent = card.heading;
-    descPanel.appendChild(h2);
+function renderDescription(card) {
+  descPanel.innerHTML = "";
 
-    var bodyText = card.body || "";
-    var isCode = /\n/.test(bodyText) && /[{}();=<>]/.test(bodyText) && !card.forkLink;
-    if (isCode) {
-      var pre = document.createElement("pre");
-      var codeEl = document.createElement("code");
-      codeEl.textContent = bodyText;
-      pre.appendChild(codeEl);
-      descPanel.appendChild(pre);
-    } else {
-      var p = document.createElement("p");
-      p.textContent = bodyText;
-      descPanel.appendChild(p);
-    }
-    if (card.uiBlock) {
+  var h2 = document.createElement("h2");
+  h2.textContent = card.heading;
+  descPanel.appendChild(h2);
+
+  var bodyText = card.body || "";
+  var isCode = /\n/.test(bodyText) && /[{}();=<>]/.test(bodyText) && !card.forkLink;
+
+  if (isCode) {
+    var bodyPre = document.createElement("pre");
+    var bodyCodeEl = document.createElement("code");
+    bodyCodeEl.textContent = bodyText;
+    bodyPre.appendChild(bodyCodeEl);
+    descPanel.appendChild(bodyPre);
+  } else {
+    var p = document.createElement("p");
+    p.textContent = bodyText;
+    descPanel.appendChild(p);
+  }
+
+  if (card.uiBlock) {
     var uiWrap = document.createElement("div");
     uiWrap.className = "lesson-ui-block";
 
@@ -223,18 +226,18 @@
     uiHeader.className = "lesson-ui-block__header";
     uiHeader.textContent = card.uiBlock.label || "Code Block";
 
-    var pre = document.createElement("pre");
-    pre.className = "lesson-ui-block__code";
+    var uiPre = document.createElement("pre");
+    uiPre.className = "lesson-ui-block__code";
 
-    var code = document.createElement("code");
-    code.textContent = card.uiBlock.code || "";
+    var uiCode = document.createElement("code");
+    uiCode.textContent = card.uiBlock.code || "";
 
-    pre.appendChild(code);
+    uiPre.appendChild(uiCode);
     uiWrap.appendChild(uiHeader);
-    uiWrap.appendChild(pre);
+    uiWrap.appendChild(uiPre);
     descPanel.appendChild(uiWrap);
   }
-  }
+}
 
   function renderResources(card, isLastSubLesson) {
     resourcesPanel.innerHTML = "";
@@ -1125,274 +1128,284 @@
   // append it to tryItPanel or touch activeTryIt \u2014 that's left to the two
   // callers below, since one of them (renderSyntaxAnnotateWithIde) needs to
   // append a second section underneath before finalizing activeTryIt.
-  function buildSyntaxAnnotateEl(card, sa) {
-    var language = sa.language || "Python";
+
 
     // KNOWN_TYPE_LABELS gives friendly labels for every token "type" we
     // teach with, across every language. When a card uses a type that isn't
     // listed here, humanizeType() turns the raw string (e.g. "comment-open")
     // into a readable label ("Comment Open") automatically, so new lesson
     // cards never need to hand-roll a legend just to get sensible copy.
-    var KNOWN_TYPE_LABELS = {
-    
-      const TOKEN_META = {
-  // Python / JavaScript-style tokens
-  keyword: { label: "Keyword", color: "#4c6fff" },
-  string: { label: "String", color: "#43b05c" },
-  number: { label: "Number", color: "#d98a2b" },
-  variable: { label: "Variable", color: "#8b5cf6" },
-  operator: { label: "Operator", color: "#e25555" },
-  punct: { label: "Punctuation", color: "#c7a32b" },
+  
+function buildSyntaxAnnotateEl(card, sa) {
+  var language = sa.language || "Python";
 
-  // HTML / CSS-style tokens
-  "comment-open": { label: "Opening Comment Marker", color: "#4c6fff" },
-  "comment-text": { label: "Comment Text", color: "#43b05c" },
-  "comment-close": { label: "Closing Comment Marker", color: "#d98a2b" },
+  var TOKEN_META = {
+    keyword: { label: "Keyword", color: "#4c6fff" },
+    string: { label: "String", color: "#43b05c" },
+    number: { label: "Number", color: "#d98a2b" },
+    variable: { label: "Variable", color: "#8b5cf6" },
+    operator: { label: "Operator", color: "#e25555" },
+    punct: { label: "Punctuation", color: "#c7a32b" },
 
-  "selector": { label: "Selector", color: "#4c6fff" },
-  "opening-brace": { label: "Opening Brace", color: "#8b5cf6" },
-  "property-name": { label: "Property Name", color: "#43b05c" },
-  "colon": { label: "Colon", color: "#e25555" },
-  "value": { label: "Value", color: "#d98a2b" },
-  "declaration-end": { label: "Semicolon", color: "#c7a32b" },
-  "closing-brace": { label: "Closing Brace", color: "#7c89ff" }
-};
+    "comment-open": { label: "Opening Comment Marker", color: "#4c6fff" },
+    "comment-text": { label: "Comment Text", color: "#43b05c" },
+    "comment-close": { label: "Closing Comment Marker", color: "#d98a2b" },
 
-    function humanizeType(type) {
-      return String(type)
-        .split(/[-_]/)
-        .filter(Boolean)
-        .map(function (word) {
-          return word.charAt(0).toUpperCase() + word.slice(1);
-        })
-        .join(" ");
-    }
+    selector: { label: "Selector", color: "#4c6fff" },
+    "opening-brace": { label: "Opening Brace", color: "#8b5cf6" },
+    "property-name": { label: "Property Name", color: "#43b05c" },
+    colon: { label: "Colon", color: "#e25555" },
+    value: { label: "Value", color: "#d98a2b" },
+    "declaration-end": { label: "Semicolon", color: "#c7a32b" },
+    "closing-brace": { label: "Closing Brace", color: "#7c89ff" }
+  };
 
-    // Build the legend from whichever token types this specific card
-    // actually uses (in the order they first appear), instead of assuming
-    // every card is teaching Python/JS-style keyword/string/number tokens.
-    // A card can still pass an explicit sa.legend to override this.
-    function legendFromTokens() {
-      var seen = {};
-      var order = [];
-      (sa.lines || []).forEach(function (lineTokens) {
-        lineTokens.forEach(function (token) {
-          if (!seen[token.type]) {
-            seen[token.type] = true;
-            order.push(token.type);
-          }
-        });
-      });
-      return order.map(function (type) {
-        return { type: type, label: KNOWN_TYPE_LABELS[type] || humanizeType(type) };
-      });
-    }
+  function humanizeType(type) {
+    return String(type)
+      .split(/[-_]/)
+      .filter(Boolean)
+      .map(function (word) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
+  }
 
-    var legend = sa.legend || legendFromTokens();
-
-    // Only frame the walkthrough around "printed output" when at least one
-    // token actually maps to a slice of outputText — markup/style syntax
-    // (HTML comments, CSS rules, etc.) doesn't print anything, so that
-    // phrasing would be misleading for those cards.
-    var hasPrintedOutput = (sa.lines || []).some(function (lineTokens) {
-      return lineTokens.some(function (token) { return !!token.output; });
-    });
-
-    var wrap = document.createElement("div");
-    wrap.className = "syntax-annot-wrap";
-
-    var instructions = document.createElement("p");
-    instructions.className = "tagmatch-instructions";
-    instructions.textContent = hasPrintedOutput
-      ? "Hover, tap, or tab through each highlighted piece of code below. The number shows the order " + language + " reads it in, and the output panel lights up when that piece is part of what gets printed."
-      : "Hover, tap, or tab through each highlighted piece of code below. The number shows the order " + language + " reads it in, and the panel below explains what job each piece does.";
-    wrap.appendChild(instructions);
-
-    var legendRow = document.createElement("div");
-    legendRow.className = "syntax-annot-legend";
-    legend.forEach(function (item) {
-      var chip = document.createElement("span");
-      chip.className = "syntax-annot-legend-item";
-      var swatch = document.createElement("span");
-      swatch.className = "syntax-annot-swatch type-" + item.type;
-      chip.appendChild(swatch);
-      var label = document.createElement("span");
-      label.textContent = item.label;
-      chip.appendChild(label);
-      legendRow.appendChild(chip);
-    });
-    wrap.appendChild(legendRow);
-
-    var win = document.createElement("div");
-    win.className = "syntax-annot-window";
-
-    var titlebar = document.createElement("div");
-    titlebar.className = "syntax-annot-titlebar";
-    ["red", "yellow", "green"].forEach(function (c) {
-      var dot = document.createElement("span");
-      dot.className = "syntax-annot-dot syntax-annot-dot--" + c;
-      titlebar.appendChild(dot);
-    });
-    var filename = document.createElement("span");
-    filename.className = "syntax-annot-filename";
-    filename.textContent = sa.filename || (language === "Python" ? "syntax_demo.py" : "syntax_demo.js");
-    titlebar.appendChild(filename);
-    win.appendChild(titlebar);
-
-    var body = document.createElement("div");
-    body.className = "syntax-annot-body";
-
-    var tokenButtons = [];
-    (sa.lines || []).forEach(function (lineTokens, lineIdx) {
-      var lineEl = document.createElement("div");
-      lineEl.className = "syntax-annot-line";
-
-      var lineNo = document.createElement("span");
-      lineNo.className = "syntax-annot-lineno";
-      lineNo.textContent = String(lineIdx + 1);
-      lineEl.appendChild(lineNo);
-
-      var codeEl = document.createElement("span");
-      codeEl.className = "syntax-annot-code";
-
+  function legendFromTokens() {
+    var seen = {};
+    var order = [];
+    (sa.lines || []).forEach(function (lineTokens) {
       lineTokens.forEach(function (token) {
-        var btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "syntax-annot-token type-" + token.type;
-        btn.setAttribute("aria-label", token.text + " \u2014 " + token.tip);
-
-        var order = document.createElement("sup");
-        order.className = "syntax-annot-order";
-        order.textContent = token.order;
-        btn.appendChild(order);
-
-        var textEl = document.createElement("span");
-        textEl.textContent = token.text;
-        btn.appendChild(textEl);
-
-        btn._token = token;
-        tokenButtons.push(btn);
-        codeEl.appendChild(btn);
-        codeEl.appendChild(document.createTextNode(" "));
-      });
-
-      lineEl.appendChild(codeEl);
-      body.appendChild(lineEl);
-    });
-
-    win.appendChild(body);
-    wrap.appendChild(win);
-
-    var captionBox = document.createElement("div");
-    captionBox.className = "syntax-annot-caption";
-    wrap.appendChild(captionBox);
-
-    var outputLabel = document.createElement("p");
-    outputLabel.className = "tryit-col-label";
-    outputLabel.style.marginTop = "var(--space-3)";
-    outputLabel.textContent = "Output";
-    wrap.appendChild(outputLabel);
-
-    var outputShell = document.createElement("div");
-    outputShell.className = "syntax-annot-output-shell";
-    var outputPrompt = document.createElement("span");
-    outputPrompt.className = "syntax-annot-output-prompt";
-    outputPrompt.textContent = ">_";
-    outputShell.appendChild(outputPrompt);
-    var outputText = document.createElement("span");
-    outputText.className = "syntax-annot-output-text";
-    outputShell.appendChild(outputText);
-    wrap.appendChild(outputShell);
-
-    var outputNote = document.createElement("p");
-    outputNote.className = "syntax-annot-output-note";
-    wrap.appendChild(outputNote);
-
-    var typeLabelFor = {};
-    legend.forEach(function (item) {
-      typeLabelFor[item.type] = item.label;
-    });
-
-    var selectedBtn = null;
-
-    function renderOutput(activeToken) {
-      outputText.innerHTML = "";
-      var full = sa.outputText || "";
-              if (activeToken) {
-          outputNote.textContent = hasPrintedOutput
-            ? "This piece doesn't show up in the output — it's an instruction for " + language + ", not printed text."
-            : "This piece doesn't change what's shown here — see the explanation above for what it does.";
-          outputNote.classList.remove("is-dim");
-        } else {
-        outputText.textContent = full;
-        if (activeToken) {
-          outputNote.textContent =
-            "This piece doesn't show up in the output \u2014 it's an instruction for " + language + ", not printed text.";
-          outputNote.classList.remove("is-dim");
-        } else {
-          outputNote.textContent = "Hover, tap, or tab a piece of code above to see how it connects here.";
-          outputNote.classList.add("is-dim");
+        if (!seen[token.type]) {
+          seen[token.type] = true;
+          order.push(token.type);
         }
-      }
-    }
-
-    function showToken(btn) {
-      var token = btn._token;
-      tokenButtons.forEach(function (b) {
-        b.classList.toggle("is-active", b === btn);
-        b.classList.toggle(
-          "is-paired",
-          b !== btn && !!token.pairId && b._token.pairId === token.pairId
-        );
       });
-      var typeLabel = typeLabelFor[token.type] || token.type;
-      captionBox.innerHTML = "";
-      var kicker = document.createElement("strong");
-      kicker.className = "syntax-annot-caption-kicker type-" + token.type;
-      kicker.textContent = "#" + token.order + " \u00b7 " + typeLabel;
-      captionBox.appendChild(kicker);
-      var tip = document.createElement("p");
-      tip.textContent = token.tip;
-      captionBox.appendChild(tip);
-      renderOutput(token);
+    });
+    return order.map(function (type) {
+      return {
+        type: type,
+        label: TOKEN_META[type] ? TOKEN_META[type].label : humanizeType(type)
+      };
+    });
+  }
+
+  var legend = sa.legend || legendFromTokens();
+
+  var hasPrintedOutput = (sa.lines || []).some(function (lineTokens) {
+    return lineTokens.some(function (token) {
+      return !!token.output;
+    });
+  });
+
+  var wrap = document.createElement("div");
+  wrap.className = "syntax-annot-wrap";
+
+  var instructions = document.createElement("p");
+  instructions.className = "tagmatch-instructions";
+  instructions.textContent = hasPrintedOutput
+    ? "Hover, tap, or tab through each highlighted piece of code below. The number shows the order " + language + " reads it in, and the output panel lights up when that piece is part of what gets printed."
+    : "Hover, tap, or tab through each highlighted piece of code below. The number shows the order " + language + " reads it in, and the panel below explains what job each piece does.";
+  wrap.appendChild(instructions);
+
+  var legendRow = document.createElement("div");
+  legendRow.className = "syntax-annot-legend";
+  legend.forEach(function (item) {
+    var chip = document.createElement("span");
+    chip.className = "syntax-annot-legend-item";
+
+    var swatch = document.createElement("span");
+    swatch.className = "syntax-annot-swatch type-" + item.type;
+    chip.appendChild(swatch);
+
+    var label = document.createElement("span");
+    label.textContent = item.label;
+    chip.appendChild(label);
+
+    legendRow.appendChild(chip);
+  });
+  wrap.appendChild(legendRow);
+
+  var win = document.createElement("div");
+  win.className = "syntax-annot-window";
+
+  var titlebar = document.createElement("div");
+  titlebar.className = "syntax-annot-titlebar";
+  ["red", "yellow", "green"].forEach(function (c) {
+    var dot = document.createElement("span");
+    dot.className = "syntax-annot-dot syntax-annot-dot--" + c;
+    titlebar.appendChild(dot);
+  });
+
+  var filename = document.createElement("span");
+  filename.className = "syntax-annot-filename";
+  filename.textContent = sa.filename || (language === "Python" ? "syntax_demo.py" : "syntax_demo.js");
+  titlebar.appendChild(filename);
+  win.appendChild(titlebar);
+
+  var body = document.createElement("div");
+  body.className = "syntax-annot-body";
+
+  var tokenButtons = [];
+  (sa.lines || []).forEach(function (lineTokens, lineIdx) {
+    var lineEl = document.createElement("div");
+    lineEl.className = "syntax-annot-line";
+
+    var lineNo = document.createElement("span");
+    lineNo.className = "syntax-annot-lineno";
+    lineNo.textContent = String(lineIdx + 1);
+    lineEl.appendChild(lineNo);
+
+    var codeEl = document.createElement("span");
+    codeEl.className = "syntax-annot-code";
+
+    lineTokens.forEach(function (token) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "syntax-annot-token type-" + token.type;
+      btn.setAttribute("aria-label", token.text + " — " + token.tip);
+
+      var order = document.createElement("sup");
+      order.className = "syntax-annot-order";
+      order.textContent = token.order;
+      btn.appendChild(order);
+
+      var textEl = document.createElement("span");
+      textEl.textContent = token.text;
+      btn.appendChild(textEl);
+
+      btn._token = token;
+      tokenButtons.push(btn);
+      codeEl.appendChild(btn);
+      codeEl.appendChild(document.createTextNode(" "));
+    });
+
+    lineEl.appendChild(codeEl);
+    body.appendChild(lineEl);
+  });
+
+  win.appendChild(body);
+  wrap.appendChild(win);
+
+  var captionBox = document.createElement("div");
+  captionBox.className = "syntax-annot-caption";
+  wrap.appendChild(captionBox);
+
+  var outputLabel = document.createElement("p");
+  outputLabel.className = "tryit-col-label";
+  outputLabel.style.marginTop = "var(--space-3)";
+  outputLabel.textContent = hasPrintedOutput ? "Output" : "What this piece does";
+  wrap.appendChild(outputLabel);
+
+  var outputShell = document.createElement("div");
+  outputShell.className = "syntax-annot-output-shell";
+
+  var outputPrompt = document.createElement("span");
+  outputPrompt.className = "syntax-annot-output-prompt";
+  outputPrompt.textContent = hasPrintedOutput ? ">_" : "i";
+  outputShell.appendChild(outputPrompt);
+
+  var outputText = document.createElement("span");
+  outputText.className = "syntax-annot-output-text";
+  outputShell.appendChild(outputText);
+  wrap.appendChild(outputShell);
+
+  var outputNote = document.createElement("p");
+  outputNote.className = "syntax-annot-output-note";
+  wrap.appendChild(outputNote);
+
+  var typeLabelFor = {};
+  legend.forEach(function (item) {
+    typeLabelFor[item.type] = item.label;
+  });
+
+  var selectedBtn = null;
+
+  function renderOutput(activeToken) {
+    outputText.innerHTML = "";
+    var full = sa.outputText || "";
+
+    if (!hasPrintedOutput) {
+      outputText.textContent = activeToken ? (activeToken.tip || "") : "Select a highlighted piece to learn what it does.";
+      outputNote.textContent = activeToken
+        ? "This code explains structure or syntax, not printed output."
+        : "Hover, tap, or tab a piece of code above to inspect it.";
+      outputNote.classList.toggle("is-dim", !activeToken);
+      return;
     }
 
-    function clearToShownOrPlaceholder() {
+    outputText.textContent = full;
+
+    if (activeToken) {
+      outputNote.textContent = activeToken.output
+        ? "This piece helps produce the highlighted output."
+        : "This piece doesn't show up in the output — it's an instruction for " + language + ", not printed text.";
+      outputNote.classList.remove("is-dim");
+    } else {
+      outputNote.textContent = "Hover, tap, or tab a piece of code above to see how it connects here.";
+      outputNote.classList.add("is-dim");
+    }
+  }
+
+  function showToken(btn) {
+    var token = btn._token;
+    tokenButtons.forEach(function (b) {
+      b.classList.toggle("is-active", b === btn);
+      b.classList.toggle("is-paired", b !== btn && !!token.pairId && b._token.pairId === token.pairId);
+    });
+
+    var typeLabel = typeLabelFor[token.type] || humanizeType(token.type);
+
+    captionBox.innerHTML = "";
+    var kicker = document.createElement("strong");
+    kicker.className = "syntax-annot-caption-kicker type-" + token.type;
+    kicker.textContent = "#" + token.order + " · " + typeLabel;
+    captionBox.appendChild(kicker);
+
+    var tip = document.createElement("p");
+    tip.textContent = token.tip;
+    captionBox.appendChild(tip);
+
+    renderOutput(token);
+  }
+
+  function clearToShownOrPlaceholder() {
+    if (selectedBtn) {
+      showToken(selectedBtn);
+      return;
+    }
+
+    tokenButtons.forEach(function (b) {
+      b.classList.remove("is-active", "is-paired");
+    });
+
+    captionBox.innerHTML =
+      '<p class="is-dim">Hover, tap, or tab through the code above to learn what each piece does.</p>';
+
+    renderOutput(null);
+  }
+
+  tokenButtons.forEach(function (btn) {
+    btn.addEventListener("mouseenter", function () {
+      showToken(btn);
+    });
+    btn.addEventListener("focus", function () {
+      showToken(btn);
+    });
+    btn.addEventListener("mouseleave", clearToShownOrPlaceholder);
+    btn.addEventListener("blur", clearToShownOrPlaceholder);
+    btn.addEventListener("click", function () {
+      selectedBtn = selectedBtn === btn ? null : btn;
       if (selectedBtn) {
         showToken(selectedBtn);
-        return;
+      } else {
+        clearToShownOrPlaceholder();
       }
-      tokenButtons.forEach(function (b) {
-        b.classList.remove("is-active", "is-paired");
-      });
-      captionBox.innerHTML =
-        '<p class="is-dim">Hover, tap, or tab through the code above to learn what each piece does.</p>';
-      renderOutput(null);
-    }
-
-    tokenButtons.forEach(function (btn) {
-      btn.addEventListener("mouseenter", function () {
-        showToken(btn);
-      });
-      btn.addEventListener("focus", function () {
-        showToken(btn);
-      });
-      btn.addEventListener("mouseleave", clearToShownOrPlaceholder);
-      btn.addEventListener("blur", clearToShownOrPlaceholder);
-      btn.addEventListener("click", function () {
-        selectedBtn = selectedBtn === btn ? null : btn;
-        if (selectedBtn) {
-          showToken(selectedBtn);
-        } else {
-          clearToShownOrPlaceholder();
-        }
-      });
     });
+  });
 
-    clearToShownOrPlaceholder();
-
-    return wrap;
-  }
+  clearToShownOrPlaceholder();
+  return wrap;
+}
 
   // Standalone use: the annotated diagram is the whole Try It tab (e.g. the
   // Python syntax intro card).
