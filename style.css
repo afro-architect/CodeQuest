@@ -924,7 +924,7 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
 }
 
 .syntax-annot-token.is-selected {
-  background: color-mix(in oklab, currentColor 12%, transparent);
+  background: color-mix(in oklab, currentColor 8%, transparent);
   border: 1px solid currentColor;
   color: inherit;
 }
