@@ -905,78 +905,19 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
 }
 
 .syntax-annot-token {
-  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.18rem;
+  padding: 0.18rem 0.38rem;
+  border-radius: 0.5rem;
   border: 1px solid transparent;
+  background: transparent;
   color: inherit;
+  cursor: pointer;
 }
 
 .syntax-annot-token:hover,
-.syntax-annot-token:focus-visible {
-  background: transparent;
-  color: inherit;
-  border: 1px dashed currentColor;
-}
-
-.syntax-annot-token.is-active {
-  background: transparent;
-  border: 1px dashed currentColor;
-  color: inherit;
-}
-
-.syntax-annot-token.is-selected {
-  background: color-mix(in oklab, currentColor 8%, transparent);
-  border: 1px solid currentColor;
-  color: inherit;
-}
-
-.syntax-annot-token.is-paired {
-  border-color: oklch(from var(--color-text) l c h / 0.22);
-  background: oklch(from var(--color-text) l c h / 0.04);
-}
-
-.syntax-annot-swatch {
-  display: inline-block;
-  width: 0.85rem;
-  height: 0.85rem;
-  border-radius: 999px;
-  background: currentColor;
-  flex-shrink: 0;
-}
-
-.syntax-annot-token.type-comment-open,
-.syntax-annot-swatch.type-comment-open,
-.syntax-annot-caption-kicker.type-comment-open {
-  color: #4c6fff;
-  border-color: #4c6fff;
-}
-
-.syntax-annot-token.type-comment-text,
-.syntax-annot-swatch.type-comment-text,
-.syntax-annot-caption-kicker.type-comment-text {
-  color: #43b05c;
-  border-color: #43b05c;
-}
-
-.syntax-annot-token.type-comment-close,
-.syntax-annot-swatch.type-comment-close,
-.syntax-annot-caption-kicker.type-comment-close {
-  color: #d98a2b;
-  border-color: #d98a2b;
-}
-
-.syntax-annot-token {
-  background: transparent;
-  border: 1px solid transparent;
-  color: inherit;
-}
-
-.syntax-annot-token:hover,
-.syntax-annot-token:focus-visible {
-  background: transparent;
-  color: inherit;
-  border: 1px dashed currentColor;
-}
-
+.syntax-annot-token:focus-visible,
 .syntax-annot-token.is-active {
   background: transparent;
   color: inherit;
@@ -990,6 +931,12 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
 }
 
 .syntax-annot-token.is-paired {
-  border-color: oklch(from var(--color-text) l c h / 0.22);
   background: oklch(from var(--color-text) l c h / 0.04);
+  border-color: oklch(from var(--color-text) l c h / 0.22);
+}
+
+.syntax-annot-order {
+  font-size: 0.68rem;
+  line-height: 1;
+  opacity: 0.9;
 }
