@@ -197,19 +197,19 @@ const LESSON_CONTENT = [
       [
         {
           text: "<!--",
-          type: "opening-marker",
+          type: "comment-open",
           order: 1,
           tip: "This opening comment marker starts the hidden note. It begins with <, then !, then two dashes."
         },
         {
           text: " This is a comment ",
-          type: "content",
+          type: "comment-text",
           order: 2,
           tip: "This is the note inside the comment. The browser ignores it, so it does not show on the webpage."
         },
         {
           text: "-->",
-          type: "closing-marker",
+          type: "comment-close",
           order: 3,
           tip: "This closing comment marker ends the hidden note. Once HTML sees this, the comment is over."
         }
