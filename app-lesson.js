@@ -1344,7 +1344,7 @@ function buildSyntaxAnnotateEl(card, sa) {
     }
   }
 
-  function showToken(btn) {
+ function showToken(btn) {
   var token = btn._token;
   tokenButtons.forEach(function (b) {
     b.classList.toggle("is-active", b === btn);
