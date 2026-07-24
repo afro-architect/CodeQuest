@@ -189,9 +189,9 @@ const LESSON_CONTENT = [
     {
   heading: "Comments",
   videoSrc: "assets/video/placeholder-tags-elements.mp4",
-  body: "In HTML, comments are little notes you can leave in your code. The browser ignores them, so they won’t show up on the webpage. They’re helpful when you want to explain something, leave yourself a reminder, or hide part of your code temporarily.",
+  body: "In HTML, comments are little notes you can leave in your code. The browser ignores them, so they won’t show up on the webpage. They’re helpful when you want to explain something, leave yourself a reminder, or hide part of your code temporarily." \n,
   uiBlock: {
-    label: "Trail Example",
+    label: "Example",
     code: "<!-- This is a comment -->"
   },
 },
