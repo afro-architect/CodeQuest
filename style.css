@@ -919,4 +919,4 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
   border-color: var(--token-color, #7c89ff);
   background: transparent;
 }
-}
+
