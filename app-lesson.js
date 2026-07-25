@@ -635,6 +635,179 @@ function renderDescription(card) {
     renderChunks();
     updatePaletteEnabled();
     renderPreview();
+ 
+        tryItPanel.appendChild(wrap);
+
+    activeTryIt = {
+      destroy: function () {},
+      refresh: function () {},
+    };
+  }
+
+  // ---- Responsive Breakpoint Explorer: three tabs (Desktop / Tablet /
+  // Mobile). Each tab is a two-panel row — real HTML+CSS on the left
+  // (with the CSS lines relevant to THAT breakpoint highlighted, same
+  // convention as css-lives-line.is-highlight) and a device-framed,
+  // already-resolved rendering of that breakpoint's layout on the right.
+  function renderResponsiveBreakpoints(card, data) {
+    var modes = data.modes || [];
+
+    var wrap = document.createElement("div");
+    wrap.className = "rdbp-wrap";
+
+    var instructions = document.createElement("p");
+    instructions.className = "tagmatch-instructions";
+    instructions.textContent =
+      data.instructions ||
+      "Same page, three screen widths. Switch tabs to see exactly which CSS rules kick in at each breakpoint, and how that changes the rendered page.";
+    wrap.appendChild(instructions);
+
+    if (data.breakpointNote) {
+      var note = document.createElement("p");
+      note.className = "rdbp-note";
+      var noteLabel = document.createElement("strong");
+      noteLabel.textContent = "Breakpoint: ";
+      note.appendChild(noteLabel);
+      note.appendChild(document.createTextNode(data.breakpointNote));
+      wrap.appendChild(note);
+    }
+
+    var toggleRow = document.createElement("div");
+    toggleRow.className = "rvs-toggle";
+    wrap.appendChild(toggleRow);
+
+    var panels = document.createElement("div");
+    panels.className = "tryit-editor-panel rdbp-panels";
+    wrap.appendChild(panels);
+
+    var codeCol = document.createElement("div");
+    codeCol.className = "tryit-editor-col rdbp-code-col";
+    var codeLabel = document.createElement("p");
+    codeLabel.className = "tryit-col-label";
+    codeLabel.textContent = "Sample IDE";
+    codeCol.appendChild(codeLabel);
+    var codeFiles = document.createElement("div");
+    codeFiles.className = "rdbp-code-files";
+    codeCol.appendChild(codeFiles);
+    panels.appendChild(codeCol);
+
+    var previewCol = document.createElement("div");
+    previewCol.className = "tryit-output-col rdbp-preview-col";
+    var previewLabel = document.createElement("p");
+    previewLabel.className = "tryit-col-label";
+    previewLabel.textContent = "Sample Site";
+    previewCol.appendChild(previewLabel);
+    var deviceFrame = document.createElement("div");
+    previewCol.appendChild(deviceFrame);
+    panels.appendChild(previewCol);
+
+    var caption = document.createElement("p");
+    caption.className = "syntax-annot-caption rdbp-caption";
+    wrap.appendChild(caption);
+
+    function buildFileWindow(file) {
+      var win = document.createElement("div");
+      win.className = "syntax-annot-window rdbp-window";
+
+      var titlebar = document.createElement("div");
+      titlebar.className = "syntax-annot-titlebar";
+      ["red", "yellow", "green"].forEach(function (c) {
+        var dot = document.createElement("span");
+        dot.className = "syntax-annot-dot syntax-annot-dot--" + c;
+        titlebar.appendChild(dot);
+      });
+      var label = document.createElement("span");
+      label.className = "syntax-annot-filename";
+      label.textContent = file.filename;
+      titlebar.appendChild(label);
+      win.appendChild(titlebar);
+
+      var body = document.createElement("div");
+      body.className = "syntax-annot-body";
+      var highlightSet = {};
+      (file.highlight || []).forEach(function (i) {
+        highlightSet[i] = true;
+      });
+      (file.lines || []).forEach(function (lineText, i) {
+        var row = document.createElement("div");
+        row.className =
+          "rvs-scriptline css-lives-line" + (highlightSet[i] ? " is-highlight" : "");
+        var no = document.createElement("span");
+        no.className = "syntax-annot-lineno";
+        no.textContent = String(i + 1);
+        row.appendChild(no);
+        var code = document.createElement("span");
+        code.className = "rvs-scriptcode";
+        code.textContent = lineText;
+        row.appendChild(code);
+        body.appendChild(row);
+      });
+      win.appendChild(body);
+      return win;
+    }
+
+    function buildDeviceChrome(frameVariant) {
+      var chrome = document.createElement("div");
+      chrome.className = "rdbp-device-chrome rdbp-device-chrome--" + frameVariant;
+      if (frameVariant === "desktop") {
+        ["red", "yellow", "green"].forEach(function (c) {
+          var dot = document.createElement("span");
+          dot.className = "rdbp-chrome-dot rdbp-chrome-dot--" + c;
+          chrome.appendChild(dot);
+        });
+        var url = document.createElement("span");
+        url.className = "rdbp-chrome-url";
+        url.textContent = "bobalicious.example";
+        chrome.appendChild(url);
+      } else {
+        var notch = document.createElement("span");
+        notch.className = "rdbp-chrome-notch";
+        chrome.appendChild(notch);
+      }
+      return chrome;
+    }
+
+    var toggleBtns = [];
+
+    function showMode(index) {
+      var m = modes[index];
+      toggleBtns.forEach(function (btn, i) {
+        btn.classList.toggle("is-active", i === index);
+      });
+
+      codeFiles.innerHTML = "";
+      (m.files || []).forEach(function (file) {
+        codeFiles.appendChild(buildFileWindow(file));
+      });
+
+      var frameVariant = m.frameVariant || "desktop";
+      var device = document.createElement("div");
+      device.className = "rdbp-device rdbp-device--" + frameVariant;
+      device.appendChild(buildDeviceChrome(frameVariant));
+      var body = document.createElement("div");
+      body.className = "rdbp-device-body";
+      body.innerHTML = m.previewHtml || "";
+      device.appendChild(body);
+      deviceFrame.innerHTML = "";
+      deviceFrame.appendChild(device);
+
+      caption.textContent = m.caption || "";
+    }
+
+    modes.forEach(function (m, i) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "rvs-toggle-btn";
+      btn.textContent = m.label;
+      btn.addEventListener("click", function () {
+        showMode(i);
+      });
+      toggleRow.appendChild(btn);
+      toggleBtns.push(btn);
+    });
+
+    if (modes.length) showMode(0);
+
     tryItPanel.appendChild(wrap);
 
     activeTryIt = {
@@ -642,6 +815,9 @@ function renderDescription(card) {
       refresh: function () {},
     };
   }
+
+  // ---- Remix Challenge: same sample site, click-to-identify questions in
+  // sequence, then an open (ungraded) reflection textarea.
 
   // =========================================================================
   // MATCH ACTIVITY: a generalized version of the tag-match pattern above.
@@ -2284,7 +2460,8 @@ tokenButtons.forEach(function (b) {
         tryItTabBtn.setAttribute("aria-disabled", "false");
         tryItTabBtn.removeAttribute("title");
       }
-      renderCssWhereLives(card, card.cssWhereLives);
+   
+            renderCssWhereLives(card, card.cssWhereLives);
       if (card.playground) {
         appendIdeSection(
           card,
@@ -2295,6 +2472,21 @@ tokenButtons.forEach(function (b) {
       }
       return;
     }
+
+    // ---- Responsive Breakpoint Explorer: Desktop / Tablet / Mobile tabs,
+    // each a two-panel row (code left, device-framed rendering right).
+    if (card.responsiveBreakpoints) {
+      if (tryItTabBtn) {
+        tryItTabBtn.disabled = false;
+        tryItTabBtn.classList.remove("is-disabled");
+        tryItTabBtn.setAttribute("aria-disabled", "false");
+        tryItTabBtn.removeAttribute("title");
+      }
+      renderResponsiveBreakpoints(card, card.responsiveBreakpoints);
+      return;
+    }
+
+    // ---- Remix Challenge: click-to-identify + open reflection.
     
     // ---- Remix Challenge: click-to-identify + open reflection.
     if (card.remixChallenge) {
