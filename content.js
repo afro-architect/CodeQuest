@@ -492,7 +492,315 @@ const LESSON_CONTENT = [
       { heading: "Mini Challenge: Restyle a Card", videoSrc: "assets/video/placeholder-mini-challenge-restyle-a-card.mp4", body: "Change the color, font, and spacing of a sample card for an online store item (with starter code for a fake site provided).", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      body { font-family: sans-serif; background: #fdeed0; }\n      .card {\n        max-width: 260px;\n        margin: 24px auto;\n        padding: 16px;\n        background: white;\n        border-radius: 12px;\n        box-shadow: 0 4px 14px rgba(0,0,0,0.15);\n        text-align: center;\n      }\n      .card h3 { color: #ff5a3d; margin: 8px 0 4px; }\n      .card p { color: #5b5f78; font-size: 14px; }\n    </style>\n  </head>\n  <body>\n    <div class=\"card\">\n      <h3>Jordan Rivera</h3>\n      <p>Skate Park Regular</p>\n    </div>\n  </body>\n</html>" } },
       { heading: "Layout & Grids", videoSrc: "assets/video/placeholder-css-the-outfit.mp4", body: "You’ll learn how CSS layout tools like flexbox or simple grids can line up cards, buttons, and sections, turning a vertical stack into a neat, organized layout.", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      .shelf {\n        display: flex;\n        gap: 12px;\n      }\n      .item {\n        background: #eee;\n        border-radius: 8px;\n        padding: 16px;\n        flex: 1;\n        text-align: center;\n      }\n    </style>\n  </head>\n  <body>\n    <div class=\"shelf\">\n      <div class=\"item\">Shoes</div>\n      <div class=\"item\">Hats</div>\n      <div class=\"item\">Bags</div>\n    </div>\n    <!-- Try changing display: flex to display: block above to see the difference -->\n  </body>\n</html>" } },
       { heading: "Activity: Arrange the Store Shelf", videoSrc: "assets/video/placeholder-css-the-outfit.mp4", body: "A hands-on activity where you rearrange a few cards or sections into rows and columns using layout properties, and see how small CSS changes reshape the page.", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      .shelf {\n        display: block; /* Challenge: change this to flex or grid */\n      }\n      .item {\n        background: #d6eaff;\n        border-radius: 8px;\n        padding: 16px;\n        margin: 6px;\n        display: inline-block;\n        width: 100px;\n        text-align: center;\n      }\n    </style>\n  </head>\n  <body>\n    <div class=\"shelf\">\n      <div class=\"item\">Sneakers</div>\n      <div class=\"item\">Jackets</div>\n      <div class=\"item\">Watches</div>\n      <div class=\"item\">Sunglasses</div>\n    </div>\n\n    <!-- Challenge: use display: flex or display: grid on .shelf, and gap,\n         to arrange these four items into a neat row or grid -->\n  </body>\n</html>" } },
-      { heading: "Responsive CSS", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "You’ll see how to use CSS so your pages adapt to different screen sizes—like phones, tablets, and laptops—by adjusting layout, spacing, and text with simple rules.", playground: { lang: "web", code: "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      .banner {\n        background: coral;\n        color: white;\n        padding: 20px;\n        font-size: 24px;\n        text-align: center;\n      }\n\n      /* This rule only applies when the screen is 480px wide or less */\n      @media (max-width: 480px) {\n        .banner {\n          font-size: 14px;\n          padding: 8px;\n        }\n      }\n    </style>\n  </head>\n  <body>\n    <div class=\"banner\">Mall Closes at 9pm Tonight</div>\n    <!-- Try resizing your browser window narrower to see the media query kick in -->\n  </body>\n</html>" } },
+      { heading: "Responsive Design", videoSrc: "assets/video/placeholder-responsive-design.mp4", body: "A good site looks great on a phone or a laptop and adapting to any terrain, just like a good skater." },
+      {
+        heading: "Activity: Explore the Breakpoints",
+        videoSrc: "assets/video/placeholder-responsive-design.mp4",
+        body: "Resize a real site down from a laptop to a phone and its layout doesn't just shrink — it reorganizes. Each tab below shows the exact same HTML and CSS for a boba truck site at a different screen width. Watch which CSS rules light up on the left as you switch tabs, and see how the page on the right responds.",
+        responsiveBreakpoints: {
+          instructions: "Same HTML and CSS, three screen widths. Switch tabs to see exactly which CSS rules turn on at each breakpoint, and how that reshapes the page on the right.",
+          breakpointNote: "A breakpoint is the exact screen width where a page's CSS switches to a different layout, written with an @media rule. This page has two: one at 900px wide, and a second at 480px wide.",
+          modes: [
+            {
+              key: "desktop",
+              label: "Desktop",
+              frameVariant: "desktop",
+              caption: "At full width, everything lines up in a row: the nav links sit beside the logo, the hero text sits beside the art, and all three menu cards sit side by side.",
+              files: [
+                {
+                  filename: "index.html",
+                  highlight: [],
+                  lines: [
+                    '<header class="bt-header">',
+                    '  <p class="bt-logo">Bobalicious 🧋</p>',
+                    '  <nav class="bt-nav">',
+                    '    <a href="#menu">Menu</a>',
+                    '    <a href="#locations">Locations</a>',
+                    '    <a href="#order">Order</a>',
+                    "  </nav>",
+                    "</header>",
+                    '<section class="bt-hero">',
+                    '  <div class="bt-hero-text">',
+                    "    <h1>Fresh Boba, Any Time</h1>",
+                    "    <p>Hand-shaken tea, real fruit, and fresh boba pearls.</p>",
+                    "    <button>Order Now</button>",
+                    "  </div>",
+                    '  <div class="bt-hero-art">🧋</div>',
+                    "</section>",
+                    '<section class="bt-menu">',
+                    '  <div class="bt-card"><h3>Taro Milk Tea</h3><p>$5.50</p></div>',
+                    '  <div class="bt-card"><h3>Brown Sugar Boba</h3><p>$6.00</p></div>',
+                    '  <div class="bt-card"><h3>Mango Green Tea</h3><p>$5.25</p></div>',
+                    "</section>",
+                  ],
+                },
+                {
+                  filename: "styles.css",
+                  highlight: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+                  lines: [
+                    ".bt-header {",
+                    "  display: flex;",
+                    "  justify-content: space-between;",
+                    "  align-items: center;",
+                    "}",
+                    ".bt-nav {",
+                    "  display: flex;",
+                    "  gap: 20px;",
+                    "}",
+                    ".bt-hero {",
+                    "  display: flex;",
+                    "  align-items: center;",
+                    "  gap: 24px;",
+                    "}",
+                    ".bt-menu {",
+                    "  display: flex;",
+                    "  gap: 16px;",
+                    "}",
+                    "",
+                    "@media (max-width: 900px) {",
+                    "  .bt-hero {",
+                    "    flex-direction: column;",
+                    "    text-align: center;",
+                    "  }",
+                    "}",
+                    "",
+                    "@media (max-width: 480px) {",
+                    "  .bt-nav {",
+                    "    flex-direction: column;",
+                    "    gap: 8px;",
+                    "  }",
+                    "  .bt-menu {",
+                    "    flex-direction: column;",
+                    "  }",
+                    "  h1 {",
+                    "    font-size: 22px;",
+                    "  }",
+                    "}",
+                  ],
+                },
+              ],
+              previewHtml:
+                '<div class="bt-site">' +
+                '<div class="bt-header">' +
+                '<p class="bt-logo">Bobalicious 🧋</p>' +
+                '<nav class="bt-nav"><a href="#menu">Menu</a><a href="#locations">Locations</a><a href="#order">Order</a></nav>' +
+                "</div>" +
+                '<div class="bt-hero">' +
+                '<div class="bt-hero-text">' +
+                "<h1>Fresh Boba, Any Time</h1>" +
+                "<p>Hand-shaken tea, real fruit, and fresh boba pearls.</p>" +
+                "<button>Order Now</button>" +
+                "</div>" +
+                '<div class="bt-hero-art">🧋</div>' +
+                "</div>" +
+                '<div class="bt-menu">' +
+                '<div class="bt-card"><h3>Taro Milk Tea</h3><p>$5.50</p></div>' +
+                '<div class="bt-card"><h3>Brown Sugar Boba</h3><p>$6.00</p></div>' +
+                '<div class="bt-card"><h3>Mango Green Tea</h3><p>$5.25</p></div>' +
+                "</div>" +
+                "</div>",
+            },
+            {
+              key: "tablet",
+              label: "Tablet",
+              frameVariant: "tablet",
+              caption: "Cross the first breakpoint at 900px and only one rule changes: .bt-hero switches from a row to a column, so the text stacks above the art. The nav and the menu cards haven't hit their breakpoint yet, so they stay exactly the same.",
+              files: [
+                {
+                  filename: "index.html",
+                  highlight: [],
+                  lines: [
+                    '<header class="bt-header">',
+                    '  <p class="bt-logo">Bobalicious 🧋</p>',
+                    '  <nav class="bt-nav">',
+                    '    <a href="#menu">Menu</a>',
+                    '    <a href="#locations">Locations</a>',
+                    '    <a href="#order">Order</a>',
+                    "  </nav>",
+                    "</header>",
+                    '<section class="bt-hero">',
+                    '  <div class="bt-hero-text">',
+                    "    <h1>Fresh Boba, Any Time</h1>",
+                    "    <p>Hand-shaken tea, real fruit, and fresh boba pearls.</p>",
+                    "    <button>Order Now</button>",
+                    "  </div>",
+                    '  <div class="bt-hero-art">🧋</div>',
+                    "</section>",
+                    '<section class="bt-menu">',
+                    '  <div class="bt-card"><h3>Taro Milk Tea</h3><p>$5.50</p></div>',
+                    '  <div class="bt-card"><h3>Brown Sugar Boba</h3><p>$6.00</p></div>',
+                    '  <div class="bt-card"><h3>Mango Green Tea</h3><p>$5.25</p></div>',
+                    "</section>",
+                  ],
+                },
+                {
+                  filename: "styles.css",
+                  highlight: [19, 20, 21, 22, 23, 24],
+                  lines: [
+                    ".bt-header {",
+                    "  display: flex;",
+                    "  justify-content: space-between;",
+                    "  align-items: center;",
+                    "}",
+                    ".bt-nav {",
+                    "  display: flex;",
+                    "  gap: 20px;",
+                    "}",
+                    ".bt-hero {",
+                    "  display: flex;",
+                    "  align-items: center;",
+                    "  gap: 24px;",
+                    "}",
+                    ".bt-menu {",
+                    "  display: flex;",
+                    "  gap: 16px;",
+                    "}",
+                    "",
+                    "@media (max-width: 900px) {",
+                    "  .bt-hero {",
+                    "    flex-direction: column;",
+                    "    text-align: center;",
+                    "  }",
+                    "}",
+                    "",
+                    "@media (max-width: 480px) {",
+                    "  .bt-nav {",
+                    "    flex-direction: column;",
+                    "    gap: 8px;",
+                    "  }",
+                    "  .bt-menu {",
+                    "    flex-direction: column;",
+                    "  }",
+                    "  h1 {",
+                    "    font-size: 22px;",
+                    "  }",
+                    "}",
+                  ],
+                },
+              ],
+              previewHtml:
+                '<div class="bt-site">' +
+                '<div class="bt-header">' +
+                '<p class="bt-logo">Bobalicious 🧋</p>' +
+                '<nav class="bt-nav"><a href="#menu">Menu</a><a href="#locations">Locations</a><a href="#order">Order</a></nav>' +
+                "</div>" +
+                '<div class="bt-hero bt-hero--stack">' +
+                '<div class="bt-hero-text">' +
+                "<h1>Fresh Boba, Any Time</h1>" +
+                "<p>Hand-shaken tea, real fruit, and fresh boba pearls.</p>" +
+                "<button>Order Now</button>" +
+                "</div>" +
+                '<div class="bt-hero-art">🧋</div>' +
+                "</div>" +
+                '<div class="bt-menu">' +
+                '<div class="bt-card"><h3>Taro Milk Tea</h3><p>$5.50</p></div>' +
+                '<div class="bt-card"><h3>Brown Sugar Boba</h3><p>$6.00</p></div>' +
+                '<div class="bt-card"><h3>Mango Green Tea</h3><p>$5.25</p></div>' +
+                "</div>" +
+                "</div>",
+            },
+            {
+              key: "mobile",
+              label: "Mobile",
+              frameVariant: "mobile",
+              caption: "Cross the second breakpoint at 480px and two more rules kick in: the nav links stack into a list, the menu cards stack into one column, and the heading shrinks so it still fits comfortably on a small screen.",
+              files: [
+                {
+                  filename: "index.html",
+                  highlight: [],
+                  lines: [
+                    '<header class="bt-header">',
+                    '  <p class="bt-logo">Bobalicious 🧋</p>',
+                    '  <nav class="bt-nav">',
+                    '    <a href="#menu">Menu</a>',
+                    '    <a href="#locations">Locations</a>',
+                    '    <a href="#order">Order</a>',
+                    "  </nav>",
+                    "</header>",
+                    '<section class="bt-hero">',
+                    '  <div class="bt-hero-text">',
+                    "    <h1>Fresh Boba, Any Time</h1>",
+                    "    <p>Hand-shaken tea, real fruit, and fresh boba pearls.</p>",
+                    "    <button>Order Now</button>",
+                    "  </div>",
+                    '  <div class="bt-hero-art">🧋</div>',
+                    "</section>",
+                    '<section class="bt-menu">',
+                    '  <div class="bt-card"><h3>Taro Milk Tea</h3><p>$5.50</p></div>',
+                    '  <div class="bt-card"><h3>Brown Sugar Boba</h3><p>$6.00</p></div>',
+                    '  <div class="bt-card"><h3>Mango Green Tea</h3><p>$5.25</p></div>',
+                    "</section>",
+                  ],
+                },
+                {
+                  filename: "styles.css",
+                  highlight: [26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37],
+                  lines: [
+                    ".bt-header {",
+                    "  display: flex;",
+                    "  justify-content: space-between;",
+                    "  align-items: center;",
+                    "}",
+                    ".bt-nav {",
+                    "  display: flex;",
+                    "  gap: 20px;",
+                    "}",
+                    ".bt-hero {",
+                    "  display: flex;",
+                    "  align-items: center;",
+                    "  gap: 24px;",
+                    "}",
+                    ".bt-menu {",
+                    "  display: flex;",
+                    "  gap: 16px;",
+                    "}",
+                    "",
+                    "@media (max-width: 900px) {",
+                    "  .bt-hero {",
+                    "    flex-direction: column;",
+                    "    text-align: center;",
+                    "  }",
+                    "}",
+                    "",
+                    "@media (max-width: 480px) {",
+                    "  .bt-nav {",
+                    "    flex-direction: column;",
+                    "    gap: 8px;",
+                    "  }",
+                    "  .bt-menu {",
+                    "    flex-direction: column;",
+                    "  }",
+                    "  h1 {",
+                    "    font-size: 22px;",
+                    "  }",
+                    "}",
+                  ],
+                },
+              ],
+              previewHtml:
+                '<div class="bt-site">' +
+                '<div class="bt-header bt-header--stack">' +
+                '<p class="bt-logo">Bobalicious 🧋</p>' +
+                '<nav class="bt-nav bt-nav--stack"><a href="#menu">Menu</a><a href="#locations">Locations</a><a href="#order">Order</a></nav>' +
+                "</div>" +
+                '<div class="bt-hero bt-hero--stack">' +
+                '<div class="bt-hero-text bt-text-sm">' +
+                "<h1>Fresh Boba, Any Time</h1>" +
+                "<p>Hand-shaken tea, real fruit, and fresh boba pearls.</p>" +
+                "<button>Order Now</button>" +
+                "</div>" +
+                '<div class="bt-hero-art">🧋</div>' +
+                "</div>" +
+                '<div class="bt-menu bt-menu--stack">' +
+                '<div class="bt-card"><h3>Taro Milk Tea</h3><p>$5.50</p></div>' +
+                '<div class="bt-card"><h3>Brown Sugar Boba</h3><p>$6.00</p></div>' +
+                '<div class="bt-card"><h3>Mango Green Tea</h3><p>$5.25</p></div>' +
+                "</div>" +
+                "</div>",
+            },
+          ],
+        },
+      },
       { heading: "Structural Selectors", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "This section is under construction" },      
       { heading: "Attribute Selectors", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "This section is under construction" },        
       { heading: "Pseudo Classes", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "This section is under construction" },      
