@@ -1348,3 +1348,89 @@ mark.syntax-annot-highlight {
   gap: 4px;
 }
 .css-lives-preview h2, .css-lives-preview h3 { margin: 0; }
+
+
+/* ============ RESPONSIVE BREAKPOINT EXPLORER ============
+   Three tabs (Desktop / Tablet / Mobile), each a two-panel row: real
+   HTML+CSS on the left (with the CSS lines relevant to that breakpoint
+   highlighted, same convention as .css-lives-line.is-highlight) and a
+   device-framed rendering of that breakpoint's actual layout on the
+   right. Reuses .rvs-toggle for tabs and .tryit-editor-panel for the
+   responsive two-column split. */
+.rdbp-wrap { display: flex; flex-direction: column; gap: var(--space-3); }
+.rdbp-note {
+  margin: 0;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-2);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+.rdbp-note strong { color: var(--color-text); }
+.rdbp-panels.tryit-editor-panel { align-items: stretch; }
+.rdbp-code-files { display: flex; flex-direction: column; gap: var(--space-3); }
+.rdbp-caption.syntax-annot-caption { min-height: unset; }
+
+.rdbp-preview-col { display: flex; flex-direction: column; align-items: center; }
+.rdbp-device {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #fff;
+  border: 2px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+  transition: width 150ms ease;
+}
+.rdbp-device--tablet { width: 82%; }
+.rdbp-device--mobile { width: 54%; min-width: 150px; }
+
+.rdbp-device-chrome {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  background: #f1eefc;
+  border-bottom: 1px solid var(--color-border);
+}
+.rdbp-device-chrome--tablet, .rdbp-device-chrome--mobile { justify-content: center; }
+.rdbp-chrome-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.rdbp-chrome-dot--red { background: #ff5f56; }
+.rdbp-chrome-dot--yellow { background: #ffbd2e; }
+.rdbp-chrome-dot--green { background: #27c93f; }
+.rdbp-chrome-url {
+  margin-left: 6px;
+  flex: 1;
+  background: #fff;
+  border-radius: var(--radius-full);
+  padding: 2px 10px;
+  font-size: 10px;
+  color: #7c7f9c;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.rdbp-chrome-notch { width: 30px; height: 5px; border-radius: var(--radius-full); background: #c8c2e6; }
+
+.rdbp-device-body { padding: var(--space-3); }
+
+/* "Bobalicious" sample boba truck site used inside the device frame. */
+.bt-site { display: flex; flex-direction: column; gap: var(--space-3); font-family: var(--font-body); color: #23283f; }
+.bt-header { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); }
+.bt-header--stack { flex-direction: column; align-items: flex-start; gap: 6px; }
+.bt-logo { margin: 0; font-weight: 700; font-family: var(--font-display); font-size: 1rem; color: #4b2e83; }
+.bt-nav { display: flex; gap: 14px; }
+.bt-nav--stack { flex-direction: column; gap: 4px; }
+.bt-nav a { font-size: var(--text-xs); color: #4b2e83; text-decoration: underline; font-weight: 600; }
+.bt-hero { display: flex; align-items: center; gap: var(--space-3); }
+.bt-hero--stack { flex-direction: column; text-align: center; }
+.bt-hero-text h1 { margin: 0 0 4px; font-family: var(--font-display); font-size: 1.05rem; color: #1f2440; }
+.bt-hero-text.bt-text-sm h1 { font-size: 0.85rem; }
+.bt-hero-text p { margin: 0 0 8px; font-size: var(--text-xs); color: #45495e; }
+.bt-hero-text button { border: 0; border-radius: var(--radius-full); padding: 6px 14px; background: #ff5a3d; color: #fff; font-weight: 700; font-size: var(--text-xs); cursor: default; }
+.bt-hero-art { font-size: 2.2rem; line-height: 1; flex-shrink: 0; }
+.bt-menu { display: flex; gap: 10px; }
+.bt-menu--stack { flex-direction: column; }
+.bt-card { flex: 1; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 8px 10px; background: #faf7ff; }
+.bt-card h3 { margin: 0 0 2px; font-size: 0.72rem; color: #1f2440; }
+.bt-card p { margin: 0; font-size: 0.7rem; color: #45495e; }
