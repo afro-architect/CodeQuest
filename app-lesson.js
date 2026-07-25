@@ -2222,7 +2222,21 @@ tokenButtons.forEach(function (b) {
         tryItTabBtn.setAttribute("aria-disabled", "false");
         tryItTabBtn.removeAttribute("title");
       }
-      renderAnatomyLab(card, card.anatomyLab);
+      
+            renderAnatomyLab(card, card.anatomyLab);
+      return;
+    }
+
+    // ---- IDE + Site Match: two-panel matching game (code left, live
+    // rendered site right) instead of free code entry.
+    if (card.ideSiteMatch) {
+      if (tryItTabBtn) {
+        tryItTabBtn.disabled = false;
+        tryItTabBtn.classList.remove("is-disabled");
+        tryItTabBtn.setAttribute("aria-disabled", "false");
+        tryItTabBtn.removeAttribute("title");
+      }
+      renderIdeSiteMatch(card, card.ideSiteMatch);
       return;
     }
 
