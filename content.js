@@ -183,6 +183,41 @@ const LESSON_CONTENT = [
       { heading: "Helpful Terms to Know", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
       { heading: "HTML = The Ingredients", videoSrc: "assets/video/placeholder-html-the-ingredients.mp4", body: "Tags are like ingredients you line up and combine to build a page." },
       { heading: "Tags & Elements", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "Tags come in pairs: <p>...</p>, <h1>...</h1>. What's between the tags is the content." },
+      {
+        heading: "Activity: Match the Code to the Page",
+        videoSrc: "assets/video/placeholder-tags-elements.mp4",
+        body: "On the left is a real sample IDE with HTML for a snack truck's page. On the right is that exact page, rendered live. Hover either side to see how a line of code and a part of the real page connect. Then click a line of code and click the part of the site you think it produced (or start from the site — either order works) to match them up. Match all 5 to finish.",
+        ideSiteMatch: {
+          filename: "index.html",
+          instructions: "Hover either panel to see how a line of code and a part of the real page connect. Click a line of code, then click the part of the site you think it produced — or start from the site, either order works — to match them up.",
+          codeLines: [
+            { text: "<h1>Ray's Snack Truck</h1>", pairId: "h1" },
+            { text: "<p>Best tacos on the block, parked by the football field every Friday.</p>", pairId: "p" },
+            { text: "<a href=\"#menu\">See the Full Menu</a>", pairId: "a" },
+            { text: "<button>Order Now</button>", pairId: "button" },
+            { text: "<ul>", pairId: "ul" },
+            { text: "  <li>Tacos – $3</li>", pairId: "ul" },
+            { text: "  <li>Churros – $2</li>", pairId: "ul" },
+            { text: "</ul>", pairId: "ul" },
+          ],
+          siteHtml:
+            '<div class="tem-site">' +
+            '<h1 class="tem-h1">Ray’s Snack Truck</h1>' +
+            '<p class="tem-p">Best tacos on the block, parked by the football field every Friday.</p>' +
+            '<a class="tem-link" href="#menu">See the Full Menu</a>' +
+            '<button class="tem-button" type="button">Order Now</button>' +
+            '<ul class="tem-list"><li>Tacos – $3</li><li>Churros – $2</li></ul>' +
+            "</div>",
+          pairs: [
+            { id: "h1", selector: ".tem-h1", label: "Heading (<h1>)", job: "The biggest, most important text on the page — used once per page." },
+            { id: "p", selector: ".tem-p", label: "Paragraph (<p>)", job: "Holds a block of regular sentence text." },
+            { id: "a", selector: ".tem-link", label: "Link (<a>)", job: "Takes the visitor somewhere else when clicked — another page, section, or site." },
+            { id: "button", selector: ".tem-button", label: "Button (<button>)", job: "A clickable control that triggers an action, like ordering or submitting." },
+            { id: "ul", selector: ".tem-list", label: "List (<ul> + <li>)", job: "Groups related items together, one <li> per item." },
+          ],
+          successMessage: "🎉 All matched! Every line of code found its match on the real page.",
+        },
+      },
       { heading: "The IDE", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "An IDE is your coding workspace. It’s where you write and organize your HTML, CSS, and JavaScript files, see errors, and run or preview your project." },
       { heading: "Text & Content Tags", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "This section is under construction" },
       { heading: "List & Table Tags", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "This section is under construction" },
