@@ -168,7 +168,50 @@ const LESSON_CONTENT = [
           reflectionPrompt: "What did the AI understand about page structure, and what did it get wrong?"
         }
       },
-      { heading: "Responsive Design", videoSrc: "assets/video/placeholder-responsive-design.mp4", body: "A good site looks great on a phone or a laptop and adapting to any terrain, just like a good skater." },
+{
+  heading: "Responsive Design",
+  videoSrc: "assets/video/placeholder-responsive-design.mp4",
+  body: "A good site looks great on a phone or a laptop, adapting to any terrain, just like a good skater.\n\nResize a real site from a laptop down to a phone and the layout doesn't just shrink — it reorganizes. Switch between the tabs below to compare the plain page against a version with the changes called out, no code required.",
+  responsiveBreakpoints: {
+    compareMode: "annotated",
+    siteUrl: "grindworks.example",
+    instructions: "Same skate shop page, three screen widths. Switch tabs, then compare the plain preview on the left with the callouts on the right to see exactly what rearranges at each breakpoint — no code here yet, just watch the page change.",
+    breakpointNote: "A breakpoint is the screen width where a design switches to a new layout. This page has two: one where it switches to a tablet-sized layout, and one where it switches to a phone-sized layout.",
+    modes: [
+      {
+        label: "Desktop",
+        frameVariant: "desktop",
+        previewHtml: "<div class=\"sp-site\"><div class=\"sp-header\"><p class=\"sp-logo\">GrindWorks 🛹</p><nav class=\"sp-nav\"><a>Decks</a><a>Wheels</a><a>Locations</a></nav></div><div class=\"sp-hero\"><div class=\"sp-hero-text\"><h2>New Deck Drop</h2><p>Fresh graphics just landed, hand-picked by our team.</p><button>Shop Decks</button></div><div class=\"sp-hero-art\">🛹</div></div><div class=\"sp-shelf\"><div class=\"sp-item\"><h3>Street Deck</h3><p>$65</p></div><div class=\"sp-item\"><h3>Cruiser Board</h3><p>$89</p></div><div class=\"sp-item\"><h3>Grip Tape 3-Pack</h3><p>$12</p></div></div></div>",
+        annotatedHtml: "<div class=\"sp-site\"><div class=\"sp-header\"><p class=\"sp-logo\">GrindWorks 🛹</p><nav class=\"sp-nav\"><a>Decks</a><a>Wheels</a><a>Locations</a></nav></div><div class=\"sp-hero\"><div class=\"sp-hero-text\"><h2>New Deck Drop</h2><p>Fresh graphics just landed, hand-picked by our team.</p><button>Shop Decks</button></div><div class=\"sp-hero-art\">🛹</div></div><div class=\"sp-shelf\"><div class=\"sp-item\"><h3>Street Deck</h3><p>$65</p></div><div class=\"sp-item\"><h3>Cruiser Board</h3><p>$89</p></div><div class=\"sp-item\"><h3>Grip Tape 3-Pack</h3><p>$12</p></div></div></div>",
+        changes: [],
+        emptyChangeNote: "This is the starting point — the full-width layout. Switch to Tablet or Mobile to see what changes.",
+        caption: "At full width, the nav sits beside the logo, the hero text sits beside the skateboard icon, and all three product cards line up in a row."
+      },
+      {
+        label: "Tablet",
+        frameVariant: "tablet",
+        previewHtml: "<div class=\"sp-site\"><div class=\"sp-header\"><p class=\"sp-logo\">GrindWorks 🛹</p><nav class=\"sp-nav\"><a>Decks</a><a>Wheels</a><a>Locations</a></nav></div><div class=\"sp-hero sp-hero--stack\"><div class=\"sp-hero-text sp-text-sm\"><h2>New Deck Drop</h2><p>Fresh graphics just landed, hand-picked by our team.</p><button>Shop Decks</button></div><div class=\"sp-hero-art\">🛹</div></div><div class=\"sp-shelf\"><div class=\"sp-item\"><h3>Street Deck</h3><p>$65</p></div><div class=\"sp-item\"><h3>Cruiser Board</h3><p>$89</p></div><div class=\"sp-item\"><h3>Grip Tape 3-Pack</h3><p>$12</p></div></div></div>",
+        annotatedHtml: "<div class=\"sp-site\"><div class=\"sp-header\"><p class=\"sp-logo\">GrindWorks 🛹</p><nav class=\"sp-nav\"><a>Decks</a><a>Wheels</a><a>Locations</a></nav></div><div class=\"sp-hero sp-hero--stack rdbp-tag-target\"><span class=\"rdbp-tag\">1</span><div class=\"sp-hero-text sp-text-sm\"><h2>New Deck Drop</h2><p>Fresh graphics just landed, hand-picked by our team.</p><button>Shop Decks</button></div><div class=\"sp-hero-art\">🛹</div></div><div class=\"sp-shelf\"><div class=\"sp-item\"><h3>Street Deck</h3><p>$65</p></div><div class=\"sp-item\"><h3>Cruiser Board</h3><p>$89</p></div><div class=\"sp-item\"><h3>Grip Tape 3-Pack</h3><p>$12</p></div></div></div>",
+        changes: [
+          "1. The hero switches from a side-by-side row to a stacked column — the text centers itself above the skateboard icon."
+        ],
+        caption: "On a tablet-sized screen, the hero stacks. The nav and product shelf are still wide enough to stay in a row."
+      },
+      {
+        label: "Mobile",
+        frameVariant: "mobile",
+        previewHtml: "<div class=\"sp-site\"><div class=\"sp-header sp-header--stack\"><p class=\"sp-logo\">GrindWorks 🛹</p><nav class=\"sp-nav sp-nav--stack\"><a>Decks</a><a>Wheels</a><a>Locations</a></nav></div><div class=\"sp-hero sp-hero--stack\"><div class=\"sp-hero-text sp-text-sm\"><h2>New Deck Drop</h2><p>Fresh graphics just landed, hand-picked by our team.</p><button>Shop Decks</button></div><div class=\"sp-hero-art\">🛹</div></div><div class=\"sp-shelf sp-shelf--stack\"><div class=\"sp-item\"><h3>Street Deck</h3><p>$65</p></div><div class=\"sp-item\"><h3>Cruiser Board</h3><p>$89</p></div><div class=\"sp-item\"><h3>Grip Tape 3-Pack</h3><p>$12</p></div></div></div>",
+        annotatedHtml: "<div class=\"sp-site\"><div class=\"sp-header sp-header--stack rdbp-tag-target\"><span class=\"rdbp-tag\">1</span><p class=\"sp-logo\">GrindWorks 🛹</p><nav class=\"sp-nav sp-nav--stack\"><a>Decks</a><a>Wheels</a><a>Locations</a></nav></div><div class=\"sp-hero sp-hero--stack rdbp-tag-target\"><span class=\"rdbp-tag\">2</span><div class=\"sp-hero-text sp-text-sm\"><h2>New Deck Drop</h2><p>Fresh graphics just landed, hand-picked by our team.</p><button>Shop Decks</button></div><div class=\"sp-hero-art\">🛹</div></div><div class=\"sp-shelf sp-shelf--stack rdbp-tag-target\"><span class=\"rdbp-tag\">3</span><div class=\"sp-item\"><h3>Street Deck</h3><p>$65</p></div><div class=\"sp-item\"><h3>Cruiser Board</h3><p>$89</p></div><div class=\"sp-item\"><h3>Grip Tape 3-Pack</h3><p>$12</p></div></div></div>",
+        changes: [
+          "1. The header stacks: the logo sits on top, and the nav links drop into a vertical list.",
+          "2. The hero still stacks into a column, same as on tablet.",
+          "3. The product shelf goes from a row of three cards to a single stacked column."
+        ],
+        caption: "On a phone-sized screen, everything stacks: the nav links drop into a list, and the three product cards line up in a single column so they're easy to tap."
+      }
+    ]
+  }
+}     
       { heading: "Recap", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
       { heading: "What's Next?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
 ]
@@ -495,7 +538,99 @@ const LESSON_CONTENT = [
       {
         heading: "Responsive Design",
         videoSrc: "assets/video/placeholder-responsive-design.mp4",
-        body: "A good site looks great on a phone or a laptop and adapting to any terrain, just like a good skater. \n \nResize a real site from a laptop down to a phone and the layout doesn't just shrink — it reorganizes. Switch between the tabs below to see how this mall storefront rearranges itself at each screen size.", responsiveBreakpoints: { codeFree: true, siteUrl: "solezone.example", instructions: "Same mall storefront, three screen widths. Switch tabs to see how the layout reorganizes itself at each breakpoint — no code here, just watch the page change.", breakpointNote: "A breakpoint is the screen width where a design switches to a new layout. This mall storefront has two: one where it switches to a tablet-sized layout, and one where it switches to a phone-sized layout.", modes: [ { label: "Desktop", frameVariant: "desktop", previewHtml: "<div class=\"ms-site\"><div class=\"ms-header\"><p class=\"ms-logo\">SoleZone 👟</p><nav class=\"ms-nav\"><a>Shop</a><a>Sale</a><a>Locations</a></nav></div><div class=\"ms-hero\"><div class=\"ms-hero-text\"><h2>Weekend Sneaker Sale</h2><p>Save up to 30% on select styles, this weekend only.</p><button>Shop the Sale</button></div><div class=\"ms-hero-art\">👟</div></div><div class=\"ms-shelf\"><div class=\"ms-item\"><h3>Classic Runners</h3><p>$59</p></div><div class=\"ms-item\"><h3>Retro High-Tops</h3><p>$72</p></div><div class=\"ms-item\"><h3>Canvas Slip-Ons</h3><p>$45</p></div></div></div>", caption: "At full width, the nav sits beside the logo, the sale banner sits beside the sneaker icon, and all three product cards line up in a row." }, { label: "Tablet", frameVariant: "tablet", previewHtml: "<div class=\"ms-site\"><div class=\"ms-header\"><p class=\"ms-logo\">SoleZone 👟</p><nav class=\"ms-nav\"><a>Shop</a><a>Sale</a><a>Locations</a></nav></div><div class=\"ms-hero ms-hero--stack\"><div class=\"ms-hero-text ms-text-sm\"><h2>Weekend Sneaker Sale</h2><p>Save up to 30% on select styles, this weekend only.</p><button>Shop the Sale</button></div><div class=\"ms-hero-art\">👟</div></div><div class=\"ms-shelf\"><div class=\"ms-item\"><h3>Classic Runners</h3><p>$59</p></div><div class=\"ms-item\"><h3>Retro High-Tops</h3><p>$72</p></div><div class=\"ms-item\"><h3>Canvas Slip-Ons</h3><p>$45</p></div></div></div>", caption: "On a tablet-sized screen, the sale banner switches from a row to a stack — the text moves above the icon and centers itself. The nav and product shelf are still wide enough to stay in a row." }, { label: "Mobile", frameVariant: "mobile", previewHtml: "<div class=\"ms-site\"><div class=\"ms-header ms-header--stack\"><p class=\"ms-logo\">SoleZone 👟</p><nav class=\"ms-nav ms-nav--stack\"><a>Shop</a><a>Sale</a><a>Locations</a></nav></div><div class=\"ms-hero ms-hero--stack\"><div class=\"ms-hero-text ms-text-sm\"><h2>Weekend Sneaker Sale</h2><p>Save up to 30% on select styles, this weekend only.</p><button>Shop the Sale</button></div><div class=\"ms-hero-art\">👟</div></div><div class=\"ms-shelf ms-shelf--stack\"><div class=\"ms-item\"><h3>Classic Runners</h3><p>$59</p></div><div class=\"ms-item\"><h3>Retro High-Tops</h3><p>$72</p></div><div class=\"ms-item\"><h3>Canvas Slip-Ons</h3><p>$45</p></div></div></div>", caption: "On a phone-sized screen, everything stacks: the nav links drop into a list, the banner heading shrinks a bit, and the three product cards line up in a single column so they're easy to tap." } ] } },
+        body: "A good site looks great on a phone or a laptop and adapting to any terrain, just like a good skater. \n \nOn the left is a real sample IDE with the CSS for a mall storefront's page. On the right is that exact page, rendered live. Switch tabs to see exactly which CSS rule kicks in at each breakpoint, and how that changes the rendered page.",
+  responsiveBreakpoints: {
+    siteUrl: "solezone.example",
+    instructions: "Same mall storefront, three screen widths. Switch tabs to see exactly which CSS rule kicks in at each breakpoint, and how that changes the rendered page.",
+    breakpointNote: "A breakpoint is the screen width where a design switches to a new layout. This mall storefront has two: one where it switches to a tablet-sized layout, and one where it switches to a phone-sized layout.",
+    modes: [
+      {
+        label: "Desktop",
+        frameVariant: "desktop",
+        previewHtml: "<div class=\"ms-site\"><div class=\"ms-header\"><p class=\"ms-logo\">SoleZone 👟</p><nav class=\"ms-nav\"><a>Shop</a><a>Sale</a><a>Locations</a></nav></div><div class=\"ms-hero\"><div class=\"ms-hero-text\"><h2>Weekend Sneaker Sale</h2><p>Save up to 30% on select styles, this weekend only.</p><button>Shop the Sale</button></div><div class=\"ms-hero-art\">👟</div></div><div class=\"ms-shelf\"><div class=\"ms-item\"><h3>Classic Runners</h3><p>$59</p></div><div class=\"ms-item\"><h3>Retro High-Tops</h3><p>$72</p></div><div class=\"ms-item\"><h3>Canvas Slip-Ons</h3><p>$45</p></div></div></div>",
+        caption: "At full width, the nav sits beside the logo, the sale banner sits beside the sneaker icon, and all three product cards line up in a row. None of the media queries in style.css have kicked in yet.",
+        files: [
+          {
+            filename: "style.css",
+            lines: [
+              ".ms-header { display: flex; justify-content: space-between; }",
+              ".ms-nav { display: flex; gap: 18px; }",
+              ".ms-hero { display: flex; gap: 24px; }",
+              ".ms-shelf { display: flex; gap: 12px; }",
+              "",
+              "@media (max-width: 900px) {",
+              "  .ms-hero { flex-direction: column; text-align: center; }",
+              "}",
+              "",
+              "@media (max-width: 600px) {",
+              "  .ms-header { flex-direction: column; }",
+              "  .ms-nav { flex-direction: column; }",
+              "  .ms-shelf { flex-direction: column; }",
+              "}"
+            ],
+            highlight: [0, 1, 2, 3]
+          }
+        ]
+      },
+      {
+        label: "Tablet",
+        frameVariant: "tablet",
+        previewHtml: "<div class=\"ms-site\"><div class=\"ms-header\"><p class=\"ms-logo\">SoleZone 👟</p><nav class=\"ms-nav\"><a>Shop</a><a>Sale</a><a>Locations</a></nav></div><div class=\"ms-hero ms-hero--stack\"><div class=\"ms-hero-text ms-text-sm\"><h2>Weekend Sneaker Sale</h2><p>Save up to 30% on select styles, this weekend only.</p><button>Shop the Sale</button></div><div class=\"ms-hero-art\">👟</div></div><div class=\"ms-shelf\"><div class=\"ms-item\"><h3>Classic Runners</h3><p>$59</p></div><div class=\"ms-item\"><h3>Retro High-Tops</h3><p>$72</p></div><div class=\"ms-item\"><h3>Canvas Slip-Ons</h3><p>$45</p></div></div></div>",
+        caption: "At 900px or narrower, the @media (max-width: 900px) block kicks in: the hero switches from a row to a stacked column, with the text centered above the icon. The nav and shelf are still wide enough to stay in a row.",
+        files: [
+          {
+            filename: "style.css",
+            lines: [
+              ".ms-header { display: flex; justify-content: space-between; }",
+              ".ms-nav { display: flex; gap: 18px; }",
+              ".ms-hero { display: flex; gap: 24px; }",
+              ".ms-shelf { display: flex; gap: 12px; }",
+              "",
+              "@media (max-width: 900px) {",
+              "  .ms-hero { flex-direction: column; text-align: center; }",
+              "}",
+              "",
+              "@media (max-width: 600px) {",
+              "  .ms-header { flex-direction: column; }",
+              "  .ms-nav { flex-direction: column; }",
+              "  .ms-shelf { flex-direction: column; }",
+              "}"
+            ],
+            highlight: [5, 6, 7]
+          }
+        ]
+      },
+      {
+        label: "Mobile",
+        frameVariant: "mobile",
+        previewHtml: "<div class=\"ms-site\"><div class=\"ms-header ms-header--stack\"><p class=\"ms-logo\">SoleZone 👟</p><nav class=\"ms-nav ms-nav--stack\"><a>Shop</a><a>Sale</a><a>Locations</a></nav></div><div class=\"ms-hero ms-hero--stack\"><div class=\"ms-hero-text ms-text-sm\"><h2>Weekend Sneaker Sale</h2><p>Save up to 30% on select styles, this weekend only.</p><button>Shop the Sale</button></div><div class=\"ms-hero-art\">👟</div></div><div class=\"ms-shelf ms-shelf--stack\"><div class=\"ms-item\"><h3>Classic Runners</h3><p>$59</p></div><div class=\"ms-item\"><h3>Retro High-Tops</h3><p>$72</p></div><div class=\"ms-item\"><h3>Canvas Slip-Ons</h3><p>$45</p></div></div></div>",
+        caption: "At 600px or narrower, the @media (max-width: 600px) block also kicks in: the header stacks, the nav becomes a vertical list, and the shelf drops to a single column, on top of the hero rule already active from the tablet breakpoint.",
+        files: [
+          {
+            filename: "style.css",
+            lines: [
+              ".ms-header { display: flex; justify-content: space-between; }",
+              ".ms-nav { display: flex; gap: 18px; }",
+              ".ms-hero { display: flex; gap: 24px; }",
+              ".ms-shelf { display: flex; gap: 12px; }",
+              "",
+              "@media (max-width: 900px) {",
+              "  .ms-hero { flex-direction: column; text-align: center; }",
+              "}",
+              "",
+              "@media (max-width: 600px) {",
+              "  .ms-header { flex-direction: column; }",
+              "  .ms-nav { flex-direction: column; }",
+              "  .ms-shelf { flex-direction: column; }",
+              "}"
+            ],
+            highlight: [9, 10, 11, 12, 13]
+          }
+        ]
+      }
+    ]
+  }
+},
       { heading: "Structural Selectors", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "This section is under construction" },      
       { heading: "Attribute Selectors", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "This section is under construction" },        
       { heading: "Pseudo Classes", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "This section is under construction" },      
