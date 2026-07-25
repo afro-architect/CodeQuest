@@ -1418,6 +1418,66 @@ mark.syntax-annot-highlight {
 
 .rdbp-device-body { padding: var(--space-3); }
 
+/* "What Changed" panel: numbered callout badge pinned to the corner of
+   whichever element changed at this breakpoint, plus the dashed outline
+   marking that element, and the text legend underneath the panel that
+   spells out each numbered change in plain language. */
+.rdbp-tag-target { position: relative; outline: 2px dashed #e0433d; outline-offset: 4px; border-radius: 6px; }
+.rdbp-tag {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e0433d;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+.rdbp-legend { list-style: none; margin: var(--space-3) 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.rdbp-legend li { font-size: var(--text-sm); color: var(--color-text); padding-left: 2px; }
+.rdbp-legend-empty { color: var(--color-text-faint); font-style: italic; }
+
+/* "SoleZone" sample mall storefront site used inside the device frame
+   (lesson 4, Themed Mall). "GrindWorks" sample skate shop site (lesson 2,
+   Skate Park) shares the same structural layout, so the .ms-* and .sp-*
+   selectors are grouped together below. */
+.ms-site, .sp-site { display: flex; flex-direction: column; gap: var(--space-4); font-family: var(--font-body); color: #23283f; }
+.ms-header, .sp-header { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); }
+.ms-header--stack, .sp-header--stack { flex-direction: column; align-items: flex-start; gap: 8px; }
+.ms-logo, .sp-logo { margin: 0; font-weight: 700; font-family: var(--font-display); font-size: 1.15rem; color: var(--color-navy); }
+.ms-nav, .sp-nav { display: flex; gap: 18px; }
+.ms-nav--stack, .sp-nav--stack { flex-direction: column; gap: 6px; }
+.ms-nav a, .sp-nav a { font-size: var(--text-sm); color: var(--color-navy); text-decoration: underline; font-weight: 600; }
+.ms-hero, .sp-hero {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: #fff4ea;
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+.sp-hero { background: #eef3ff; }
+.ms-hero--stack, .sp-hero--stack { flex-direction: column; text-align: center; }
+.ms-hero-text h2, .sp-hero-text h2 { margin: 0 0 6px; font-family: var(--font-display); font-size: 1.25rem; color: #1f2440; }
+.ms-hero-text.ms-text-sm h2, .sp-hero-text.sp-text-sm h2 { font-size: 1rem; }
+.ms-hero-text p, .sp-hero-text p { margin: 0 0 10px; font-size: var(--text-sm); color: #45495e; }
+.ms-hero-text button, .sp-hero-text button { border: 0; border-radius: var(--radius-full); padding: 8px 18px; color: #fff; font-weight: 700; font-size: var(--text-sm); cursor: default; }
+.ms-hero-text button { background: #ff5a3d; }
+.sp-hero-text button { background: #1f2440; }
+.ms-hero-art, .sp-hero-art { font-size: 2.8rem; line-height: 1; flex-shrink: 0; }
+.ms-shelf, .sp-shelf { display: flex; gap: 12px; }
+.ms-shelf--stack, .sp-shelf--stack { flex-direction: column; }
+.ms-item, .sp-item { flex: 1; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 10px 12px; background: #faf7ff; }
+.ms-item h3, .sp-item h3 { margin: 0 0 3px; font-size: 0.85rem; color: #1f2440; }
+.ms-item p, .sp-item p { margin: 0; font-size: 0.8rem; color: #45495e; }
+
 /* "Bobalicious" sample boba truck site used inside the device frame. */
 .bt-site { display: flex; flex-direction: column; gap: var(--space-3); font-family: var(--font-body); color: #23283f; }
 .bt-header { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); }
