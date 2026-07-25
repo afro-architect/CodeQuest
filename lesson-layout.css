@@ -1351,12 +1351,16 @@ mark.syntax-annot-highlight {
 
 
 /* ============ RESPONSIVE BREAKPOINT EXPLORER ============
-   Three tabs (Desktop / Tablet / Mobile), each a two-panel row: real
-   HTML+CSS on the left (with the CSS lines relevant to that breakpoint
-   highlighted, same convention as .css-lives-line.is-highlight) and a
-   device-framed rendering of that breakpoint's actual layout on the
-   right. Reuses .rvs-toggle for tabs and .tryit-editor-panel for the
-   responsive two-column split. */
+   Three tabs (Desktop / Tablet / Mobile), two panels per tab. Reuses
+   .rvs-toggle for the tab buttons and .tryit-editor-panel for the 50/50
+   column split.
+   - Default mode: "Sample IDE" code column + "Sample Site" device column
+     (data has no compareMode) -- used once CSS syntax has been taught.
+   - compareMode: "annotated": no code column at all. Two device columns
+     instead -- a plain "Sample Site" preview and a "What Changed" preview
+     with numbered callout badges (.rdbp-tag) plus a text legend below it
+     (.rdbp-legend) -- used before CSS syntax has been introduced. */
+
 .rdbp-wrap { display: flex; flex-direction: column; gap: var(--space-3); }
 .rdbp-note {
   margin: 0;
