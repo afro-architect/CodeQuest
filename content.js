@@ -213,8 +213,9 @@ const LESSON_CONTENT = [
 },   
       { heading: "Recap", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
       { heading: "What's Next?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-]
-  },
+    ]
+  }
+},
   {
     id: "lesson-3",
     title: "What is HTML?",
