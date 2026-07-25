@@ -247,29 +247,48 @@ function renderDescription(card) {
   }
 }
 
+    // Icon set for the per-card "resources" download list. Pass a "type" of
+  // pdf / zip / doc / image / link on each resource item to pick one; falls
+  // back to the generic "doc" icon if omitted or unrecognized.
+  var RESOURCE_ICONS = {
+    pdf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>',
+    zip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>',
+    doc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+    image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>',
+    link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>'
+  };
+
+  // Renders card.resources (optional array of { label, href, type }) as real
+  // download links. type "link" opens in a new tab (e.g. an external repo or
+  // doc site); every other type gets a `download` attribute so the browser
+  // saves the file instead of navigating to it. Cards with no resources
+  // array just show the "unlock" note (unchanged legacy behavior) or, if
+  // present, the forkLink CTA.
   function renderResources(card, isLastSubLesson) {
     resourcesPanel.innerHTML = "";
-    var ul = document.createElement("ul");
-    ul.setAttribute("role", "list");
+    var items = card.resources || [];
 
-    var starter = document.createElement("li");
-    starter.innerHTML =
-      '<a class="resource-link" href="#" data-resource-placeholder="starter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span>Starter file</span></a>';
-    ul.appendChild(starter);
-
-    var cheatsheet = document.createElement("li");
-    cheatsheet.innerHTML =
-      '<a class="resource-link" href="#" data-resource-placeholder="cheatsheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>Cheat sheet</span></a>';
-    ul.appendChild(cheatsheet);
-
-    resourcesPanel.appendChild(ul);
-
-    ul.querySelectorAll("[data-resource-placeholder]").forEach(function (link) {
-      link.addEventListener("click", function (e) {
-        e.preventDefault();
-        showToast("This is a placeholder resource -- real files go here!");
+    if (items.length > 0) {
+      var ul = document.createElement("ul");
+      ul.setAttribute("role", "list");
+      items.forEach(function (res) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.className = "resource-link";
+        a.href = res.href || "#";
+        if (res.type === "link") {
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+        } else {
+          a.setAttribute("download", "");
+        }
+        var icon = RESOURCE_ICONS[res.type] || RESOURCE_ICONS.doc;
+        a.innerHTML = icon + "<span>" + (res.label || "Download") + "</span>";
+        li.appendChild(a);
+        ul.appendChild(li);
       });
-    });
+      resourcesPanel.appendChild(ul);
+    }
 
     // For modules 8-15, the last sub-lesson of the stop surfaces the existing
     // forkLink CTA here instead of only in the old carousel.
@@ -286,8 +305,8 @@ function renderDescription(card) {
         e.preventDefault();
         showToast("This is a placeholder link \u2014 your real starter repo goes here!");
       });
-      resourcesPanel.appendChild(fork);
-    } else if (!isLastSubLesson) {
+       resourcesPanel.appendChild(fork);
+    } else if (items.length === 0 && !isLastSubLesson) {
       var note = document.createElement("p");
       note.className = "resources-empty";
       note.textContent = "More resources unlock as you move through this stop.";
