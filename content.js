@@ -47,7 +47,7 @@ const LESSON_CONTENT = [
     title: "What Makes a Website?",
     theme: "Trailhead / Campsite",
     cards: [
-      { heading: "Course Introduction", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
+      { heading: "Course Introduction", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them.", resources: [ { label: "Course Topics Map", href: "assets/resources/lesson-1/course-topics-map.png", type: "image" } ] },
       { heading: "What You'll Learn", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
       { heading: "Icebreaker", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
       { heading: "Helpful Terms to Know", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
