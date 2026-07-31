@@ -740,19 +740,6 @@ const LESSON_CONTENT = [
       { heading: "How Python Works in Practice", videoSrc: "assets/video/placeholder-python-a-new-board.mp4", body: "Python works like a restaurant. You start with a customer at the table = user with a browser (front end). They see the menu (web page) and click or type. They request (what the user wants: a page, data, or an action) as if it were an order slip. A waiter carryies the slip (network/API), just moving the request back and forth. The Kitchen is like the backend server where Python runs. This is where the actual work happens: checking the menu, combining ingredients, timing, validation, etc. This is where python can reference recipes (code) + keep track of what's kept on the pantry shelves (database information). Python follows recipe instructions (functions) and pulls ingredients (stored data). Then it sends a response as if it were a finished plate (HTML, JSON, or data) back to the customer’s browser to display. So Python specifically is the kitchen logic: how the order is interpreted, what steps are taken, how ingredients/data are combined, and what result gets sent back." },
       { heading: "Why Learn Python At My Age?", videoSrc: "assets/video/placeholder-why-python.mp4", body: "Easy to Read, has a huge community of people to help you learn, and gives you real skills to complete tasks you care about faster and in a more intelligent way." },
       { heading: "Where Python Runs", videoSrc: "assets/video/placeholder-where-python-runs.mp4", body: "Python runs almost anywhere: in a terminal on your own laptop, inside a browser-based tool like this one, on a server you never see, or on tiny devices like a Raspberry Pi. Wherever it runs, the code you write looks exactly the same." },
-      { heading: "Recap", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "What's Next?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-]
-  },
-  {
-    id: "lesson-7",
-    title: "What do you need before building Python projects?",
-    theme: "Basecamp / Gear Shop",
-    cards: [
-      { heading: "How Are Python Fundamentals Sequenced?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Python talks to the computer → Stores info → Uses Rules to Decide → Repeat → Organizes → and Uses other tools." },
-      { heading: "What You'll Learn", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "Icebreaker", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Think about a checklist or packing list you've used before a trip. Why does the order of steps matter? Python fundamentals work the same way and each piece builds on the one before it." },
-      { heading: "Helpful Terms to Know", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Key words for this unit: variable, data type, conditional, loop, function, and import. You'll meet each one in this section, then use all of them together in your first real projects." },
  {
   heading: "Python Syntax: How the Pieces Fit Together",
   videoSrc: "assets/video/placeholder-python-syntax.mp4",
@@ -844,7 +831,21 @@ const LESSON_CONTENT = [
       { code: "print('Scripts are great for saving and reusing your work.')", output: "Scripts are great for saving and reusing your work." },
     ],
   },
-},
+},      
+      { heading: "Recap", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
+      { heading: "What's Next?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
+]
+  },
+  {
+    id: "lesson-7",
+    title: "What do you need before building Python projects?",
+    theme: "Basecamp / Gear Shop",
+    cards: [
+      { heading: "How Are Python Fundamentals Sequenced?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Python talks to the computer → Stores info → Uses Rules to Decide → Repeat → Organizes → and Uses other tools." },
+      { heading: "What You'll Learn", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
+      { heading: "Icebreaker", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Think about a checklist or packing list you've used before a trip. Why does the order of steps matter? Python fundamentals work the same way and each piece builds on the one before it." },
+      { heading: "Helpful Terms to Know", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Key words for this unit: variable, data type, conditional, loop, function, and import. You'll meet each one in this section, then use all of them together in your first real projects." },
+
       { heading: "Variables & Data Types", videoSrc: "assets/video/placeholder-variables-types-data.mp4", body: "Numbers, strings, booleans; and the basic 'gear' every Python project uses.", playground: { lang: "python", code: "age = 13                  # int (whole number)\nheight = 5.2               # float (decimal number)\nname = 'Explorer'          # string (text)\nis_hiking = True           # boolean (True or False)\n\nprint(name, 'is', age, 'years old and', height, 'feet tall.')\nprint('Currently hiking:', is_hiking)" } },
       { heading: "Basic Operations", videoSrc: "assets/video/placeholder-variables-types-data.mp4", body: "Python can do math (+, -, *, /) and combine text (+) just like a calculator and a word processor rolled into one.", playground: { lang: "python", code: "trail_miles = 8\nmiles_hiked = 3\n\nprint('Miles left:', trail_miles - miles_hiked)\nprint('Total snacks needed:', trail_miles * 2)\n\nfirst_name = 'Alex'\nlast_name = 'Rivera'\nprint('Hiker: ' + first_name + ' ' + last_name)" } },
       { heading: "Naming Conventions", videoSrc: "assets/video/placeholder-variables-types-data.mp4", body: "Variable names should be lowercase with underscores between words (like trail_miles), start with a letter, and describe what they hold. Good names make your code easier for you (and everyone else) to read.", playground: { lang: "python", code: "# Good names: clear and describe what they hold\ntrail_miles = 8\nhiker_name = 'Alex'\n\n# Avoid names like these — they work, but they're confusing later on\nx = 8\nthing2 = 'Alex'\n\nprint(hiker_name, 'has', trail_miles, 'miles to go.')" } },
