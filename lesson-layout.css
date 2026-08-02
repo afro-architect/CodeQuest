@@ -73,7 +73,15 @@ body { overflow-x: hidden; }
     pointer-events: auto;
   }
 }
-
+/* The sticky "Stamp My Passport" bar uses z-index:100, which sits above
+     the mobile sidebar drawer (z-index:60) and its scrim (z-index:59). With
+     the drawer open, that put the bar on top of the last 1-2 items in the
+     topic list -- they were scrollable into view but visually covered by
+     the frosted bar, and elastic overscroll made it look like they
+     "disappeared" again the instant you let go. Hiding the bar while the
+     drawer is open removes the overlap entirely. */
+  body.sidebar-open .stamp-bar { display: none; }
+}
 /* ============ SIDEBAR ============ */
 .course-sidebar {
   flex: 0 0 clamp(260px, 28%, 340px);
