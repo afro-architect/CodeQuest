@@ -738,11 +738,6 @@ body[data-lesson-id] .toast { bottom: calc(var(--space-6) + 76px); }
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
-.card-body {
-  white-space: normal;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
 
 
 .fork-cta {
