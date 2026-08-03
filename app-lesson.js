@@ -199,9 +199,10 @@
 // ---------------------------------------------------------------------------
 // DESCRIPTION BODY FORMATTING
 //
-// Lesson bodies are plain strings authored in content.js. They are prose, but
-// that prose constantly *mentions* HTML tags ("<p>", "</h1>", "<!-- ... -->").
-// Two things used to break because of that:
+// Lesson bodies are plain strings authored in content.js. Authors write normal
+// prose that constantly *mentions* HTML tags ("<p>", "</h1>", "<!-- ... -->")
+// and that often has a real code example dropped in the middle of it. Two
+// things used to break because of that:
 //
 //   1. The old isCode check was `/\n/ && /[{}();=<>]/`, so ANY multi-paragraph
 //      description that mentioned a tag or used parentheses was dumped into a
@@ -212,10 +213,19 @@
 //      typo can never break the page), so that markup showed up literally as
 //      the characters "<code>&lt;p&gt;</code>".
 //
-// So: detect real code blocks strictly, and render prose through a formatter
-// that turns tag mentions into inline <code> chips using DOM nodes only. No
-// innerHTML anywhere, so bad content can render oddly but can never break the
-// page.
+// How it works now: the body is split on blank lines into chunks, and EACH
+// chunk is judged on its own. A chunk that reads like source becomes a real
+// syntax-highlighted code block; everything else becomes a paragraph whose tag
+// mentions are turned into inline <code> chips. Authoring rule for content.js:
+//
+//   body: "Some prose about tags like <p> and <h1>.\n\n" +
+//         "p {\n  color: blue;\n}\n\n" +
+//         "More prose after the code."
+//
+// No language hints, no escaping, no <code> wrappers. The language is detected
+// from the code itself. Everything is built with DOM nodes and textContent —
+// there is no innerHTML on this path, so bad content can look odd but can
+// never break the page.
 // ---------------------------------------------------------------------------
 
 // A line is "code-like" if it reads like source, not like a sentence.
@@ -223,23 +233,33 @@ function looksLikeCodeLine(line) {
   var t = line.trim();
   if (!t) return true; // blank lines are neutral
   if (t.split(/\s+/).length > 14) return false; // long = prose
-  if (/^(from|import|def|class|return|if|for|while|print|const|let|var|function)\b/.test(t)) return true;
-  if (/^[@#/)\]}{]/.test(t)) return true;
+  if (/^(from|import|export|def|class|return|if|elif|else|for|while|print|const|let|var|function|fetch|document|await|async|try|except|with)\b/.test(t)) return true;
+  if (/^[@#/)\].}{]/.test(t)) return true;
   if (/^<\/?[a-zA-Z!]/.test(t)) return true;
-  if (/[{(;,=]$/.test(t)) return true;
+  if (/[{(;,=:]$/.test(t)) return true;
   if (/^[\w.$\[\]'"]+\s*=[^=]/.test(t)) return true;
   if (/^[\w.$]+\(/.test(t)) return true;
-  if (/^[\w.$]+:\s*[\w'"[{(]/.test(t)) return true;
+  if (/^[\w.$-]+:\s*[\w'"[{(#]/.test(t)) return true;
   return false;
 }
 
-function looksLikeCodeBlock(bodyText) {
-  if (!/\n/.test(bodyText)) return false;
-  var lines = bodyText.split("\n").filter(function (l) {
+// True when EVERY non-empty line of this chunk reads like source. Multi-line is
+// required for the loose signals; a one-liner has to look unmistakably like
+// code (an assignment, a definition, or a bare call) so that prose which just
+// happens to open with something like "print() displays output..." stays prose.
+function looksLikeCodeChunk(chunk) {
+  var lines = chunk.split("\n").filter(function (l) {
     return l.trim() !== "";
   });
-  if (lines.length < 2) return false;
-  return lines.every(looksLikeCodeLine);
+  if (lines.length === 0) return false;
+  if (!lines.every(looksLikeCodeLine)) return false;
+  if (lines.length >= 2) return true;
+
+  var only = lines[0].trim();
+  if (/^(from|import|export|def|class|function|const|let|var)\b/.test(only)) return true;
+  if (/^[\w.$\[\]]+\s*=[^=]/.test(only)) return true;
+  if (/^[\w.$]+\(.*\)\s*;?$/.test(only)) return true;
+  return false;
 }
 
 // Undo hand-authored markup/entities so the formatter sees plain text.
@@ -254,33 +274,274 @@ function normalizeBodyChunk(text) {
     .replace(/&amp;/g, "&");
 }
 
+// ---------------------------------------------------------------------------
+// SYNTAX HIGHLIGHTING FOR STATIC CODE BLOCKS
+//
+// Deliberately self-contained: the live playgrounds use CodeMirror from a CDN,
+// but description code blocks must still color correctly with no network, so
+// this is a small ordered-alternation tokenizer instead. Each rule is
+// [className, regex] and rules are tried in order, so comments and strings win
+// before keywords can match inside them. Rule regexes must not contain
+// capturing groups — group N of the combined regex maps to rule N.
+// ---------------------------------------------------------------------------
+
+var HL_RULES = {
+  html: [
+    ["comment", /<!--[\s\S]*?-->/],
+    ["keyword", /<!doctype[^>]*>|<!DOCTYPE[^>]*>/],
+    ["string", /"[^"\n]*"|'[^'\n]*'/],
+    ["tag", /<\/?[a-zA-Z][\w:-]*|\/?>/],
+    ["attr", /[a-zA-Z-]+(?=\s*=)/]
+  ],
+  css: [
+    ["comment", /\/\*[\s\S]*?\*\//],
+    ["string", /"[^"\n]*"|'[^'\n]*'/],
+    ["keyword", /@[\w-]+/],
+    ["selector", /(?:^|\n)[ \t]*[^\n{}();]+(?=\{)/],
+    ["prop", /[-a-zA-Z]+(?=\s*:)/],
+    ["number", /#[0-9a-fA-F]{3,8}\b|\b\d+(?:\.\d+)?(?:px|em|rem|%|vw|vh|vmin|s|ms|deg|fr)?\b/],
+    ["punct", /[{}:;,()]/]
+  ],
+  js: [
+    ["comment", /\/\/[^\n]*|\/\*[\s\S]*?\*\//],
+    ["string", /"[^"\n]*"|'[^'\n]*'|`[^`]*`/],
+    ["keyword", /\b(?:let|const|var|function|return|if|else|for|while|do|new|import|export|default|from|class|extends|this|typeof|instanceof|await|async|try|catch|finally|throw|switch|case|break|continue|true|false|null|undefined)\b|=>/],
+    ["number", /\b\d+(?:\.\d+)?\b/],
+    ["func", /\b[a-zA-Z_$][\w$]*(?=\s*\()/],
+    ["punct", /[{}()[\];,.=+\-*/<>!?:&|]/]
+  ],
+  python: [
+    ["comment", /#[^\n]*/],
+    ["string", /"""[\s\S]*?"""|'''[\s\S]*?'''|[fbruFBRU]{0,2}"[^"\n]*"|[fbruFBRU]{0,2}'[^'\n]*'/],
+    ["keyword", /\b(?:def|return|if|elif|else|for|while|in|not|and|or|is|import|from|as|class|lambda|with|try|except|finally|raise|pass|break|continue|global|True|False|None|print|input|len|range|int|str|float|bool|list|dict|set|tuple)\b/],
+    ["number", /\b\d+(?:\.\d+)?\b/],
+    ["func", /\b[a-zA-Z_]\w*(?=\s*\()/],
+    ["punct", /[{}()[\];,.=+\-*/<>!?:]/]
+  ]
+};
+
+// Combined regex per language, built once.
+var HL_CACHE = {};
+function highlighterFor(lang) {
+  if (HL_CACHE[lang]) return HL_CACHE[lang];
+  var rules = HL_RULES[lang] || HL_RULES.js;
+  var source = rules
+    .map(function (rule) {
+      return "(" + rule[1].source + ")";
+    })
+    .join("|");
+  HL_CACHE[lang] = { rules: rules, re: new RegExp(source, "g") };
+  return HL_CACHE[lang];
+}
+
+// Blanks out the *contents* of comments and string literals, keeping line
+// structure intact. Language sniffing runs on this stripped copy so English
+// words inside a comment ("# Python runs the function now") can never be
+// mistaken for keywords, while the comment markers themselves stay visible as
+// signals (`#` leans Python, `//` leans JS).
+function stripCodeProse(code) {
+  return String(code)
+    .replace(/("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|`(?:[^`\\]|\\.)*`)/g, function (m) {
+      return m[0] + m[0];
+    })
+    .replace(/\/\*[\s\S]*?\*\//g, "/**/")
+    .replace(/(#|\/\/)[^\n]*/g, "$1");
+}
+
+// Guess the language from the code itself so authors never have to label it.
+function detectCodeLang(code) {
+  if (/^\s*<!?[a-zA-Z]/.test(code) || /<\/[a-zA-Z][\w-]*>/.test(code)) return "html";
+  if (/^\s*@(?:media|import|keyframes|supports)\b/.test(code)) return "css";
+  if (/(?:^|\n)[^\n{}]*\{[^{}]*[-a-zA-Z]+\s*:[^{}]*;/.test(code) && !/\b(?:function|let|const|def)\b/.test(code)) {
+    return "css";
+  }
+
+  var bare = stripCodeProse(code);
+
+  // Python signals: def/elif/print()/input(), a bare `#` comment, snake_case
+  // dunders, or a colon followed by an indented block.
+  var pythonish =
+    /(?:^|\n)\s*(?:def|elif|class|from|import|with|for|while|if|try|except)\s/.test(bare) ||
+    /\b(?:print|input|len|range|str|int|float)\(/.test(bare) ||
+    /\b(?:None|True|False|elif|self|__\w+__)\b/.test(bare) ||
+    /(?:^|\n)\s*#/.test(bare) ||
+    /:\s*\n\s+\S/.test(bare);
+
+  // JS signals, deliberately narrow: a declaration at the start of a line, an
+  // arrow, a `function` used as a keyword (not the English word), a browser
+  // global, or an ES-module import/export.
+  var jsish =
+    /(?:^|\n)\s*(?:let|const|var)\s+[A-Za-z_$]/.test(bare) ||
+    /=>/.test(bare) ||
+    /\bfunction\s*[A-Za-z_$]*\s*\(/.test(bare) ||
+    /\b(?:console|document|window|Math|JSON)\./.test(bare) ||
+    /\b(?:fetch|querySelector|addEventListener|getElementById)\(/.test(bare) ||
+    /(?:^|\n)\s*(?:export|import)\b[^\n]*\bfrom\b/.test(bare) ||
+    /(?:^|\n)\s*export\s/.test(bare) ||
+    /(?:^|\n)\s*\/\//.test(bare);
+
+  if (pythonish && !jsish) return "python";
+  if (jsish && !pythonish) return "js";
+  if (jsish && pythonish) {
+    // Both voted. Semicolon-terminated lines are the tiebreaker JS wins on.
+    return /;\s*(?:\n|$)/.test(bare) ? "js" : "python";
+  }
+  // Neither signalled outright. Semicolon line endings mean JS; otherwise
+  // assume Python, the quieter of the two syntaxes. Braces alone are NOT a JS
+  // signal, because Python dict literals use them too.
+  return /;\s*(?:\n|$)/.test(bare) ? "js" : "python";
+}
+
+// Appends `code` into `parent` as highlighted <span> runs.
+function appendHighlighted(parent, code, lang) {
+  var hl = highlighterFor(lang);
+  var last = 0;
+  var match;
+  hl.re.lastIndex = 0;
+  while ((match = hl.re.exec(code)) !== null) {
+    if (match[0] === "") {
+      hl.re.lastIndex += 1;
+      continue;
+    }
+    if (match.index > last) {
+      parent.appendChild(document.createTextNode(code.slice(last, match.index)));
+    }
+    var cls = null;
+    for (var i = 1; i < match.length; i++) {
+      if (match[i] !== undefined) {
+        cls = hl.rules[i - 1][0];
+        break;
+      }
+    }
+    var span = document.createElement("span");
+    span.className = "tok-" + (cls || "punct");
+    span.textContent = match[0];
+    parent.appendChild(span);
+    last = match.index + match[0].length;
+  }
+  if (last < code.length) {
+    parent.appendChild(document.createTextNode(code.slice(last)));
+  }
+}
+
+// Builds one <pre><code> code block, highlighted, with the detected language
+// shown as a small label so students can tell CSS from JS from Python.
+function renderCodeBlock(code) {
+  var trimmed = code.replace(/^\n+/, "").replace(/\s+$/, "");
+  var lang = detectCodeLang(trimmed);
+
+  var wrap = document.createElement("div");
+  wrap.className = "code-block code-block--" + lang;
+
+  var label = document.createElement("span");
+  label.className = "code-block__lang";
+  label.textContent = lang === "js" ? "JavaScript" : lang.toUpperCase();
+  wrap.appendChild(label);
+
+  var pre = document.createElement("pre");
+  var codeEl = document.createElement("code");
+  appendHighlighted(codeEl, trimmed, lang);
+  pre.appendChild(codeEl);
+  wrap.appendChild(pre);
+  return wrap;
+}
+
 // Matches an HTML comment or a single tag mention, e.g. <p>, </h1>,
 // <a href="...">, <!-- note -->. Kept deliberately narrow (no nested < >).
 var TAG_MENTION_RE = /<!--[\s\S]*?-->|<\/?[a-zA-Z][^<>]*>/g;
 
-// Appends `text` into `parent`, wrapping tag mentions in <code> chips.
+// Inline code-ish mentions inside prose that aren't HTML tags: property or
+// function names, selectors, terminal commands. Chipped so "font-family" or
+// "pip install pandas" reads as code, not as an odd hyphenated word.
+var INLINE_CODE_RE = /`([^`\n]+)`/g;
+
+// Appends `text` into `parent`, wrapping backtick spans and tag mentions in
+// <code> chips.
 function appendWithTagChips(parent, text) {
-  var lastIndex = 0;
-  var match;
-  TAG_MENTION_RE.lastIndex = 0;
-  while ((match = TAG_MENTION_RE.exec(text)) !== null) {
-    if (match.index > lastIndex) {
-      parent.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+  // Backticks first: an author-controlled, unambiguous signal.
+  var segments = [];
+  var lastTick = 0;
+  var tick;
+  INLINE_CODE_RE.lastIndex = 0;
+  while ((tick = INLINE_CODE_RE.exec(text)) !== null) {
+    if (tick.index > lastTick) segments.push({ chip: false, text: text.slice(lastTick, tick.index) });
+    segments.push({ chip: true, text: tick[1] });
+    lastTick = tick.index + tick[0].length;
+  }
+  if (lastTick < text.length) segments.push({ chip: false, text: text.slice(lastTick) });
+
+  segments.forEach(function (seg) {
+    if (seg.chip) {
+      var explicit = document.createElement("code");
+      explicit.className = "tag-chip";
+      explicit.textContent = seg.text;
+      parent.appendChild(explicit);
+      return;
     }
-    var chip = document.createElement("code");
-    chip.className = "tag-chip";
-    chip.textContent = match[0];
-    parent.appendChild(chip);
-    lastIndex = match.index + match[0].length;
-  }
-  if (lastIndex < text.length) {
-    parent.appendChild(document.createTextNode(text.slice(lastIndex)));
-  }
+    var lastIndex = 0;
+    var match;
+    TAG_MENTION_RE.lastIndex = 0;
+    while ((match = TAG_MENTION_RE.exec(seg.text)) !== null) {
+      if (match.index > lastIndex) {
+        parent.appendChild(document.createTextNode(seg.text.slice(lastIndex, match.index)));
+      }
+      var chip = document.createElement("code");
+      chip.className = "tag-chip";
+      chip.textContent = match[0];
+      parent.appendChild(chip);
+      lastIndex = match.index + match[0].length;
+    }
+    if (lastIndex < seg.text.length) {
+      parent.appendChild(document.createTextNode(seg.text.slice(lastIndex)));
+    }
+  });
 }
 
 // Short lead-ins the curriculum uses over and over. Bolded so long
 // descriptions scan instead of reading as one grey wall of text.
 var LEAD_IN_RE = /^([A-Z][^.:!?<>\n]{2,54}:)\s+/;
+
+// A chunk whose lines all start with the same bullet marker becomes a real
+// list. Authors write "- item" or "* item" at the start of each line.
+var BULLET_RE = /^\s*[-*•]\s+/;
+
+// Inside a list item the curriculum names the term first, separated by an em
+// dash ("Colors — color for text and background-color for background"). Bold
+// the term so the list scans like a glossary.
+var ITEM_TERM_RE = /^([^—:\n]{2,44}?)\s+—\s+/;
+
+function renderBulletList(chunk) {
+  var items = chunk.split("\n").filter(function (l) {
+    return l.trim() !== "";
+  });
+  if (items.length < 2 || !items.every(function (l) { return BULLET_RE.test(l); })) return null;
+
+  var ul = document.createElement("ul");
+  ul.className = "body-list";
+  items.forEach(function (line) {
+    var li = document.createElement("li");
+    var text = line.replace(BULLET_RE, "");
+    // Only the em-dash glossary form is bolded inside a list. The sentence
+    // lead-in rule stays out of lists on purpose: applying it here bolded some
+    // items and not others depending on whether the sentence happened to have
+    // a colon in it, which read as random emphasis.
+    var term = text.match(ITEM_TERM_RE);
+    if (term && term[1].split(/\s+/).length <= 6) {
+      var termEl = document.createElement("strong");
+      termEl.className = "body-lead-in";
+      // Run the term through the chip pass too: glossary terms are very often
+      // themselves code ("`cd` — change which folder you're in"), and setting
+      // textContent here would leave the backticks showing literally.
+      appendWithTagChips(termEl, term[1]);
+      li.appendChild(termEl);
+      li.appendChild(document.createTextNode(" — "));
+      text = text.slice(term[0].length);
+    }
+    appendWithTagChips(li, text);
+    ul.appendChild(li);
+  });
+  return ul;
+}
 
 function renderBodyParagraph(rawChunk) {
   var chunk = normalizeBodyChunk(rawChunk).trim();
@@ -291,13 +552,88 @@ function renderBodyParagraph(rawChunk) {
   if (leadIn && leadIn[1].split(/\s+/).length <= 8) {
     var strong = document.createElement("strong");
     strong.className = "body-lead-in";
-    strong.textContent = leadIn[1];
+    appendWithTagChips(strong, leadIn[1]);
     p.appendChild(strong);
     p.appendChild(document.createTextNode(" "));
     chunk = chunk.slice(leadIn[0].length);
   }
   appendWithTagChips(p, chunk);
   return p;
+}
+
+// Renders one blank-line-separated chunk as a list, a code block, or a
+// paragraph. Code detection runs on the RAW chunk (before entity decoding) so
+// that indentation is preserved exactly as authored.
+function renderBodyChunk(rawChunk) {
+  if (!rawChunk || !rawChunk.trim()) return null;
+  var list = renderBulletList(rawChunk);
+  if (list) return list;
+  if (looksLikeCodeChunk(rawChunk)) return renderCodeBlock(normalizeBodyChunk(rawChunk));
+  return renderBodyParagraph(rawChunk);
+}
+
+// ---------------------------------------------------------------------------
+// COMPARISON TABLES
+//
+// Drop a `table` object on any card to get a real, responsive table:
+//
+//   table: {
+//     caption: "How They Connect",              // optional
+//     headers: ["Concept", "What it is"],
+//     rows: [["Algorithm", "The logical plan"]]
+//   }
+//
+// Wide on desktop, stacked into labeled rows on narrow screens (the header text
+// is echoed into a data-label attribute that CSS shows on mobile), so it can
+// never force the page wider than the viewport.
+// ---------------------------------------------------------------------------
+function renderTable(spec) {
+  var headers = spec.headers || [];
+  var rows = spec.rows || [];
+  if (!rows.length) return null;
+
+  var wrap = document.createElement("div");
+  wrap.className = "lesson-table-wrap";
+
+  var table = document.createElement("table");
+  table.className = "lesson-table";
+
+  if (spec.caption) {
+    var cap = document.createElement("caption");
+    cap.textContent = spec.caption;
+    table.appendChild(cap);
+  }
+
+  if (headers.length) {
+    var thead = document.createElement("thead");
+    var headRow = document.createElement("tr");
+    headers.forEach(function (h) {
+      var th = document.createElement("th");
+      th.setAttribute("scope", "col");
+      appendWithTagChips(th, String(h));
+      headRow.appendChild(th);
+    });
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+  }
+
+  var tbody = document.createElement("tbody");
+  rows.forEach(function (row) {
+    var tr = document.createElement("tr");
+    row.forEach(function (cell, i) {
+      var isRowHeader = i === 0 && headers.length > 0;
+      var td = document.createElement(isRowHeader ? "th" : "td");
+      if (isRowHeader) td.setAttribute("scope", "row");
+      if (headers[i]) td.setAttribute("data-label", String(headers[i]));
+      appendWithTagChips(td, String(cell));
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+
+  wrap.appendChild(table);
+  return wrap;
 }
 
 function renderDescription(card) {
@@ -308,23 +644,18 @@ function renderDescription(card) {
   descPanel.appendChild(h2);
 
   var bodyText = card.body || "";
-  var isCode = !card.forkLink && looksLikeCodeBlock(bodyText);
 
-  if (isCode) {
-    var bodyPre = document.createElement("pre");
-    var bodyCodeEl = document.createElement("code");
-    bodyCodeEl.textContent = bodyText;
-    bodyPre.appendChild(bodyCodeEl);
-    descPanel.appendChild(bodyPre);
-  } else {
-    // Split on blank lines into paragraphs; a lone \n stays inside its
-    // paragraph as a normal wrap so single-newline bodies don't fragment.
-    bodyText
-      .split(/\n\s*\n/)
-      .forEach(function (chunk) {
-        var p = renderBodyParagraph(chunk);
-        if (p) descPanel.appendChild(p);
-      });
+  // Split on blank lines into chunks; a lone \n stays inside its chunk as a
+  // normal wrap so single-newline prose doesn't fragment, while a \n inside a
+  // detected code chunk is preserved as a real line break.
+  bodyText.split(/\n[ \t]*\n/).forEach(function (chunk) {
+    var el = renderBodyChunk(chunk);
+    if (el) descPanel.appendChild(el);
+  });
+
+  if (card.table) {
+    var tableEl = renderTable(card.table);
+    if (tableEl) descPanel.appendChild(tableEl);
   }
 
   if (card.uiBlock) {
