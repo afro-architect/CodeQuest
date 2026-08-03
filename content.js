@@ -224,7 +224,11 @@ const LESSON_CONTENT = [
       { heading: "What You'll Learn", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
       { heading: "Icebreaker", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
       { heading: "Helpful Terms to Know", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "HTML = The Ingredients", videoSrc: "assets/video/placeholder-html-the-ingredients.mp4", body: "Tags are like ingredients you line up and combine to build a page." },
+      { heading: "HTML = The Ingredients", videoSrc: "assets/video/placeholder-html-the-ingredients.mp4", body: "HTML (HyperText Markup Language) is the skeleton of every website you've ever visited — TikTok, YouTube, your school portal, all of it. It's not really a "programming language" like Python; it's a markup language, meaning its whole job is to label pieces of content so a browser knows what ingredients make up a website. \n \nThe labels tell the browser what's a heading, what's a paragraph, what's an image, and so on. \n \nThink of it like a set of instructions for how to label the ingredients or parts that you combine to make up the internet.
+
+\n \nWhy it matters: before you can make a website look cool or do anything interactive, you need something for the styling (CSS) and behavior (JavaScript/Python-backed logic) to attach to, like the bones of a meat based dish. 
+
+\n \nHTML is that foundation — skip it and there's nothing to build on. \n \nIn your skill progression, HTML is literally step one of "how the web works," and everything else (CSS, JavaScript, even backend Python with frameworks like Flask) gets layered on top of it." },
       { heading: "Tags & Elements", videoSrc: "assets/video/placeholder-tags-elements.mp4", body: "Tags come in pairs: <p>...</p>, <h1>...</h1>. What's between the tags is the content." },
       {
         heading: "Activity: Match the Code to the Page",
