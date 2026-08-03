@@ -196,6 +196,110 @@
   var descPanel = document.querySelector('[data-panel="description"]');
   var resourcesPanel = document.querySelector('[data-panel="resources"]');
 
+// ---------------------------------------------------------------------------
+// DESCRIPTION BODY FORMATTING
+//
+// Lesson bodies are plain strings authored in content.js. They are prose, but
+// that prose constantly *mentions* HTML tags ("<p>", "</h1>", "<!-- ... -->").
+// Two things used to break because of that:
+//
+//   1. The old isCode check was `/\n/ && /[{}();=<>]/`, so ANY multi-paragraph
+//      description that mentioned a tag or used parentheses was dumped into a
+//      <pre> block. <pre> doesn't wrap, so long prose blew out horizontally
+//      and pushed the whole mobile layout wider than the viewport.
+//   2. Authors worked around #1 by hand-writing "<code>&lt;p&gt;</code>" in the
+//      body string. But bodies are inserted with textContent (on purpose, so a
+//      typo can never break the page), so that markup showed up literally as
+//      the characters "<code>&lt;p&gt;</code>".
+//
+// So: detect real code blocks strictly, and render prose through a formatter
+// that turns tag mentions into inline <code> chips using DOM nodes only. No
+// innerHTML anywhere, so bad content can render oddly but can never break the
+// page.
+// ---------------------------------------------------------------------------
+
+// A line is "code-like" if it reads like source, not like a sentence.
+function looksLikeCodeLine(line) {
+  var t = line.trim();
+  if (!t) return true; // blank lines are neutral
+  if (t.split(/\s+/).length > 14) return false; // long = prose
+  if (/^(from|import|def|class|return|if|for|while|print|const|let|var|function)\b/.test(t)) return true;
+  if (/^[@#/)\]}{]/.test(t)) return true;
+  if (/^<\/?[a-zA-Z!]/.test(t)) return true;
+  if (/[{(;,=]$/.test(t)) return true;
+  if (/^[\w.$\[\]'"]+\s*=[^=]/.test(t)) return true;
+  if (/^[\w.$]+\(/.test(t)) return true;
+  if (/^[\w.$]+:\s*[\w'"[{(]/.test(t)) return true;
+  return false;
+}
+
+function looksLikeCodeBlock(bodyText) {
+  if (!/\n/.test(bodyText)) return false;
+  var lines = bodyText.split("\n").filter(function (l) {
+    return l.trim() !== "";
+  });
+  if (lines.length < 2) return false;
+  return lines.every(looksLikeCodeLine);
+}
+
+// Undo hand-authored markup/entities so the formatter sees plain text.
+function normalizeBodyChunk(text) {
+  return text
+    .replace(/<\/?code>/gi, "")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#0?39;/g, "'")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&");
+}
+
+// Matches an HTML comment or a single tag mention, e.g. <p>, </h1>,
+// <a href="...">, <!-- note -->. Kept deliberately narrow (no nested < >).
+var TAG_MENTION_RE = /<!--[\s\S]*?-->|<\/?[a-zA-Z][^<>]*>/g;
+
+// Appends `text` into `parent`, wrapping tag mentions in <code> chips.
+function appendWithTagChips(parent, text) {
+  var lastIndex = 0;
+  var match;
+  TAG_MENTION_RE.lastIndex = 0;
+  while ((match = TAG_MENTION_RE.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parent.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+    }
+    var chip = document.createElement("code");
+    chip.className = "tag-chip";
+    chip.textContent = match[0];
+    parent.appendChild(chip);
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) {
+    parent.appendChild(document.createTextNode(text.slice(lastIndex)));
+  }
+}
+
+// Short lead-ins the curriculum uses over and over. Bolded so long
+// descriptions scan instead of reading as one grey wall of text.
+var LEAD_IN_RE = /^([A-Z][^.:!?<>\n]{2,54}:)\s+/;
+
+function renderBodyParagraph(rawChunk) {
+  var chunk = normalizeBodyChunk(rawChunk).trim();
+  if (!chunk) return null;
+
+  var p = document.createElement("p");
+  var leadIn = chunk.match(LEAD_IN_RE);
+  if (leadIn && leadIn[1].split(/\s+/).length <= 8) {
+    var strong = document.createElement("strong");
+    strong.className = "body-lead-in";
+    strong.textContent = leadIn[1];
+    p.appendChild(strong);
+    p.appendChild(document.createTextNode(" "));
+    chunk = chunk.slice(leadIn[0].length);
+  }
+  appendWithTagChips(p, chunk);
+  return p;
+}
+
 function renderDescription(card) {
   descPanel.innerHTML = "";
 
@@ -204,7 +308,7 @@ function renderDescription(card) {
   descPanel.appendChild(h2);
 
   var bodyText = card.body || "";
-  var isCode = /\n/.test(bodyText) && /[{}();=<>]/.test(bodyText) && !card.forkLink;
+  var isCode = !card.forkLink && looksLikeCodeBlock(bodyText);
 
   if (isCode) {
     var bodyPre = document.createElement("pre");
@@ -213,16 +317,13 @@ function renderDescription(card) {
     bodyPre.appendChild(bodyCodeEl);
     descPanel.appendChild(bodyPre);
   } else {
+    // Split on blank lines into paragraphs; a lone \n stays inside its
+    // paragraph as a normal wrap so single-newline bodies don't fragment.
     bodyText
       .split(/\n\s*\n/)
-      .map(function (chunk) {
-        return chunk.trim();
-      })
-      .filter(Boolean)
       .forEach(function (chunk) {
-        var p = document.createElement("p");
-        p.textContent = chunk;
-        descPanel.appendChild(p);
+        var p = renderBodyParagraph(chunk);
+        if (p) descPanel.appendChild(p);
       });
   }
 
