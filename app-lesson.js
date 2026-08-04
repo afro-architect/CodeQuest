@@ -1,10 +1,10 @@
-// app-lesson.js Ã¢â‚¬â€Â shared behavior for every lesson-N.html page: renders the
+// app-lesson.js â€” shared behavior for every lesson-N.html page: renders the
 // sidebar mini-course (stop accordion + sub-lesson list), the video player +
 // tabs content browser for the active sub-lesson, wires the fixed
 // Stamp My Passport button, dark-mode toggle, and the locked-page guard.
 //
 // NOTE: completeLesson()/getProgress()/getLessonState() come from progress.js
-// and are NOT modified by this file Ã¢â‚¬â€Â this file only reads/calls them exactly
+// and are NOT modified by this file â€” this file only reads/calls them exactly
 // as the previous carousel version did.
 
 (function () {
@@ -51,7 +51,7 @@
   function renderAccordion() {
     accordionEl.innerHTML = "";
 
-    // Only render THIS stop Ã¢â‚¬â€Â other stops are intentionally hidden from the
+    // Only render THIS stop â€” other stops are intentionally hidden from the
     // sidebar so students stay focused on the current unit's sub-lessons.
     var nodeIdx = QUEST_NODES.findIndex(function (n) {
       return n.id === LESSON_ID;
@@ -150,7 +150,7 @@
     if (src) {
       videoEl.src = src;
       videoEl.play().catch(function () {
-        /* placeholder source may not resolve Ã¢â‚¬â€Â poster stays as fallback */
+        /* placeholder source may not resolve â€” poster stays as fallback */
       });
     }
     videoPlayerEl.classList.add("is-playing");
@@ -746,7 +746,7 @@ function renderDescription(card) {
     }
   }
 
-  // giscus config Ã¢â‚¬â€Â GitHub Discussions-powered comments for afro-architect/CodeQuest
+  // giscus config â€” GitHub Discussions-powered comments for afro-architect/CodeQuest
   var GISCUS_CONFIG = {
     repo: "afro-architect/CodeQuest",
     repoId: "R_kgDOTdW5Bg",
@@ -803,7 +803,7 @@ function renderDescription(card) {
   // =========================================================================
   var tryItPanel = document.querySelector('[data-panel="tryit"]');
 
-  // Shared Pyodide instance Ã¢â‚¬â€Â loaded lazily once per page view, reused across
+  // Shared Pyodide instance â€” loaded lazily once per page view, reused across
   // every Python sub-lesson card on this same lesson page.
   var pyodideInstance = null;
   var pyodidePromise = null;
@@ -3285,7 +3285,7 @@ tokenButtons.forEach(function (b) {
       return;
     }
 
-    // Playground exists Ã¢â‚¬â€Â enable the tab.
+    // Playground exists â€” enable the tab.
     if (tryItTabBtn) {
       tryItTabBtn.disabled = false;
       tryItTabBtn.classList.remove("is-disabled");
@@ -3380,7 +3380,7 @@ tokenButtons.forEach(function (b) {
       });
       cm.setValue(code || "");
       // Container may have been zero-width at mount time (e.g. tab panel was
-      // hidden with display:none) Ã¢â‚¬â€Â refresh on the next frame so CodeMirror
+      // hidden with display:none) â€” refresh on the next frame so CodeMirror
       // re-measures itself and renders every line correctly.
       requestAnimationFrame(function () {
         cm.refresh();
@@ -3757,4 +3757,3 @@ tokenButtons.forEach(function (b) {
     });
   }
 })();
-
