@@ -1,4 +1,4 @@
-/* lesson-layout.css â€” sidebar + video-player + tabs "mini-course" layout for
+/* lesson-layout.css Ã¢â‚¬â€ sidebar + video-player + tabs "mini-course" layout for
    lesson-N.html pages. Extends style.css's adventure design tokens; does not
    redefine palette/fonts. Loaded after style.css on every lesson page. */
 
@@ -55,7 +55,7 @@ body { overflow-x: hidden; }
 
 @media (max-width: 767px) {
   .sidebar-toggle { display: inline-flex; }
-  /* align-items: stretch is required here â€” the base .course-shell rule uses
+  /* align-items: stretch is required here Ã¢â‚¬â€ the base .course-shell rule uses
      flex-start so the sidebar and content top-align on desktop's row layout.
      In column mode (mobile), flex-start lets flex children size to their own
      content width instead of the container's width, so a child with wide
@@ -404,6 +404,17 @@ body { overflow-x: hidden; }
    spacing of its own. */
 .panel-description p + p { margin-top: var(--space-4); }
 
+/* Anything following a list, a code block or a table needs the same breathing
+   room that p + p gets, otherwise the next paragraph hugs the block it follows. */
+.panel-description .body-list + p,
+.panel-description .code-block + p,
+.panel-description .lesson-table-wrap + p,
+.panel-description .body-list + .code-block,
+.panel-description .code-block + .body-list,
+.panel-description .body-list + .body-list {
+  margin-top: var(--space-4);
+}
+
 .panel-description .body-lead-in {
   color: var(--color-text);
   font-weight: 800;
@@ -442,11 +453,197 @@ body { overflow-x: hidden; }
   white-space: normal;
   overflow-wrap: break-word;
   word-break: break-word;
+  /* A chip that wraps across two lines gets its padding, border and rounded
+     corners applied to BOTH fragments, so it still reads as one pill instead
+     of a box that looks cut in half. */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 [data-theme="dark"] .panel-description code.tag-chip {
   background: var(--color-surface-offset);
   color: var(--color-primary);
   border-color: var(--color-border);
+}
+
+/* Bullet chunks in a description body. Authors write "- item" on consecutive
+   lines in content.js and the formatter turns them into a real <ul>. */
+.panel-description .body-list {
+  margin-top: var(--space-4);
+  padding-left: var(--space-5);
+  max-width: 65ch;
+  list-style: disc;
+}
+.panel-description .body-list li {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  overflow-wrap: break-word;
+}
+.panel-description .body-list li + li { margin-top: var(--space-2); }
+
+/* ---------------------------------------------------------------------------
+   STATIC CODE BLOCKS
+
+   Built by renderCodeBlock() in app-lesson.js: any blank-line-separated chunk
+   of a description body that reads like source becomes one of these, with the
+   language auto-detected and shown in the corner badge. The <pre> keeps its
+   navy background in both themes, so the token palette below only has to be
+   legible on navy -- no dark-mode variants needed.
+   --------------------------------------------------------------------------- */
+.panel-description .code-block {
+  position: relative;
+  margin-top: var(--space-4);
+  max-width: 100%;
+  min-width: 0;
+}
+.panel-description .code-block__lang {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  padding: 0.15em 0.6em;
+  border-radius: 0 var(--radius-md) 0 var(--radius-sm, 6px);
+  background: rgba(255, 255, 255, 0.12);
+  color: #c9d2f5;
+  font-family: var(--font-body);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.panel-description .code-block pre {
+  margin-top: 0;
+  padding-right: var(--space-6);
+  white-space: pre;
+  tab-size: 2;
+}
+
+/* Token palette, tuned for the navy code background. */
+.panel-description .tok-comment { color: #8b9ac4; font-style: italic; }
+.panel-description .tok-string { color: #a5e8b0; }
+.panel-description .tok-keyword { color: #ff9ec4; font-weight: 700; }
+.panel-description .tok-number { color: #ffd48a; }
+.panel-description .tok-func { color: #8fd6ff; }
+.panel-description .tok-tag { color: #ff9ec4; }
+.panel-description .tok-attr { color: #ffd48a; }
+.panel-description .tok-prop { color: #8fd6ff; }
+.panel-description .tok-selector { color: #ffd48a; font-weight: 700; }
+.panel-description .tok-punct { color: #c3cbe8; }
+
+/* ---------------------------------------------------------------------------
+   COMPARISON TABLES
+
+   Built by renderTable() from a card's `table: { headers, rows }` field. Wide
+   layout on desktop; below 640px each row collapses into a stacked block with
+   the column name pulled from the data-label attribute, so a five-column table
+   can never force the page wider than a phone screen.
+   --------------------------------------------------------------------------- */
+.panel-description .lesson-table-wrap {
+  margin-top: var(--space-5);
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.panel-description .lesson-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+.panel-description .lesson-table caption {
+  caption-side: top;
+  text-align: left;
+  padding-bottom: var(--space-3);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: var(--text-base);
+}
+.panel-description .lesson-table th,
+.panel-description .lesson-table td {
+  padding: var(--space-3);
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--color-divider);
+  overflow-wrap: break-word;
+}
+.panel-description .lesson-table thead th {
+  background: var(--color-surface-offset-2);
+  color: var(--color-text);
+  font-weight: 800;
+  white-space: nowrap;
+}
+.panel-description .lesson-table tbody th {
+  color: var(--color-text);
+  font-weight: 700;
+}
+.panel-description .lesson-table tbody tr:nth-child(even) {
+  background: var(--color-surface-offset);
+}
+[data-theme="dark"] .panel-description .lesson-table thead th {
+  background: var(--color-surface-offset);
+}
+
+@media (max-width: 639px) {
+  /* Shrink code a touch on phones so the sample lines used in the lesson
+     bodies fit without sideways scrolling. The <pre> is still a horizontal
+     scroll container, so an unusually long line is reachable, never clipped. */
+  .panel-description .code-block pre {
+    font-size: 0.75rem;
+    padding: var(--space-3);
+    padding-right: var(--space-6);
+  }
+
+  /* The caption must be forced back to a block once the table itself is no
+     longer a table box, otherwise it shrink-wraps to the longest word and
+     stacks one word per line. */
+  .panel-description .lesson-table caption {
+    display: block;
+    width: auto;
+  }
+
+  .panel-description .lesson-table,
+  .panel-description .lesson-table tbody,
+  .panel-description .lesson-table tr,
+  .panel-description .lesson-table th,
+  .panel-description .lesson-table td {
+    display: block;
+    width: auto;
+  }
+  .panel-description .lesson-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .panel-description .lesson-table tbody tr {
+    margin-bottom: var(--space-4);
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .panel-description .lesson-table tbody th {
+    background: var(--color-surface-offset-2);
+    font-size: var(--text-base);
+  }
+  .panel-description .lesson-table td {
+    border-bottom: none;
+  }
+  .panel-description .lesson-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 2px;
+    color: var(--color-text-faint);
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
 }
 
 /* Resources panel */
@@ -559,6 +756,245 @@ body { overflow-x: hidden; }
   box-shadow: var(--shadow-md);
 }
 .panel-resources .fork-cta svg { width: 18px; height: 18px; }
+
+
+/* ==========================================================================
+   IDE + Site Match activity ("Match the Code to the Page")
+   Left panel is a mock IDE, right panel is the same markup rendered as a real
+   little page. Hovering either side lights up its counterpart; clicking one
+   side then the other locks the pair in.
+   ========================================================================== */
+.ism-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.ism-progress {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-faint);
+}
+
+.ism-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  align-items: start;
+  min-width: 0;
+}
+
+.ism-panel {
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* ---- Left: the mock IDE ---- */
+.ism-panel--code { background: var(--color-navy); border-color: var(--color-navy); }
+
+.ism-filetab,
+.ism-browsertab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.ism-filetab {
+  background: rgba(255, 255, 255, 0.08);
+  color: #dfe5f7;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+.ism-browsertab {
+  background: var(--color-surface-offset);
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+.ism-dots {
+  flex: none;
+  width: 34px;
+  height: 8px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 4px 4px, var(--color-pink) 3px, transparent 3.5px),
+    radial-gradient(circle at 17px 4px, var(--color-gold) 3px, transparent 3.5px),
+    radial-gradient(circle at 30px 4px, var(--color-teal) 3px, transparent 3.5px);
+}
+
+.ism-codelines {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-2) 0;
+  min-width: 0;
+}
+
+.ism-codeline {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  width: 100%;
+  padding: 3px var(--space-3);
+  background: transparent;
+  border: 0;
+  border-left: 3px solid transparent;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  /* Reset the inherited body line-height: without this the row is measured
+     against a 16px strut and every line sits ~15px further apart than the
+     code inside it actually needs. */
+  line-height: 1.7;
+  color: #dfe5f7;
+}
+.ism-linenum {
+  flex: none;
+  width: 1.4em;
+  text-align: right;
+  color: #7b88b0;
+  font-size: 0.72rem;
+  line-height: 1.7;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+.ism-linecode {
+  flex: 1 1 auto;
+  min-width: 0;
+  /* Wrap rather than scroll. A student has to be able to read the whole line
+     to match it, and a hidden horizontal scrollbar inside a card inside a tab
+     is not somewhere anyone thinks to look. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.78rem;
+  line-height: 1.7;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  color: #dfe5f7;
+}
+.ism-tick {
+  flex: none;
+  opacity: 0;
+  color: var(--color-teal);
+  font-weight: 800;
+  /* Matches the code's own metrics so the checkmark never sets the row height. */
+  font-size: 0.78rem;
+  line-height: 1.7;
+}
+
+.ism-codeline:hover:not(:disabled),
+.ism-codeline.is-peek { background: rgba(255, 255, 255, 0.09); }
+.ism-codeline.is-selected {
+  background: rgba(255, 255, 255, 0.14);
+  border-left-color: var(--color-gold);
+}
+.ism-codeline.is-matched {
+  background: rgba(88, 214, 165, 0.16);
+  border-left-color: var(--color-teal);
+  cursor: default;
+}
+.ism-codeline.is-matched .ism-tick { opacity: 1; }
+.ism-codeline:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: -2px;
+}
+
+/* ---- Right: the rendered page ---- */
+.ism-site-host {
+  background: #fff;
+  padding: var(--space-4);
+  font-family: var(--font-body);
+  color: #23283f;
+}
+
+/* The sample page's own look. Scoped under .ism-site-host so these generic
+   names can never affect the surrounding lesson UI. */
+.ism-site-host .tem-site { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.ism-site-host .tem-h1 { margin: 0; font-size: 1.15rem; font-weight: 800; line-height: 1.25; color: #23283f; }
+.ism-site-host .tem-p { margin: 0; font-size: 0.85rem; line-height: 1.5; color: #4a5170; }
+.ism-site-host .tem-link { font-size: 0.85rem; font-weight: 700; color: #2f6df6; text-decoration: underline; }
+.ism-site-host .tem-button {
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 0;
+  background: #2f6df6;
+  color: #fff;
+  cursor: pointer;
+}
+.ism-site-host .tem-list { margin: 0; padding-left: 1.15rem; font-size: 0.85rem; line-height: 1.6; color: #4a5170; }
+
+/* Clickable regions inside the rendered page. */
+.ism-site-host .ism-target {
+  position: relative;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 2px transparent;
+  transition: box-shadow 0.12s ease, background-color 0.12s ease;
+}
+.ism-site-host .ism-target:hover,
+.ism-site-host .ism-target.is-peek { box-shadow: 0 0 0 2px var(--color-primary); }
+.ism-site-host .ism-target.is-selected { box-shadow: 0 0 0 3px var(--color-gold); }
+.ism-site-host .ism-target.is-matched {
+  box-shadow: 0 0 0 2px var(--color-teal);
+  background: rgba(88, 214, 165, 0.14);
+  cursor: default;
+}
+/* The button paints its own background, and the matched tint would replace it
+   with pale teal under white label text. Keep its fill; the teal ring already
+   signals the match. */
+.ism-site-host .tem-button.is-matched { background: #2f6df6; }
+.ism-site-host .ism-target:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* ---- Legend ---- */
+.ism-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.ism-legend-item {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-text-faint);
+  padding-left: var(--space-4);
+  position: relative;
+}
+.ism-legend-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-border);
+}
+.ism-legend-item.is-matched { color: var(--color-text-muted); }
+.ism-legend-item.is-matched::before { background: var(--color-teal); }
+.ism-legend-item strong { color: var(--color-text); font-weight: 800; }
+
+.ism-legend-empty {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-faint);
+}
+
+.ism-reset { align-self: flex-start; }
+
+/* Stack the two panels on narrow screens; side-by-side is unreadable there. */
+@media (max-width: 719px) {
+  .ism-panels { grid-template-columns: 1fr; }
+}
+
+[data-theme="dark"] .ism-browsertab { background: var(--color-surface-offset); }
+[data-theme="dark"] .ism-panel--site { border-color: var(--color-border); }
 
 /* ---- Try It tab: disabled state on tab button ---- */
 .tab-btn[disabled],
