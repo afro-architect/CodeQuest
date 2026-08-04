@@ -1,4 +1,4 @@
-/* lesson-layout.css Ã¢â‚¬â€ sidebar + video-player + tabs "mini-course" layout for
+/* lesson-layout.css â€” sidebar + video-player + tabs "mini-course" layout for
    lesson-N.html pages. Extends style.css's adventure design tokens; does not
    redefine palette/fonts. Loaded after style.css on every lesson page. */
 
@@ -55,7 +55,7 @@ body { overflow-x: hidden; }
 
 @media (max-width: 767px) {
   .sidebar-toggle { display: inline-flex; }
-  /* align-items: stretch is required here Ã¢â‚¬â€ the base .course-shell rule uses
+  /* align-items: stretch is required here â€” the base .course-shell rule uses
      flex-start so the sidebar and content top-align on desktop's row layout.
      In column mode (mobile), flex-start lets flex children size to their own
      content width instead of the container's width, so a child with wide
