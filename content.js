@@ -63,16 +63,16 @@ const LESSON_CONTENT = [
     title: "Parts of a Website",
     theme: "Skate Park",
     cards: [
-      { heading: "What You'll Learn", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Every website is made of the same recurring parts — frames, blocks, text hierarchy, layout, and forms. This stop teaches you to name them and spot them everywhere." },
+      { heading: "What You'll Learn", videoSrc: "assets/video/L2-what-you-will-learn.mp4", body: "Every website is made of the same recurring parts — frames, blocks, text hierarchy, layout, and forms. This stop teaches you to name them and spot them everywhere." },
       { heading: "Icebreaker", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Think of an app or site you use all the time — what's the first thing your eyes land on when it opens? Share what you noticed in the discussion tab." },
-      { heading: "Anatomy of a Website - Page Structure", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Every page shares the same basic frame: header, navigation, body, and footer — the book covers, table of contents, and chapter of the site." },
-      { heading: "Content Blocks Inside the Page Structure", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Inside the body, content is organized into blocks like hero sections, cards, and featured sections — each one doing its own job, like a post in a feed." },
-      { heading: "Text Hierarchy On a Page", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Headings, subheadings, body text, and captions create a hierarchy so your brain knows what to read first." },
-      { heading: "Layout and Grid", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Layout is how many columns a page uses and in what order; grid is the invisible lines that keep those blocks lined up." },
-      { heading: "Forms As Interactive Parts", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Forms are how a website listens back to you — titles, labels, inputs, radio buttons, checkboxes, and a submit button all play a role." },
+      { heading: "Anatomy of a Website - Page Structure", videoSrc: "assets/video/L2-anatomy-of-a-website.mp4", body: "Every page shares the same basic frame: header, navigation, body, and footer — the book covers, table of contents, and chapter of the site." },
+      { heading: "Content Blocks Inside the Page Structure", videoSrc: "assets/L2-content-blocks.mp4", body: "Inside the body, content is organized into blocks like hero sections, cards, and featured sections — each one doing its own job, like a post in a feed." },
+      { heading: "Text Hierarchy On a Page", videoSrc: "assets/video/L2-text-hierarchy.mp4", body: "Headings, subheadings, body text, and captions create a hierarchy so your brain knows what to read first." },
+      { heading: "Layout and Grid", videoSrc: "assets/video/L2-layout.mp4", body: "Layout is how many columns a page uses and in what order; grid is the invisible lines that keep those blocks lined up." },
+      { heading: "Forms As Interactive Parts", videoSrc: "assets/video/L2-forms.mp4", body: "Forms are how a website listens back to you — titles, labels, inputs, radio buttons, checkboxes, and a submit button all play a role." },
       {
         heading: "Activity: Website Anatomy Lab",
-        videoSrc: "assets/video/placeholder-header-body-footer.mp4",
+        videoSrc: "assets/video/L2-website-anatomy-lab.mp4",
         body: "Below is a real sample website for a skate crew. Hover over any part \u2014 header, nav, hero, cards, footer, form \u2014 to see its boundary outlined. Click a highlighted part to answer two questions about it: what is this part called, and what job does it do? Pick your answers from the buttons; no typing needed. Get both right and that part gets checked off. Work through all 8 parts.",
         anatomyLab: {
           siteHtml: SKATE_SITE_HTML,
@@ -81,7 +81,7 @@ const LESSON_CONTENT = [
       },
       {
         heading: "How Did This Land?",
-        videoSrc: "assets/video/placeholder-header-body-footer.mp4",
+        videoSrc: "assets/video/L2-how-did-this-land.mp4",
         body: "Here's that same skate crew site again. This time, click directly on the page to answer three quick questions: where's the hero, which text is the H1, and which text is the body copy. Then there's an open reflection question \u2014 no right answer, just your thinking: if this were a music site instead of a skate site, what would you move, rename, or restyle first, and why?",
         remixChallenge: {
           siteHtml: SKATE_SITE_HTML,
@@ -113,7 +113,7 @@ const LESSON_CONTENT = [
       },
       {
         heading: "Vibe Coding Extension",
-        videoSrc: "assets/video/placeholder-header-body-footer.mp4",
+        videoSrc: "assets/video/L2-vibe-coding.mp4",
         body: "An AI tool was given this prompt: \"Build a homepage for a student skate club with a header, nav, hero section, 3 content cards, heading hierarchy, and footer.\" Below is what it actually produced. Your job isn't to build it yourself \u2014 it's to diagnose it. Look at the preview, answer the diagnostic questions, check off anything you'd fix for clarity, then write a short final reflection.",
         vibeCoding: {
           starterPrompt: "Build a homepage for a student skate club with:\n- header\n- nav\n- hero section\n- 3 content cards\n- heading hierarchy\n- footer",
@@ -170,7 +170,7 @@ const LESSON_CONTENT = [
       },
 {
   heading: "Responsive Design",
-  videoSrc: "assets/video/placeholder-responsive-design.mp4",
+  videoSrc: "assets/video/L2-responsive-design.mp4",
   body: "A good site looks great on a phone or a laptop, adapting to any terrain, just like a good skater.\n\nResize a real site from a laptop down to a phone and the layout doesn't just shrink â€” it reorganizes. Switch between the tabs below to compare the plain page against a version with the changes called out, no code required.",
   responsiveBreakpoints: {
     compareMode: "annotated",
@@ -212,8 +212,8 @@ const LESSON_CONTENT = [
     ]
   }
 },
-      { heading: "Recap", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "You now know the anatomy of any page: header, navigation, body, and footer, built from content blocks, organized with text hierarchy, arranged in a layout, and made interactive with forms." },
-      { heading: "What's Next?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Next up: getting hands-on with the actual HTML code behind this structure, then styling it with CSS." },
+      { heading: "Recap", videoSrc: "assets/video/L2-recap.mp4", body: "You now know the anatomy of any page: header, navigation, body, and footer, built from content blocks, organized with text hierarchy, arranged in a layout, and made interactive with forms." },
+      { heading: "What's Next?", videoSrc: "assets/video/L2-whats-nexto.mp4", body: "Next up: getting hands-on with the actual HTML code behind this structure, then styling it with CSS." },
     ]
   },
   {
