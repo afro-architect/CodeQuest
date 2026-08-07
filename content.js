@@ -64,7 +64,7 @@ const LESSON_CONTENT = [
     theme: "Skate Park",
     cards: [
       { heading: "What You'll Learn", videoSrc: "assets/video/L2-what-you-will-learn.mp4", body: "Every website is made of the same recurring parts — frames, blocks, text hierarchy, layout, and forms. This stop teaches you to name them and spot them everywhere." },
-      { heading: "Icebreaker", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Think of an app or site you use all the time — what's the first thing your eyes land on when it opens? Share what you noticed in the discussion tab." },
+      { heading: "Icebreaker", videoSrc: "assets/video/L2-icebreaker.mp4", body: "Think of an app or site you use all the time — what's the first thing your eyes land on when it opens? Share what you noticed in the discussion tab." },
       { heading: "Anatomy of a Website - Page Structure", videoSrc: "assets/video/L2-anatomy-of-a-website.mp4", body: "Every page shares the same basic frame: header, navigation, body, and footer — the book covers, table of contents, and chapter of the site." },
       { heading: "Content Blocks Inside the Page Structure", videoSrc: "assets/L2-content-blocks.mp4", body: "Inside the body, content is organized into blocks like hero sections, cards, and featured sections — each one doing its own job, like a post in a feed." },
       { heading: "Text Hierarchy On a Page", videoSrc: "assets/video/L2-text-hierarchy.mp4", body: "Headings, subheadings, body text, and captions create a hierarchy so your brain knows what to read first." },
