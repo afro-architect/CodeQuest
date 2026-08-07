@@ -213,7 +213,7 @@ const LESSON_CONTENT = [
   }
 },
       { heading: "Recap", videoSrc: "assets/video/L2-recap.mp4", body: "You now know the anatomy of any page: header, navigation, body, and footer, built from content blocks, organized with text hierarchy, arranged in a layout, and made interactive with forms." },
-      { heading: "What's Next?", videoSrc: "assets/video/L2-whats-nexto.mp4", body: "Next up: getting hands-on with the actual HTML code behind this structure, then styling it with CSS." },
+      { heading: "What's Next?", videoSrc: "assets/video/L2-whats-next.mp4", body: "Next up: getting hands-on with the actual HTML code behind this structure, then styling it with CSS." },
     ]
   },
   {
