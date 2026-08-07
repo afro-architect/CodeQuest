@@ -48,14 +48,14 @@ const LESSON_CONTENT = [
     theme: "Trailhead / Campsite",
     cards: [
       { heading: "Course Introduction", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them.", resources: [ { label: "Course Topics Map", href: "assets/resources/lesson-1/course-topics-map.png", type: "image" } ] },
-      { heading: "What You'll Learn", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "Icebreaker", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "Helpful Terms to Know", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "Every Website is a Conversation", videoSrc: "assets/video/placeholder-every-website-is-a-conversation.mp4", body: "Websites are how computers talk to you and through text, images, buttons, and links. Every click is you 'talking back.'" },
-      { heading: "Three Layers of Every Site", videoSrc: "assets/video/placeholder-three-layers-of-every-site.mp4", body: "HTML = structure (the bones), CSS = style (the skin/outfit), JavaScript = behavior (the reflexes). You'll learn all three on this trail." },
-      { heading: "Client vs. Server", videoSrc: "assets/video/placeholder-client-vs-server.mp4", body: "Your browser (the client) asks a server for a page. The server sends back the ingredients, and your browser assembles them for you." },
-      { heading: "Recap", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "What's Next?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
+      { heading: "What You'll Learn", videoSrc: "assets/video/L1-what-you-will-learn.mp4", body: "This stop covers three big ideas: every website is a conversation, the three layers every site is built from, and how clients and servers talk to each other." },
+      { heading: "Icebreaker", videoSrc: "assets/video/L1-icebreaker.mp4", body: "Introduce yourself in the discussion tab, then share one memorable thing you've seen on a website that you really enjoyed." },
+      { heading: "Helpful Terms to Know", videoSrc: "assets/video/L1-helpful-terms.mp4", body: "Browser, client, and server — the three terms you'll need before this stop makes sense." },
+      { heading: "Every Website is a Conversation", videoSrc: "assets/video/L1-every-website-is-a-conversation.mp4", body: "Websites are how computers talk to you and through text, images, buttons, and links. Every click is you 'talking back.'" },
+      { heading: "Three Layers of Every Site", videoSrc: "assets/video/L1-three-layers-of-every-site.mp4", body: "HTML = structure (the bones), CSS = style (the skin/outfit), JavaScript = behavior (the reflexes). You'll learn all three on this trail." },
+      { heading: "Client vs. Server", videoSrc: "assets/video/L1-client-vs-server.mp4", body: "Your browser (the client) asks a server for a page. The server sends back the ingredients, and your browser assembles them for you." },
+      { heading: "Recap", videoSrc: "assets/video/L1-recap.mp4", body: "Every website is a conversation between a client and a server, built from three layers: HTML, CSS, and JavaScript." },
+      { heading: "What's Next?", videoSrc: "assets/video/L1-whats-next.mp4", body: "Next up: the parts of a website, how HTML actually works, and how CSS makes your site look the way you intend." },
           ]
   },
   {
