@@ -63,13 +63,13 @@ const LESSON_CONTENT = [
     title: "Parts of a Website",
     theme: "Skate Park",
     cards: [
-      { heading: "What You'll Learn", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "Icebreaker", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "Anatomy of a Website - Page Structure", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "Content Blocks Inside the Page Structure", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Most pages follow the same skeleton: a header up top, main content in the middle, footer info at the bottom." },
-      { heading: "Text Hierarchy On a Page", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Most pages follow the same skeleton: a header up top, main content in the middle, footer info at the bottom." },
-      { heading: "Layout and Grid", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Most pages follow the same skeleton: a header up top, main content in the middle, footer info at the bottom." },
-      { heading: "Forms As Interactive Parts", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Most pages follow the same skeleton: a header up top, main content in the middle, footer info at the bottom." },
+      { heading: "What You'll Learn", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Every website is made of the same recurring parts — frames, blocks, text hierarchy, layout, and forms. This stop teaches you to name them and spot them everywhere." },
+      { heading: "Icebreaker", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Think of an app or site you use all the time — what's the first thing your eyes land on when it opens? Share what you noticed in the discussion tab." },
+      { heading: "Anatomy of a Website - Page Structure", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Every page shares the same basic frame: header, navigation, body, and footer — the book covers, table of contents, and chapter of the site." },
+      { heading: "Content Blocks Inside the Page Structure", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Inside the body, content is organized into blocks like hero sections, cards, and featured sections — each one doing its own job, like a post in a feed." },
+      { heading: "Text Hierarchy On a Page", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Headings, subheadings, body text, and captions create a hierarchy so your brain knows what to read first." },
+      { heading: "Layout and Grid", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Layout is how many columns a page uses and in what order; grid is the invisible lines that keep those blocks lined up." },
+      { heading: "Forms As Interactive Parts", videoSrc: "assets/video/placeholder-header-body-footer.mp4", body: "Forms are how a website listens back to you — titles, labels, inputs, radio buttons, checkboxes, and a submit button all play a role." },
       {
         heading: "Activity: Website Anatomy Lab",
         videoSrc: "assets/video/placeholder-header-body-footer.mp4",
@@ -212,8 +212,8 @@ const LESSON_CONTENT = [
     ]
   }
 },
-      { heading: "Recap", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
-      { heading: "What's Next?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "By the end of this journey you'll have built your own working pages and mini projects and not just read about them." },
+      { heading: "Recap", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "You now know the anatomy of any page: header, navigation, body, and footer, built from content blocks, organized with text hierarchy, arranged in a layout, and made interactive with forms." },
+      { heading: "What's Next?", videoSrc: "assets/video/placeholder-course-intro.mp4", body: "Next up: getting hands-on with the actual HTML code behind this structure, then styling it with CSS." },
     ]
   },
   {
